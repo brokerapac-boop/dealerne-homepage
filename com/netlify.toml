@@ -1,0 +1,9 @@
+# 이 폴더가 그대로 사이트에 올라갑니다. 빌드 과정은 없습니다.
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

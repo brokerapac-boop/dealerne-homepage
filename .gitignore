@@ -1,0 +1,20 @@
+# 로컬 전용: 예전 버전, 검토용 캡처, 임시 폴더
+_old/
+v1/
+v2/
+v3-c-calculator/
+v4-c-story/
+v5-d-first/
+review/
+handoff/
+dist*/
+.netlify/
+.DS_Store
+instructor.png
+candles.svg
+.agents/
+.claude/
+skills-lock.json
+MAPPING.md
+SAMPLE-CONTENT.md
+drafts/

@@ -1,0 +1,25 @@
+name: 미리보기 주소 안내
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  pull-requests: write
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const n = context.issue.number;
+            const body = [
+              '### 미리보기 주소',
+              '1~2분 뒤에 아래 주소에서 수정된 화면을 볼 수 있습니다.',
+              '',
+              `- dealerne.com 미리보기: https://deploy-preview-${n}--dealerne-academy-draft-6406.netlify.app`,
+              `- dealerne.co.kr 미리보기: https://deploy-preview-${n}--dealerne-community.netlify.app`,
+              '',
+              '괜찮으면 아래 **Merge pull request** 버튼을 누르세요. 1~2분 뒤 실제 사이트에 반영됩니다.',
+              '고친 폴더(`com/` 또는 `kr/`)의 미리보기만 바뀝니다.'
+            ].join('\n');
+            await github.rest.issues.createComment({ ...context.repo, issue_number: n, body });

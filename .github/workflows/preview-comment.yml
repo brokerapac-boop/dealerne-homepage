@@ -20,6 +20,6 @@ jobs:
               `- dealerne.co.kr 미리보기: https://deploy-preview-${n}--dealerne-community.netlify.app`,
               '',
               '괜찮으면 아래 **Merge pull request** 버튼을 누르세요. 1~2분 뒤 실제 사이트에 반영됩니다.',
-              '고친 폴더(`com/` 또는 `kr/`)의 미리보기만 바뀝니다.'
+              '고치지 않은 쪽 주소는 "Page not found"로 나옵니다. 정상입니다.'
             ].join('\n');
             await github.rest.issues.createComment({ ...context.repo, issue_number: n, body });

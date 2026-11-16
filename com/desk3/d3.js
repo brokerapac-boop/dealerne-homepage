@@ -21,10 +21,10 @@
   /* ---------- 기준값은 한곳에 (5장) ----------
      계약 크기는 기존 데스크 페이지에 적힌 값입니다. 브로커와 계좌 유형에 따라 다를 수 있습니다. */
   var INST = {
-    gold: { name: '골드',      unit: '온스',      size: 100,    move: 1,      moveLabel: '$1',          stop: 5,      stopLabel: '$5',     tgtLabel: '$10',    sizeText: function (q) { return fmtNum(q) + '온스'; } },
-    nas:  { name: '나스닥100', unit: '계약',      size: 1,      move: 1,      moveLabel: '1포인트',     stop: 50,     stopLabel: '50포인트', tgtLabel: '100포인트', sizeText: function (q) { return fmtNum(q) + '계약'; } },
-    wti:  { name: 'WTI 오일',  unit: '배럴',      size: 100,    move: 1,      moveLabel: '$1',          stop: 0.5,    stopLabel: '$0.5',   tgtLabel: '$1',     sizeText: function (q) { return fmtNum(q) + '배럴'; } },
-    eur:  { name: 'EUR/USD',   unit: '통화 단위', size: 100000, move: 0.0001, moveLabel: '1핍(0.0001)', stop: 0.0020, stopLabel: '20핍',   tgtLabel: '40핍',   sizeText: function (q) { return fmtNum(q) + ' 통화 단위'; } }
+    gold: { name: '골드',      what: '시세가', sizeLabel: '계약 크기', size: 100,    move: 1,      moveLabel: '$1',          stop: 5,      stopLabel: '$5',     tgtLabel: '$10',    sizeText: function (q) { return fmtNum(q) + '온스'; } },
+    nas:  { name: '나스닥100', what: '지수가', sizeLabel: '', size: 1,      move: 1,      moveLabel: '1포인트',     stop: 50,     stopLabel: '50포인트', tgtLabel: '100포인트', sizeText: function (q) { return fmtNum(q) + '계약'; } },
+    wti:  { name: 'WTI 원유',  what: '유가가', sizeLabel: '계약 크기', size: 100,    move: 1,      moveLabel: '$1',          stop: 0.5,    stopLabel: '$0.5',   tgtLabel: '$1',     sizeText: function (q) { return fmtNum(q) + '배럴'; } },
+    eur:  { name: 'EUR/USD',   what: '환율이', sizeLabel: '계약 규모', size: 100000, move: 0.0001, moveLabel: '1핍(0.0001)', stop: 0.0020, stopLabel: '20핍',   tgtLabel: '40핍',   sizeText: function (q) { return fmtNum(q) + '단위'; } }
   };
   var TARGET_RATIO = 2;   // 목표 폭 = 손절 폭의 2배
 
@@ -35,19 +35,19 @@
   var calc = { k: 'gold', lot: 0.01 };
   function renderCalc() {
     var c = INST[calc.k], qty = c.size * calc.lot, perMove = qty * c.move, stop = qty * c.stop, tgt = stop * TARGET_RATIO;
-    $('rLot').textContent = calc.lot.toFixed(2) + '랏';
+    $('rLot').textContent = calc.lot.toFixed(2) + '랏' + (c.sizeLabel ? ' · ' + c.sizeLabel : '');
     $('rSize').textContent = c.sizeText(qty);
-    $('rMoveL').textContent = '가격이 ' + c.moveLabel + ' 움직이면';
+    $('rMoveL').textContent = c.what + ' ' + c.moveLabel + ' 움직일 때';
     $('rMove').textContent = money(perMove);
-    $('rStopL').textContent = '손절 (−' + c.stopLabel + ')에 닿으면';
+    $('rStopL').textContent = '손절가(−' + c.stopLabel + ') 도달 시';
     $('rStop').textContent = '−' + money(stop);
-    $('rTgtL').textContent = '목표 (+' + c.tgtLabel + ')에 닿으면';
+    $('rTgtL').textContent = '목표가(+' + c.tgtLabel + ') 도달 시';
     $('rTgt').textContent = '+' + money(tgt);
-    setUnits($('rNote'), ['가정: ' + c.name + ' 1랏 = ' + c.sizeText(c.size) + ' ·', '손절 ' + c.stopLabel + ' · 목표 ' + c.tgtLabel + ' · 수수료 제외.', '계약 크기는 브로커마다 다릅니다.']);
+    setUnits($('rNote'), ['계산 기준: ' + c.name + ' 1랏 = ' + c.sizeText(c.size) + ' ·', '손절 −' + c.stopLabel + ' · 목표 +' + c.tgtLabel + ' (수수료 제외) ·', '세부 계약 단위는 브로커마다 다를 수 있습니다.']);
     var carry = c.name + ' ' + calc.lot.toFixed(2) + '랏';                 // 계산해 본 내용을 상담으로 이어 줍니다
     $('calcField').value = calc.touched ? carry : '';
     $('calcCarry').hidden = !calc.touched;
-    $('calcCarry').textContent = '계산해 보신 ' + carry + '도 함께 전달합니다.';
+    $('calcCarry').textContent = '위에서 확인하신 [' + c.name + ' · ' + calc.lot.toFixed(2) + '랏] 계산 기준도 상담방에 함께 전달됩니다.';
   }
   function radioGroup(root, onPick) {
     var btns = [].slice.call(root.querySelectorAll('[role=radio],[role=tab]'));
@@ -170,7 +170,7 @@
     var body = new URLSearchParams(new FormData(form)).toString();
     btn.disabled = true; btn.textContent = '접수하는 중입니다';   // 불러오는 중 상태
     function finish(ok) {
-      btn.disabled = false; btn.textContent = '신청하고 카카오톡 열기';
+      btn.disabled = false; btn.textContent = '무료 상담 신청하고 카톡방 열기';
       track(ok ? 'form_done' : 'form_send_failed', { kind: form.elements.kind.value });
       if (!ok) return fail(null, '접수가 저장되지 않았습니다. 열린 카카오톡 상담방에 이름과 연락처를 남겨 주시면 바로 이어서 도와드립니다.');
       $('doneName').textContent = nameEl.value.trim();

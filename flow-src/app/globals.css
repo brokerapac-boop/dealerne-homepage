@@ -594,3 +594,8 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
   .cta-bar .btn{min-height:46px;padding:0 18px}
   .sample-flag.up{bottom:calc(80px + env(safe-area-inset-bottom))}
 }
+
+.cta-logo{flex:none;width:34px;height:34px}
+.cta-bar{padding-left:14px}
+@media (max-width:820px){.cta-logo{width:30px;height:30px}.cta-bar{padding-left:10px}}
+@media (max-width:380px){.cta-bar{gap:8px}.cta-bar p{font-size:14px}.cta-bar .btn{padding:0 14px}.cta-logo{width:28px;height:28px}}

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>딜러네 아카데미 | 기준부터 세우는 선물 트레이딩</title>
+<meta name="description" content="3분 레벨 진단으로 시작 단계를 확인하고, 입문부터 실전 복기까지 5단계로 배웁니다.">
+<meta property="og:title" content="딜러네 아카데미 | 기준부터 세우는 선물 트레이딩">
+<meta property="og:description" content="3분 레벨 진단으로 시작 단계를 확인하고, 입문부터 실전 복기까지 5단계로 배웁니다.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://dealerne.com/og.png">
+<meta name="theme-color" content="#07090F">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../desk3/d3.css">
+<link rel="stylesheet" href="a3.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#start" aria-label="딜러네 아카데미 처음으로"><img src="../logo.webp" alt="" width="32" height="32"><span>딜러네 아카데미</span></a>
+  <a class="top-link" href="../desk3/">데스크</a>
+</header>
+<p class="sample-flag">SAMPLE DRAFT · 요약 시안</p>
+
+<main id="start">
+
+  <!-- 1. 약속 -->
+  <section class="sec hero" aria-labelledby="h-hero">
+    <p class="tag">선물 거래, 어디서부터 시작할지 막막하신가요?</p>
+    <h1 id="h-hero"><span class="s"><em class="hl">기준</em>부터 세우는</span> <span class="s">선물 트레이딩</span></h1>
+    <ul class="checks">
+      <li><span class="s">3분 진단으로</span> <span class="s">현재 내 실력부터 점검합니다</span></li>
+      <li><span class="s">나에게 맞는 단계부터</span> <span class="s">차근차근 시작합니다</span></li>
+      <li><span class="s">레벨 상담은 카카오톡으로</span> <span class="s">무료 진행됩니다</span></li>
+    </ul>
+    <ol class="lvbar" id="lvBar" aria-label="5단계 로드맵 한눈에 보기">
+      <li data-lv="Lv1 입문"><b>Lv1</b>입문</li><li data-lv="Lv2 차트"><b>Lv2</b>차트</li><li data-lv="Lv3 진입 기준"><b>Lv3</b>진입</li><li data-lv="Lv4 리스크"><b>Lv4</b>리스크</li><li data-lv="Lv5 실전"><b>Lv5</b>실전</li>
+    </ol>
+    <a class="jump" href="#quiz" id="heroJump">3분 레벨 진단 시작하기 <i aria-hidden="true">↓</i></a>
+  </section>
+
+  <!-- 2. 내 경우: 레벨 진단 -->
+  <section class="sec" id="quiz" aria-labelledby="h-quiz">
+    <h2 id="h-quiz"><span class="s">3분 진단으로</span> <span class="s"><em class="hl">내 레벨</em>부터 확인하세요</span></h2>
+    <p class="body"><span class="s">8문항에 답하면</span> <span class="s">추천 시작 단계를 알려드립니다.</span></p>
+
+    <div class="result quiz-card" aria-live="polite">
+      <div id="quizAsk">
+        <p class="quiz-step"><span id="quizStep">1 / 8</span></p>
+        <div class="quiz-bar" aria-hidden="true"><i id="quizBar"></i></div>
+        <h3 id="quizQ" tabindex="-1"></h3>
+        <div class="quiz-opts" id="quizOpts"></div>
+      </div>
+      <div id="quizResult" hidden>
+        <p class="result-size"><span>추천 시작 단계</span><b id="resLv"></b></p>
+        <p class="body" id="resText"></p>
+        <p class="note"><span class="s">진단 결과는 참고용이며,</span> <span class="s">상담에서 함께 다시 확인합니다.</span></p>
+        <a class="btn-sub" href="#apply" id="resApply">이 레벨로 무료 상담 신청</a>
+        <button class="btn-sub" type="button" id="quizReset">다시 진단하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 방법: 5단계 -->
+  <section class="sec" id="roadmap" aria-labelledby="h-road">
+    <h2 id="h-road"><span class="s">기초 개념부터 실전 복기까지,</span> <span class="s"><em class="hl">5단계</em>로 완성합니다</span></h2>
+    <p class="body"><span class="s">단계마다 통과 기준이 정해져 있습니다.</span> <span class="s">통과할 때마다 다음 레벨이 열립니다.</span></p>
+    <ol class="steps lv" id="lvList">
+      <li data-lv="Lv1 입문"><b><i>입문</i> 선물 시장이 움직이는 기본 원리</b><span>통과 기준 · 교재를 보지 않고 핵심 용어를 내 말로 설명할 수 있음</span></li>
+      <li data-lv="Lv2 차트"><b><i>차트</i> 일관된 순서로 분석하는 눈</b><span>통과 기준 · 추세와 핵심 지지·저항 구간을 스스로 짚어낼 수 있음</span></li>
+      <li data-lv="Lv3 진입 기준"><b><i>진입 기준</i> 진입 근거와 손절 라인을 문장으로</b><span>통과 기준 · 주문 전에 진입 근거와 손절가를 먼저 기록함</span></li>
+      <li data-lv="Lv4 리스크"><b><i>리스크</i> 내 계좌에 맞는 허용 손실 한도</b><span>통과 기준 · 일일 손실 한도를 지키며 한 달간 매매 기록을 완주함</span></li>
+      <li data-lv="Lv5 실전"><b><i>실전</i> 원칙대로 실행하고 데이터로 복기</b><span>수료 기준 · 매매일지를 바탕으로 월간 복기 리포트를 완성함</span></li>
+    </ol>
+    <div class="chat journal" role="group" aria-label="매매일지 양식 예시">
+      <p class="chat-head"><b>매매일지 · 복기 양식</b><span>양식 예시</span></p>
+      <dl class="rows">
+        <div><dt>진입 근거</dt><dd>주문 전에 기록</dd></div>
+        <div><dt>손절가 · 목표가</dt><dd>주문 전에 기록</dd></div>
+        <div><dt>주문 수량</dt><dd>손실 한도 안에서 계산</dd></div>
+        <div><dt>원칙 준수 여부</dt><dd>매매 후 체크</dd></div>
+      </dl>
+      <p class="note"><span class="s">Lv3부터 매매마다 이 항목을 기록하고,</span> <span class="s">Lv5에서 월간 복기 리포트로 정리합니다.</span></p>
+    </div>
+  </section>
+
+  <!-- 4. 맛보기: 영상 -->
+  <section class="sec" id="videos" aria-labelledby="h-vid">
+    <h2 id="h-vid"><span class="s">손절은 저점을 맞히는</span> <span class="s"><em class="hl">기술이 아닙니다</em></span></h2>
+    <p class="body"><span class="s">핵심 원칙을 1분 영상에 담았습니다.</span></p>
+    <ul class="list vids">
+      <li><a class="row" href="https://www.youtube.com/watch?v=ZkFaC6Of3VY" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/ZkFaC6Of3VY/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">손절은 바닥 맞히는 기술이 아닙니다</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=ntGobt2x9U4" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/ntGobt2x9U4/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">분할매수했는데 손실이 더 커진 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=A7yYcCHm4-k" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/A7yYcCHm4-k/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">본전 생각나는 순간 손실이 커지는 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=TiUQks72WDo" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/TiUQks72WDo/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">외국인이 주식을 사면서 선물을 파는 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener"><span class="row-t">전체 영상 보기</span><span class="row-v">딜러네 유튜브 <i aria-hidden="true">›</i></span></a></li>
+    </ul>
+    <p class="note">영상은 유튜브에서 열립니다.</p>
+  </section>
+
+  <!-- 5. 누가: 강사 -->
+  <section class="sec" id="instructor" aria-labelledby="h-ins">
+    <h2 id="h-ins"><span class="s"><em class="hl">기준</em>이 있어야</span> <span class="s">흔들려도 돌아옵니다</span></h2>
+    <div class="ins">
+      <img src="../instructor2.webp" alt="딜러네 아카데미 강사 송프로" width="112" height="140" loading="lazy">
+      <div>
+        <p class="ins-name">송프로 <small>딜러네 아카데미 강사</small></p>
+        <p class="ins-tags"><span>거시경제(매크로)</span><span>시장심리</span></p>
+        <p class="note"><span class="s">금리와 원자재(골드·원유)의</span> <span class="s">흐름을 연결해 시장의 큰 그림을</span> <span class="s">쉽게 풀어냅니다.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 걸리는 점 -->
+  <section class="sec" id="faq" aria-labelledby="h-faq">
+    <h2 id="h-faq"><em class="hl">자주 묻는</em> 질문</h2>
+    <div class="faq">
+      <details data-q="beginner">
+        <summary>선물 거래가 완전 처음인데 수강할 수 있나요?</summary>
+        <p><span class="s">물론입니다.</span> <span class="s">3분 레벨 진단으로 현재 이해도를 먼저 확인한 뒤,</span> <span class="s">가장 기초인 Lv1 입문 과정부터</span> <span class="s">차근차근 시작하실 수 있습니다.</span></p>
+      </details>
+      <details data-q="scope">
+        <summary>주로 어떤 종목과 시장을 다루나요?</summary>
+        <p><span class="s">해외·국내 선물 시장의 구조와 차트 분석법,</span> <span class="s">리스크 관리 원칙을 다룹니다.</span> <span class="s">세부 커리큘럼은 레벨 상담 시 안내해 드립니다.</span></p>
+      </details>
+      <details data-q="profit">
+        <summary>교육만 들으면 바로 수익이 나나요?</summary>
+        <p><span class="s">아닙니다. 어떠한 교육도 수익을 보장하지 않습니다.</span> <span class="s">아카데미는 요행을 바라는 매매 대신,</span> <span class="s">스스로 손절·진입 기준을 세우고</span> <span class="s">모의계좌에서 충분히 검증하는 훈련에 집중합니다.</span></p>
+      </details>
+      <details data-q="price">
+        <summary>수강 기간과 비용은 어떻게 되나요?</summary>
+        <p><span class="s">시작하시는 레벨과 선택 과정에 따라</span> <span class="s">수강 기간 및 비용이 달라집니다.</span> <span class="s">불필요한 과정을 권하지 않도록</span> <span class="s">1:1 레벨 상담을 거쳐 맞춤 안내해 드리고 있습니다.</span></p>
+      </details>
+      <details data-q="process">
+        <summary>상담 신청 후에는 어떻게 진행되나요?</summary>
+        <p><span class="s">신청 정보를 남겨주시면 카카오톡 상담방을 통해</span> <span class="s">현재 레벨과 고민 지점을 먼저 파악한 뒤,</span> <span class="s">가장 적합한 시작 단계와 연습 방법을</span> <span class="s">1:1로 안내해 드립니다.</span></p>
+      </details>
+      <details data-q="after">
+        <summary>수료한 뒤에는 어떻게 이어가나요?</summary>
+        <p><span class="s">Lv5 과정을 마친 뒤에는 1:1 피드백 상담을 통해</span> <span class="s">매매 습관의 약점을 점검하고</span> <span class="s">다음 목표를 함께 설계합니다.</span></p>
+      </details>
+      <details data-q="league">
+        <summary>시즌 리그는 무엇인가요?</summary>
+        <p><span class="s">단순 수익률 대결이 아닌,</span> <span class="s">'손실 한도 준수'와 '매매일지 기록'으로 평가하는</span> <span class="s">4주 모의투자 챌린지입니다.</span> <span class="s">차기 시즌 일정은 추후 공지됩니다.</span></p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 7. 시작 -->
+  <section class="sec cta" id="apply" aria-labelledby="h-apply">
+    <p class="tag">카카오톡 채팅 상담 · 무료</p>
+    <h2 id="h-apply"><span class="s">1:1 <em class="hl">무료</em></span> <span class="s">레벨 상담 신청</span></h2>
+    <p class="body"><span class="s">신청해 주시면 카카오톡 상담방으로 연결되며,</span> <span class="s">현재 레벨과 시작 단계를 함께 확인합니다.</span></p>
+    <div class="chat" role="group" aria-label="신청 후 카카오톡 상담 예시">
+      <p class="chat-head"><b>신청 후 카톡 상담 예시</b><span>예시 화면</span></p>
+      <p class="bub me" id="chatMe">안녕하세요, 홈페이지에서 레벨 상담 신청했습니다.</p>
+      <p class="bub you"><b>딜러네 아카데미</b>반갑습니다. 현재 레벨과 막히는 지점부터 카카오톡 채팅으로 함께 확인해 드립니다.</p>
+      <p class="bub you card"><b>상담에서 함께 정하는 것</b>시작 단계와 모의계좌 연습 방법</p>
+      <p class="note"><span class="s">이해를 돕기 위한 예시 화면이며,</span> <span class="s">실제 안내 내용은 다를 수 있습니다.</span></p>
+    </div>
+
+    <form name="academy3-consult" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="form" novalidate>
+      <input type="hidden" name="form-name" value="academy3-consult">
+      <p hidden><label>Skip <input name="bot-field"></label></p>
+
+      <p class="quiz-badge" id="quizBadge" hidden></p>
+      <label class="field"><span class="label">관심 시작 레벨</span>
+        <select name="level" id="levelSel"><option>잘 모르겠어요</option><option>Lv1 입문</option><option>Lv2 차트</option><option>Lv3 진입 기준</option><option>Lv4 리스크</option><option>Lv5 실전</option></select>
+      </label>
+      <label class="field"><span class="label">이름 (또는 닉네임)</span><input name="fullname" required autocomplete="name" maxlength="20" placeholder="홍길동"></label>
+      <label class="field"><span class="label">휴대폰 번호 <small>상담 연락에만 씁니다</small></span><input name="phone" type="tel" inputmode="numeric" required autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></label>
+      <label class="agree"><input type="checkbox" name="consent" required><span><span class="s">[필수] 1:1 상담 안내를 위한</span> <span class="s">개인정보(이름 또는 닉네임, 휴대폰 번호)</span> <span class="s">수집·이용에 동의합니다.</span></span></label>
+
+      <input type="hidden" name="quiz" id="quizField" value="">
+      <input type="hidden" name="src" id="srcField" value="">
+      <p class="note" id="quizCarry" hidden></p>
+      <p class="err" id="formErr" role="alert" hidden></p>
+      <button class="btn-main" type="submit" id="submitBtn">무료 레벨 상담 신청하고 카톡방 열기</button>
+      <p class="note"><span class="s">본 상담은 교육 과정 안내를 목적으로 하며,</span> <span class="s">투자자문이나 수익 보장을 제공하지 않습니다.</span></p>
+    </form>
+
+    <div class="done" id="done" role="status" hidden>
+      <h3>신청이 접수됐습니다</h3>
+      <p class="body"><span class="s">지금 하실 일은 하나입니다.</span> <span class="s">상담방에 들어와 <b id="doneName"></b> 이름을 남겨 주세요.</span></p>
+      <a class="btn-main" href="https://open.kakao.com/o/gZ4c0RWi" target="_blank" rel="noopener" id="doneKakao">카카오톡 상담방 열기</a>
+      <h3 class="sub-h">상담방에서 이어서 하는 일</h3>
+      <ol class="mini">
+        <li>현재 실력 진단</li>
+        <li>맞춤 레벨 배정</li>
+        <li>모의계좌 실습</li>
+        <li>일지 복기 및 피드백</li>
+      </ol>
+    </div>
+
+    <ul class="list who-mini" aria-label="운영 주체와 채널">
+      <li><div class="row static"><span class="row-t">운영</span><span class="row-v">(주)맨큐</span></div></li>
+      <li><a class="row" href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener"><span class="row-t">유튜브</span><span class="row-v">@딜러네 <i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="../desk3/"><span class="row-t">모의계좌 실습</span><span class="row-v">딜러네 데스크 <i aria-hidden="true">›</i></span></a></li>
+    </ul>
+  </section>
+
+  <section class="sec risk" aria-labelledby="h-risk">
+    <h2 id="h-risk">투자위험 고지</h2>
+    <p>본 사이트에서 제공하는 모든 영상·시그널 및 학습 자료는 이해를 돕기 위한 교육용 정보이며, 특정 금융상품에 대한 매매 권유나 투자자문이 아닙니다. 어떠한 경우에도 수익을 보장하지 않으며, 해외선물·CFD·FX 등 레버리지 파생상품은 시장 변동에 따라 투자 원금을 초과하는 손실이 발생할 수 있습니다. 과거의 데이터나 사례가 미래의 수익을 보장하지 않으며, 모든 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.</p>
+    <p class="foot">(주)맨큐 · © 2026 딜러네 아카데미 · <a href="https://open.kakao.com/o/gZ4c0RWi" target="_blank" rel="noopener">문의</a></p>
+  </section>
+</main>
+
+<div class="bar" id="bar"><a class="btn-main" href="#apply" id="barBtn"><svg class="ic-chat" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.6 1.6 4.9 4 6.4L5.2 21l4-2.3c.9.2 1.8.3 2.8.3 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/></svg>무료 레벨 상담 신청하기</a><p class="bar-cap">카카오톡 채팅으로 안내 · 상담 무료</p></div>
+
+<script src="a3.js"></script>
+</body>
+</html>

@@ -1,12 +1,10 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { ReactLenis } from 'lenis/react';
-import { MotionConfig, motion, useScroll, useTransform, useMotionTemplate, useMotionValueEvent, useInView } from 'motion/react';
+import { MotionConfig, motion, useTransform, useMotionTemplate, useMotionValueEvent } from 'motion/react';
 import Chart from './Chart';
-
-const TG = 'https://t.me/dealerne';
-const SPRING = { type: 'spring', stiffness: 110, damping: 20, mass: 0.9 };
-const SOFT = { type: 'spring', stiffness: 70, damping: 18 };
+import { TG, SPRING, SOFT, usePin, Up, Roll } from './kit';
+import { Demo, Platforms, Instructor, Videos, Forms } from './More';
 
 /* 예시 기준가 (실제 시그널이 아님) */
 const LV = { entry: 21621.3, stop: 21505.2, target: 21853.6 };
@@ -53,32 +51,9 @@ const CLOUD = [
   ['스프레드', -40, 4, 1.7], ['롤오버', 34, 22, 1.4], ['마진콜', -26, 28, 1.8], ['슬리피지', 8, 34, 1.3],
   ['헤지', -6, 16, 1.1], ['포지션', 16, -14, 1.4], ['익절', -18, -8, 1.2], ['스왑', 44, -24, 1.1],
 ];
-const CHAPTERS = ['데스크', '기준', '순서', '차트', '수급', '종목', '아카데미', '시그널'];
+const CHAPTERS = ['데스크', '기준', '순서', '차트', '수급', '종목', '모의거래', '플랫폼', '아카데미', '강사', '영상', '시그널', '상담'];
 
-function usePin() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
-  return [ref, scrollYProgress];
-}
 const rise = (d) => ({ initial: { opacity: 0, y: 44 }, animate: { opacity: 1, y: 0 }, transition: { ...SPRING, delay: 0.15 + d * 0.2 } });
-
-function Up({ as = 'div', i = 0, children, ...rest }) {
-  const M = motion[as];
-  return <M initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '0px 0px -12% 0px' }} transition={{ ...SPRING, delay: i * 0.09 }} {...rest}>{children}</M>;
-}
-
-/* 숫자가 자리마다 굴러서 멈춤 */
-function Roll({ value }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  return (
-    <span className="roll" ref={ref} role="text" aria-label={value}>
-      {[...value].map((ch, i) => /\d/.test(ch)
-        ? <span className="roll-col" key={i} aria-hidden="true"><motion.span className="roll-strip" initial={false} animate={{ y: inView ? `-${+ch * 1.15}em` : '0em' }} transition={{ type: 'spring', stiffness: 55, damping: 15, delay: i * 0.06 }}>{'0123456789'.split('').map((d) => <span key={d}>{d}</span>)}</motion.span></span>
-        : <span key={i} aria-hidden="true">{ch}</span>)}
-    </span>
-  );
-}
 
 /* 1. 첫 화면: 전체 화면 차트가 스크롤에 따라 둥근 카드로 줄어듦 */
 function Hero() {
@@ -243,7 +218,7 @@ function Road() {
   useMotionValueEvent(p, 'change', (v) => setLit(Math.min(ROAD.length, Math.floor(v * 5.6) + 1)));
   const fill = useTransform(p, [0, 0.9], [0.08, 1]);
   return (
-    <section ref={ref} className="pin road-sec" id="road" data-tone="light" data-ch="6" style={{ height: '300svh' }}>
+    <section ref={ref} className="pin road-sec" id="road" data-tone="light" data-ch="8" style={{ height: '300svh' }}>
       <div className="pin-stage">
         <div className="wrap">
           <p className="eyebrow">딜러네 아카데미</p>
@@ -269,7 +244,7 @@ function Finale() {
   const r = useTransform(p, [0.12, 0.82], [0, 130]);
   const clip = useMotionTemplate`circle(${r}% at 50% 64%)`;
   return (
-    <section ref={ref} className="pin end-sec" data-tone="dark" data-ch="7" style={{ height: '230svh' }}>
+    <section ref={ref} className="pin end-sec" data-tone="dark" data-ch="11" style={{ height: '230svh' }}>
       <div className="pin-stage">
         <div className="end-layer"><h2 className="big">기준은 차트로,</h2><span className="btn ghost" aria-hidden="true">텔레그램에서 시그널 받기</span></div>
         <motion.div className="end-layer accent" style={{ clipPath: clip }}><h2 className="big">시그널은 텔레그램으로.</h2><a className="btn dark" href={TG} target="_blank" rel="noopener">텔레그램에서 시그널 받기</a></motion.div>
@@ -385,15 +360,13 @@ export default function Page() {
         </section>
 
         <Insts mobile={mobile} />
+        <Demo />
+        <Platforms />
         <Road />
+        <Instructor />
+        <Videos />
         <Finale />
-
-        <section className="sec doors-sec" data-tone="dark" data-ch="7">
-          <div className="wrap doors">
-            <Up as="a" className="door" i={0} href="/#desk-apply-demo" whileHover={{ y: -6 }}><span>처음이라면</span><b>모의투자 상담 신청</b><i aria-hidden="true">→</i></Up>
-            <Up as="a" className="door" i={1} href="/#desk-apply-live" whileHover={{ y: -6 }}><span>바로 매매하려면</span><b>실전 매매 상담 신청</b><i aria-hidden="true">→</i></Up>
-          </div>
-        </section>
+        <Forms />
       </main>
 
       <section className="risk">

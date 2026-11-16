@@ -83,7 +83,7 @@ function PlatCard({ i, n, p, data }) {
   const [name, tag, rows] = data;
   return (
     <div className="plat-slot" style={{ top: `calc(var(--hd) + 28px + ${i * 80}px)` }}>
-      <motion.article className="plat" style={{ scale }}>
+      <motion.article className={`plat p-${i}`} style={{ scale }}>
         <header><h3>{name}</h3><span>{tag}</span></header>
         <ul>{rows.map(([s, t], k) => <li key={k} className={s === '−' ? 'minus' : s === '·' ? 'dot' : ''}><i aria-hidden="true">{s}</i><span>{t}</span></li>)}</ul>
       </motion.article>

@@ -519,3 +519,12 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 }
 
 @media (max-width:1000px){.cal-in{grid-template-columns:minmax(0,1fr)}}
+
+/* 플랫폼 카드: 카드마다 색을 달리해 겹쳐도 구분되게 */
+.plat{--pc-bg:var(--card);--pc-ink:var(--ink);--pc-sub:var(--sub);--pc-mark:#B07A00;--pc-tag:#8A6A12;--pc-tagline:#B07A00;background:var(--pc-bg);color:var(--pc-ink)}
+.plat.p-0{--pc-bg:#0E1119;--pc-ink:#F3F4F7;--pc-sub:#A9B0BF;--pc-mark:#FFC247;--pc-tag:#FFC247;--pc-tagline:rgba(255,194,71,.6);border-color:#0E1119}
+.plat.p-1{--pc-bg:#FFC247;--pc-ink:#1A1300;--pc-sub:#5A4300;--pc-mark:#1A1300;--pc-tag:#1A1300;--pc-tagline:rgba(26,19,0,.45);border-color:#FFC247}
+.plat.p-2{--pc-bg:#2B5BD7;--pc-ink:#FFFFFF;--pc-sub:#D5E0FF;--pc-mark:#FFFFFF;--pc-tag:#FFFFFF;--pc-tagline:rgba(255,255,255,.55);border-color:#2B5BD7}
+.plat header span{border-color:var(--pc-tagline);color:var(--pc-tag)}
+.plat li i{color:var(--pc-mark)}
+.plat li.minus,.plat li.dot{color:var(--pc-sub)}

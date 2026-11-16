@@ -371,7 +371,9 @@
       e.preventDefault(); closeMenu();
       var same = document.body.getAttribute('data-view') === vl;
       if (!same) go(vl);
-      window.scrollTo({ top: 0, behavior: same ? 'smooth' : 'auto' });
+      window.scrollTo({ top: 0, behavior: same ? 'smooth' : 'instant' });
+      // 화면을 바꿀 때는 항상 맨 위에서 시작합니다 (CSS의 부드러운 스크롤이 중간에 끊겨 엉뚱한 위치에 멈추던 문제)
+      if (!same) requestAnimationFrame(function () { requestAnimationFrame(function () { window.scrollTo({ top: 0, behavior: 'instant' }); }); });
       return;
     }
     var href = a.getAttribute('href') || '';

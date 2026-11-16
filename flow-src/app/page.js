@@ -5,7 +5,7 @@ import { MotionConfig, motion, useTransform, useMotionTemplate, useMotionValueEv
 import Chart from './Chart';
 import { TG, SPRING, SOFT, usePin, Up, Roll } from './kit';
 import { Demo, Platforms, Instructor, Videos, Forms } from './More';
-import { VizRule, VizSteps, VizJournal, Spark, FlowChart } from './Viz';
+import { VizRule, VizSteps, VizJournal, Spark } from './Viz';
 
 /* 예시 기준가 (실제 시그널이 아님) */
 const LV = { entry: 21621.3, stop: 21505.2, target: 21853.6 };
@@ -17,8 +17,8 @@ const LINES = [
 const RISK = LV.entry - LV.stop, REWARD = LV.target - LV.entry;
 const f1 = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-/* 더미 수급 (실제 자료가 아님) */
-const FLOW = [{ who: '외국인', v: 4820 }, { who: '기관', v: -3150 }, { who: '개인', v: -1670 }];
+/* Investing.com 이 제공하는 공식 경제 캘린더 위젯: 미국·한국·유로존·중국·일본, 중요도 2~3, 한국 시간, 한국어 */
+const CAL_SRC = 'https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&importance=2,3&features=datepicker,timezone&countries=5,11,72,37,35&calType=week&timeZone=88&lang=18';
 
 const INSTS = [
   ['nas', '나스닥100', '기술주 중심의 미국 대표 지수', 'USA100', '1계약 (HFM 기준)'],
@@ -54,7 +54,7 @@ const CLOUD = [
 ];
 const ACADEMY_HASH = ['#academy', '#hero', '#principles', '#roadmap', '#after', '#daily', '#faq'];
 const DESK_HASH = { '#desk-instruments': '#instruments', '#desk-demo': '#demo', '#desk-platforms': '#platforms', '#desk-apply': '#apply', '#desk-apply-demo': '#apply-demo', '#desk-apply-live': '#apply-live' };
-const CHAPTERS = ['데스크', '기준', '순서', '차트', '수급', '종목', '모의거래', '플랫폼', '아카데미', '강사', '영상', '시그널', '상담'];
+const CHAPTERS = ['데스크', '기준', '순서', '차트', '일정', '종목', '모의거래', '플랫폼', '아카데미', '강사', '영상', '시그널', '상담'];
 
 const rise = (d) => ({ initial: { opacity: 0, y: 44 }, animate: { opacity: 1, y: 0 }, transition: { ...SPRING, delay: 0.15 + d * 0.2 } });
 
@@ -358,25 +358,21 @@ export default function Page() {
           </div>
         </section>
 
-        {/* 5. 수급 (더미) */}
-        <section className="sec flow-sec" id="flow" data-tone="dark" data-ch="4">
-          <div className="wrap">
-            <Up as="p" className="eyebrow">오늘의 브리핑</Up>
-            <Up as="h2" className="big">수급은<br /><b>숫자로</b> 확인합니다.</Up>
-            <Up className="flow">
-              <p className="flow-hd"><strong>선물 순매수</strong><span>단위: 계약</span><em>더미 데이터</em></p>
-              <div className="fchart-box"><FlowChart /></div>
-              <ul>
-                {FLOW.map(({ who, v }, k) => (
-                  <li key={who}>
-                    <span className="who">{who}</span>
-                    <span className="bar"><motion.i className={v > 0 ? 'pos' : 'neg'} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true, amount: 0.8 }} transition={{ ...SOFT, delay: 0.15 + k * 0.14 }} style={{ width: `${(Math.abs(v) / 5000) * 50}%` }} /></span>
-                    <span className={`val ${v > 0 ? 'pos' : 'neg'}`}><Roll value={(v > 0 ? '+' : '−') + Math.abs(v).toLocaleString('en-US')} /></span>
-                  </li>
-                ))}
-              </ul>
+        {/* 5. 이번 주 경제 일정 (Investing.com 공식 위젯) */}
+        <section className="sec cal-sec" id="flow" data-tone="dark" data-ch="4">
+          <div className="wrap cal-in">
+            <div className="cal-copy">
+              <Up as="p" className="eyebrow">오늘의 브리핑</Up>
+              <Up as="h2" className="big">이번 주<br /><b>경제 일정</b>부터<br />확인합니다.</Up>
+              <Up as="p" className="sub">중요 지표가 발표되는 시간에는 가격이 크게 움직일 수 있습니다. 발표 시간을 먼저 봅니다.</Up>
+            </div>
+            <Up className="cal">
+              <p className="cal-hd"><strong>경제 캘린더</strong><span>한국 시간 · 중요도 중간 이상</span></p>
+              <div className="cal-frame">
+                <iframe src={CAL_SRC} title="이번 주 경제 일정 (Investing.com)" loading="lazy" width="650" height="520" />
+              </div>
+              <p className="cal-by">실시간 경제 캘린더 제공: <a href="https://kr.investing.com/economic-calendar/" target="_blank" rel="noopener nofollow">Investing.com</a></p>
             </Up>
-            <p className="note">자리 확인용 더미 숫자입니다 · 실제 수급 자료가 아닙니다</p>
           </div>
         </section>
 

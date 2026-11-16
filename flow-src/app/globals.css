@@ -170,24 +170,18 @@ body[data-tone="light"] .num{color:#8A6A12}
 .ratio dd{font:700 clamp(16px,2.4vw,24px)/1.4 'Space Grotesk',var(--font);font-variant-numeric:tabular-nums}
 .ratio small{font-size:.6em;color:var(--sub)}
 
-/* 5. 수급 (더미) */
-.flow-sec{padding-top:0}
-.flow{margin:clamp(40px,6vw,72px) 0 16px;padding:clamp(20px,3vw,36px);border-radius:28px;background:var(--card);border:1px dashed color-mix(in srgb,var(--accent) 55%,transparent);transition:background-color .7s var(--ease)}
-.flow-hd{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:22px}
-.flow-hd strong{font-size:20px;letter-spacing:-.03em}
-.flow-hd span{font-size:13px;color:var(--sub);margin-right:auto}
-.flow-hd em{font-style:normal;font-size:12px;font-weight:700;color:var(--accent);border:1px dashed currentColor;border-radius:999px;padding:2px 10px}
-.flow ul{display:flex;flex-direction:column;gap:18px}
-.flow li{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(96px,auto);align-items:center;gap:14px}
-.flow .who{font-size:16px;font-weight:700}
-.flow .bar{position:relative;height:14px;border-radius:999px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
-.flow .bar::after{content:"";position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:var(--line)}
-.flow .bar i{position:absolute;top:0;bottom:0;border-radius:999px}
-.flow .bar i.pos{left:50%;background:#F0556B;transform-origin:left}
-.flow .bar i.neg{right:50%;background:#4B8BFF;transform-origin:right}
-.flow .val{text-align:right;font:700 clamp(20px,3.4vw,36px)/1.2 'Space Grotesk',var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.flow .val.pos{color:#F0556B}
-.flow .val.neg{color:#6FA2FF}
+/* 5. 경제 일정 */
+.cal-sec{padding-top:0}
+.cal-sec .sub{margin-top:18px}
+.cal-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,660px);gap:clamp(32px,5vw,72px);align-items:center}
+.cal{padding:clamp(16px,2.4vw,28px);border-radius:28px;background:var(--card);border:1px solid var(--line);transition:background-color .7s var(--ease)}
+.cal-hd{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:16px}
+.cal-hd strong{font-size:20px;letter-spacing:-.03em}
+.cal-hd span{font-size:13px;color:var(--sub)}
+.cal-frame{border-radius:16px;background:#fff;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cal-frame iframe{display:block;width:100%;min-width:600px;height:min(560px,62svh);border:0}
+.cal-by{margin-top:12px;font-size:12px;color:var(--sub)}
+.cal-by a{font-weight:700;text-decoration:underline;text-underline-offset:2px}
 
 /* 6. 종목: 가로로 지나감 */
 .insts{display:flex;gap:20px;width:max-content;padding:0 max(20px,calc((100vw - 1120px) / 2));will-change:transform}
@@ -266,7 +260,6 @@ body[data-tone="light"] .num{color:#8A6A12}
   .cloud-words{font-size:17px}
   .ratio{gap:8px}
   .ratio div{padding:10px 12px}
-  .flow li{grid-template-columns:52px minmax(0,1fr) auto;gap:10px}
   .insts-sec{padding-top:0}
   .insts{width:100%;margin-top:36px;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 20px 8px;scrollbar-width:none}
   .insts::-webkit-scrollbar{display:none}
@@ -508,11 +501,6 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 @keyframes vz-fall{0%{stroke-dashoffset:1;opacity:1}80%,90%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 @keyframes vz-ftip{0%,88%{opacity:1}96%,100%{opacity:0}}
 
-/* 수급 줄의 선 */
-.fline{width:100%;height:36px;overflow:visible}
-.fline path{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.fline.pos path{stroke:#F0556B}.fline.neg path{stroke:#6FA2FF}
-
 /* 종목 카드: 아이콘 옆에 흐르는 미니 차트 */
 .ivis{display:flex;align-items:center;gap:14px;margin-bottom:20px}
 .insts .ivis img{margin-bottom:0;flex:none}
@@ -530,17 +518,4 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
   .viz,.viz *{animation:none!important}
 }
 
-/* 수급 차트 (더미) */
-.fchart-box{margin:0 0 26px;border-radius:18px;background:#090C13;border:1px solid rgba(255,255,255,.06);overflow:hidden}
-.fchart{aspect-ratio:600/200}
-.fchart .zero{stroke:rgba(255,255,255,.14);stroke-dasharray:3 5}
-.fchart path{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;animation:vz-fdraw 8s infinite linear}
-.fchart .pos path{stroke:#F0556B}.fchart .neg path{stroke:#4B8BFF}.fchart .neg2 path{stroke:#8FB4FF}
-.fchart .pos circle{fill:#F0556B}.fchart .neg circle{fill:#4B8BFF}.fchart .neg2 circle{fill:#8FB4FF}
-.fchart .end{animation:vz-fend 8s infinite}
-.fchart .end text{font-size:12px;font-weight:700;fill:#C5CBD8}
-.fchart .scan{stroke:rgba(255,194,71,.6);stroke-width:1.5;animation:vz-scan 8s infinite linear}
-@keyframes vz-fdraw{0%{stroke-dashoffset:1;opacity:1}62%,90%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
-@keyframes vz-fend{0%,58%{opacity:0}64%,90%{opacity:1}100%{opacity:0}}
-@keyframes vz-scan{0%{transform:translateX(0);opacity:1}62%{transform:translateX(500px);opacity:1}68%,100%{transform:translateX(500px);opacity:0}}
-@media (max-width:820px){.fchart .end text{display:none}}
+@media (max-width:1000px){.cal-in{grid-template-columns:minmax(0,1fr)}}

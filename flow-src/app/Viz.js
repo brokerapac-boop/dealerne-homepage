@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
 
 /* 카드 안에서 계속 움직이는 작은 그림들. 모두 예시이며 실제 시세·실적이 아닙니다.
    움직임은 globals.css 의 @keyframes (vz-*) 로 반복됩니다. */
@@ -131,36 +130,4 @@ export function Spark({ seed = 1 }) {
     return () => { cancelAnimationFrame(raf); io.disconnect(); window.removeEventListener('resize', onR); };
   }, [seed]);
   return <canvas ref={ref} className="spark" aria-hidden="true" />;
-}
-
-/* 수급 줄마다 그려지는 선 (더미) */
-export function FlowLine({ up, seed }) {
-  let s = seed * 7919 + 3; const rnd = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-  let y = up ? 30 : 10; const p = [];
-  for (let i = 0; i <= 12; i++) { y += (up ? -1.5 : 1.5) + (rnd() - 0.5) * 7; y = Math.min(36, Math.max(4, y)); p.push(`${i ? 'L' : 'M'}${i * 10} ${y.toFixed(1)}`); }
-  return <svg className={`fline ${up ? 'pos' : 'neg'}`} viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true"><motion.path d={p.join(' ')} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true, amount: 0.8 }} transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1], delay: 0.15 + seed * 0.14 }} /></svg>;
-}
-
-/* 수급: 장중 누적 흐름이 그려지는 차트 (더미) */
-export function FlowChart() {
-  const mk = (seed, end) => {
-    let s = seed * 7919 + 3; const rnd = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-    const p = []; let y = 100;
-    for (let i = 0; i <= 26; i++) { const t = i / 26; y = 100 + (end - 100) * (t * t * (3 - 2 * t)) + (rnd() - 0.5) * 16 * Math.sin(Math.PI * t); p.push(`${i ? 'L' : 'M'}${(40 + t * 500).toFixed(1)} ${y.toFixed(1)}`); }
-    return p.join(' ');
-  };
-  const rows = [['외국인', 'pos', mk(1, 34), 34], ['기관', 'neg', mk(2, 164), 164], ['개인', 'neg2', mk(3, 134), 134]];
-  return (
-    <svg className="viz fchart" viewBox="0 0 600 200" aria-hidden="true">
-      <line className="zero" x1="40" y1="100" x2="540" y2="100" /><text x="34" y="104" textAnchor="end">0</text>
-      {['09:00', '11:00', '13:00', '15:30'].map((t, k) => <text key={t} x={40 + k * 166.6} y="194" textAnchor="middle">{t}</text>)}
-      {rows.map(([name, cls, d, end]) => (
-        <g key={name} className={cls}>
-          <path pathLength="1" d={d} />
-          <g className="end"><circle cx="540" cy={end} r="5" /><text x="552" y={end + 4}>{name}</text></g>
-        </g>
-      ))}
-      <line className="scan" x1="40" y1="14" x2="40" y2="180" />
-    </svg>
-  );
 }

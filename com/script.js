@@ -634,3 +634,33 @@
     card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card); } });
   });
 })();
+
+/* ---------- 줄바꿈 다듬기: 쉼표·마침표 단위로 문장을 묶습니다 ----------
+   묶음(.ph)은 한 줄에 들어가면 쪼개지지 않기 때문에, 줄이 바뀔 때 구절 중간이 아니라 구절 사이에서 바뀝니다.
+   숫자 안의 쉼표·마침표(10,000.00)는 뒤에 띄어쓰기가 없어서 건드리지 않습니다. */
+(function () {
+  var SKIP = '#lib, .risk, .fine, .foot, footer, form, dialog, [aria-hidden="true"], .chart-note, .dk-board, .tbl, svg';
+  var els = document.querySelectorAll('.view p, .view h3, .view li, .view dd, .view summary, .bridge p');
+  [].forEach.call(els, function (el) {
+    if (el.closest(SKIP) || el.querySelector('p, li, div, article, .ph')) return;
+    var disp = getComputedStyle(el).display;
+    if (disp.indexOf('flex') > -1 || disp.indexOf('grid') > -1) return;   // 플렉스 안에서는 묶음이 따로 놀아서 제외
+    [].slice.call(el.childNodes).forEach(function (node) {
+      if (node.nodeType !== 3) return;
+      var text = node.textContent; if (text.trim().length < 12) return;
+      var parts = text.replace(/([,.!?])\s+(?=\S)/g, '$1\u0000').split('\u0000');
+      for (var i = 0; i < parts.length - 1; i++) {                       // 너무 짧은 조각은 다음 조각에 붙입니다
+        if (parts[i].trim().length < 5) { parts[i + 1] = parts[i] + ' ' + parts[i + 1]; parts.splice(i, 1); i--; }
+      }
+      if (parts.length < 2) return;
+      var frag = document.createDocumentFragment();
+      parts.forEach(function (part, i) {
+        var lead = /^\s/.test(part) && i === 0 ? ' ' : '', tail = i === parts.length - 1 && /\s$/.test(part) ? ' ' : '';
+        if (lead) frag.appendChild(document.createTextNode(' '));
+        var s = document.createElement('span'); s.className = 'ph'; s.textContent = part.trim(); frag.appendChild(s);
+        frag.appendChild(document.createTextNode(i < parts.length - 1 ? ' ' : tail));
+      });
+      el.replaceChild(frag, node);
+    });
+  });
+})();

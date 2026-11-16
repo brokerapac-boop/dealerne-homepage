@@ -530,3 +530,12 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
   .dk-vis img{width:58px;height:58px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.45))}
   .dk-spark{height:44px}
 }
+
+/* ===== 줄바꿈 다듬기 =====
+   - 제목과 짧은 문구는 줄 길이를 고르게 맞춰 마지막 줄에 단어 하나만 남지 않게 합니다.
+   - script.js 가 쉼표·마침표 단위로 문장을 묶어(.ph) 의미가 끊기는 자리에서 줄이 바뀌게 합니다. */
+.view h1,.view h2,.view h3,.view h4,.bridge h2,.quiz h3{text-wrap:balance}
+.view p,.view li,.view dd,.view summary,.view blockquote{text-wrap:pretty}
+.view article p,.view .sub,.bridge .sub,.view-desk section>div>div>p{text-wrap:balance}
+.ph{display:inline-block;max-width:100%}
+.view-desk #desk-instruments>div>p:last-child,.view-desk #desk-platforms>div>p{max-width:62ch}

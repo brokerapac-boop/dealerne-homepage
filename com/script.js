@@ -114,9 +114,9 @@
   var rt;
   window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { size(); if (finished || reduce) draw(99); }, 120); });
 
-  /* ---------- live 1-minute candle simulation (TradingView Lightweight Charts) ----------
-     Data is generated from log returns with volatility clustering. To use a real feed,
-     replace nextSub()/history() with an adapter (see README note) - the chart code stays the same. */
+  /* ---------- 300틱 캔들 시뮬레이션 (TradingView Lightweight Charts) ----------
+     실제 시세가 아닙니다. 체결(틱) 300번이 모이면 캔들 하나가 완성되는 틱차트 방식입니다.
+     틱은 변동성이 뭉치는 로그수익률로 만들고, 거래가 몰릴 때는 캔들이 더 빨리 찹니다. */
   function startLive() {
     var LW = window.LightweightCharts;
     var host = document.getElementById('lwc');
@@ -146,16 +146,16 @@
 
     function gauss(r) { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
     var R = rng(20261105), price = 100, h = 0;
-    var SUB = 16, SIG = 0.0005, KAPPA = 0.025;  // per-candle sigma (log), sub-steps, mean reversion
+    var TPC = 300, SIG = 0.0005, KAPPA = 0.025;  // 캔들당 틱 수, 캔들 하나의 변동성(log), 평균 회귀
     function volNow() { return SIG * Math.exp(h); }
     function step(r, p) {                       // one sub-step of the log-return walk (mean-reverting around 100)
       var z = gauss(r);
-      return Math.exp((0.00002 - KAPPA * Math.log(p / 100)) / SUB + volNow() / Math.sqrt(SUB) * z);
+      return Math.exp((0.00002 - KAPPA * Math.log(p / 100)) / TPC + volNow() / Math.sqrt(TPC) * z);
     }
     function bumpVol(r) { h = 0.93 * h + 0.32 * gauss(r); if (h > 1.0) h = 1.0; if (h < -0.8) h = -0.8; }
     function buildCandle(time, r) {
       var o = price, hi = o, lo = o, c = o;
-      for (var k = 0; k < SUB; k++) { c = c * step(r, c); if (c > hi) hi = c; if (c < lo) lo = c; }
+      for (var k = 0; k < TPC; k++) { c = c * step(r, c); if (c > hi) hi = c; if (c < lo) lo = c; }
       price = c; bumpVol(r);
       return { time: time, open: o, high: hi, low: lo, close: c };
     }
@@ -173,26 +173,30 @@
     setLines();
     chart.timeScale().scrollToPosition(10, false);
 
-    // live candle (a "minute" is accelerated to ~6s of real time)
+    // 진행 중인 캔들: 한 번에 틱 여러 개를 받아 그립니다. 300틱이 차면 다음 캔들로 넘어갑니다.
     var cur = { time: t0 + HIST * 60, open: price, high: price, low: price, close: price }, ticks = 0, lastRebase = 0;
     var Rl = Math.random;
     function tick() {
-      cur.close = cur.close * step(Rl, cur.close);
-      if (cur.close > cur.high) cur.high = cur.close;
-      if (cur.close < cur.low) cur.low = cur.close;
-      series.update(cur);
-      price = cur.close; ticks++;
-      if (ticks >= SUB) {
-        bumpVol(Rl); ticks = 0;
-        cur = { time: cur.time + 60, open: cur.close, high: cur.close, low: cur.close, close: cur.close };
-        if (price <= stop || price >= target) setLines();   // stop/target reached: set the next plan
+      var n = Math.max(2, Math.round((3 + 9 * Math.random()) * Math.exp(h * 0.9)));   // 거래가 몰리면 틱이 한꺼번에 들어옵니다
+      for (var k = 0; k < n; k++) {
+        cur.close = cur.close * step(Rl, cur.close);
+        if (cur.close > cur.high) cur.high = cur.close;
+        if (cur.close < cur.low) cur.low = cur.close;
+        price = cur.close; ticks++;
+        if (ticks >= TPC) {
+          series.update(cur);
+          bumpVol(Rl); ticks = 0;
+          cur = { time: cur.time + 60, open: cur.close, high: cur.close, low: cur.close, close: cur.close };
+          if (price <= stop || price >= target) setLines();   // stop/target reached: set the next plan
+        }
       }
+      series.update(cur);
     }
     // 데스크 화면에서 넘어오면 숨겨져 있던 차트의 위치를 다시 잡습니다
     window.addEventListener('dn:view', function (e) { if (e.detail === 'academy') requestAnimationFrame(function () { chart.timeScale().scrollToPosition(10, false); }); });
     if (reduce) return true;                    // static snapshot for reduced-motion
     var timer = null, visible = true;
-    function run() { if (!timer && visible && !document.hidden) timer = setInterval(tick, 380); }
+    function run() { if (!timer && visible && !document.hidden) timer = setInterval(tick, 60); }
     function halt() { clearInterval(timer); timer = null; }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (e) { visible = e[e.length - 1].isIntersecting; visible ? run() : halt(); }).observe(wrap);
@@ -413,7 +417,7 @@
 })();
 
 /* ---------- 데스크 시그널 보드: 예시 차트 엔진 (TradingView Lightweight Charts) ----------
-   실제 시세가 아닙니다. 종목마다 정해진 씨앗값으로 만든 시뮬레이션 캔들이 한 봉씩 움직입니다.
+   실제 시세가 아닙니다. 종목마다 정해진 씨앗값으로 만든 300틱 시뮬레이션 캔들이 움직입니다.
    매수/매도 종목은 진입·손절·목표 선을 긋고, 대기 종목은 선 없이 차트만 보여 줍니다. */
 (function () {
   var box = document.getElementById('deskChart'), LW = window.LightweightCharts;
@@ -428,7 +432,7 @@
     btc:  { name: '비트코인',   sym: 'BTCUSD',             side: 'wait', base: 96200,  dec: 0, vol: 0.0019, seed: 67 }
   };
   var SIDE = { buy: '매수', sell: '매도', wait: '대기' };
-  var N = 70, STEP = 60;
+  var N = 70, STEP = 60, TPC = 300;                          // 캔들 수, 시간축 간격(표시 안 함), 캔들당 틱 수
 
   function rng(seed) { var s = seed * 2654435761 % 4294967296; return function () { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; }; }
   function fmt(v, dec) { return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }); }
@@ -438,7 +442,7 @@
     var t0 = Math.floor(Date.now() / 1000 / STEP) * STEP - N * STEP, px = cfg.base, data = [], rangeSum = 0;
     for (var i = 0; i < N; i++) {
       var o = px, h = o, l = o, c = o;
-      for (var k = 0; k < 8; k++) { c = c * (1 + cfg.vol / Math.sqrt(8) * g() - 0.02 * Math.log(c / cfg.base) / 8); if (c > h) h = c; if (c < l) l = c; }
+      for (var k = 0; k < 60; k++) { c = c * (1 + cfg.vol / Math.sqrt(60) * g() - 0.02 * Math.log(c / cfg.base) / 60); if (c > h) h = c; if (c < l) l = c; }
       px = c; rangeSum += h - l; data.push({ time: t0 + i * STEP, open: o, high: h, low: l, close: c });
     }
     var atr = rangeSum / N, entry = data[N - 12].close, lv = null;
@@ -503,15 +507,20 @@
   var visible = false, timer = null;
   function tick() {
     var cfg = INST[cur], st = state[cur]; if (!st) return;
-    var b = st.last, c = b.close * (1 + cfg.vol / 2.6 * st.g() - 0.004 * Math.log(b.close / cfg.base));
-    st.ticks++;
-    if (st.ticks % 7 === 0) {                                 // 일곱 번에 한 번 새 봉을 엽니다
-      b = { time: b.time + STEP, open: b.close, high: Math.max(b.close, c), low: Math.min(b.close, c), close: c };
-      st.data.push(b); if (st.data.length > 160) st.data.shift();
-    } else { b.close = c; if (c > b.high) b.high = c; if (c < b.low) b.low = c; }
+    var b = st.last, n = 3 + Math.floor(Math.random() * 10);   // 한 번에 틱 3~12개
+    for (var k = 0; k < n; k++) {
+      var c = b.close * (1 + cfg.vol / Math.sqrt(TPC) * st.g() - 0.02 * Math.log(b.close / cfg.base) / TPC);
+      st.ticks++;
+      if (st.ticks >= TPC) {                                   // 300틱이 차면 새 캔들을 엽니다
+        b.close = c; if (c > b.high) b.high = c; if (c < b.low) b.low = c; series.update(b);
+        b = { time: b.time + STEP, open: c, high: c, low: c, close: c };
+        st.data.push(b); if (st.data.length > 160) st.data.shift();
+        st.ticks = 0;
+      } else { b.close = c; if (c > b.high) b.high = c; if (c < b.low) b.low = c; }
+    }
     st.last = b; series.update(b);
   }
-  function run() { if (!timer && visible) timer = setInterval(tick, 850); }
+  function run() { if (!timer && visible) timer = setInterval(tick, 60); }
   function halt() { clearInterval(timer); timer = null; }
   if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[e.length - 1].isIntersecting; visible ? run() : halt(); }).observe(box);
   else { visible = true; run(); }

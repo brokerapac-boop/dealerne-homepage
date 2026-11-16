@@ -2,6 +2,17 @@
 [build]
   publish = "."
 
+# 예전 시안 주소와 끝에 / 가 붙은 아카데미 주소를 정리합니다.
+[[redirects]]
+  from = "/flow/*"
+  to = "/"
+  status = 302
+
+[[redirects]]
+  from = "/academy/"
+  to = "/academy"
+  status = 301
+
 [[headers]]
   for = "/*"
   [headers.values]

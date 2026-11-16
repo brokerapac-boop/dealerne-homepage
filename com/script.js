@@ -346,7 +346,7 @@
     var h = location.hash.slice(1);
     if (h === 'desk' || h === 'academy') return h;
     if (h) { var v = viewOf(document.getElementById(h)); if (v) return v; }
-    return 'desk';   // 첫 화면은 데스크
+    return document.documentElement.getAttribute('data-default-view') || 'desk';   // 기본 화면 (academy.html 은 아카데미)
   }
   function apply(v) {
     document.body.setAttribute('data-view', v);

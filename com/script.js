@@ -521,3 +521,24 @@
   });
   document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
 })();
+
+/* ---------- 폰 하단 고정 버튼: 첫 화면을 지나면 보이고, 상담 폼이 화면에 있으면 숨깁니다 ---------- */
+(function () {
+  var dock = document.getElementById('dock'); if (!dock) return;
+  var mq = window.matchMedia('(max-width:760px)'), tick = false;
+  function formInView() {
+    var v = document.body.getAttribute('data-view'), f = document.getElementById(v === 'desk' ? 'desk-apply' : 'apply'); if (!f) return false;
+    var r = f.getBoundingClientRect(); return r.top < window.innerHeight * 0.85 && r.bottom > 80;
+  }
+  function update() {
+    tick = false;
+    var on = mq.matches && window.scrollY > window.innerHeight * 0.6 && !formInView();
+    dock.classList.toggle('show', on);
+    document.body.classList.toggle('dock-on', mq.matches);
+  }
+  function req() { if (!tick) { tick = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', req, { passive: true });
+  window.addEventListener('resize', req);
+  window.addEventListener('dn:view', req);
+  update();
+})();

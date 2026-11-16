@@ -76,9 +76,9 @@
 </div>
 </div>
 
-<div style="perspective: 2400px">
-<div style="display: flex; flex-wrap: wrap; background: #0C0F17; border: 1px solid rgba(255,255,255,0.16); border-radius: 22px; overflow: hidden; transform: rotateX(7deg); transform-origin: 50% 100%; box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 70px 120px -50px rgba(0,0,0,0.9), 0 30px 80px -40px rgba(255,194,71,0.22)">
-<div style="flex: 1 1 210px; display: flex; flex-direction: column; padding: 20px 0; border-right: 1px solid rgba(255,255,255,0.1)">
+<div class="dk-persp" style="perspective: 2400px">
+<div class="dk-board" style="display: flex; flex-wrap: wrap; background: #0C0F17; border: 1px solid rgba(255,255,255,0.16); border-radius: 22px; overflow: hidden; transform: rotateX(7deg); transform-origin: 50% 100%; box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 70px 120px -50px rgba(0,0,0,0.9), 0 30px 80px -40px rgba(255,194,71,0.22)">
+<div class="dk-list" style="flex: 1 1 210px; display: flex; flex-direction: column; padding: 20px 0; border-right: 1px solid rgba(255,255,255,0.1)">
 <p style="margin: 0; padding: 0 20px 12px; font-size: 12px; font-weight: 700; color: #9BA1AF">종목 <span style="font-weight: 500">· 눌러서 보기</span></p>
 <button type="button" class="dk-inst on" data-inst="nas" aria-pressed="true"><span style="font-size: 16px; font-weight: inherit">나스닥100</span><span style="padding: 3px 10px; border-radius: 999px; background: #F0556B; color: #24040A; font-size: 12px; font-weight: 800">매수</span></button>
 <button type="button" class="dk-inst" data-inst="gold" aria-pressed="false"><span style="font-size: 16px; font-weight: inherit">골드</span><span style="padding: 3px 10px; border-radius: 999px; background: #4B8BFF; color: #04122B; font-size: 12px; font-weight: 800">매도</span></button>
@@ -88,7 +88,7 @@
 <button type="button" class="dk-inst" data-inst="btc" aria-pressed="false"><span style="font-size: 16px; font-weight: inherit">비트코인</span><span style="padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.3); color: #C5CBD8; font-size: 12px; font-weight: 700">대기</span></button>
 </div>
 
-<div style="flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 24px 28px">
+<div class="dk-main" style="flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 24px 28px">
 <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px">
 <h2 style="margin: 0; font-size: 22px; letter-spacing: -0.03em"><span id="dkName">나스닥100</span> <span id="dkSym" style="font-size: 13px; font-weight: 400; color: #9BA1AF">USA100 · US100Cash</span> <span id="dkSide" class="dk-side buy">매수</span></h2>
 <span style="font-size: 12px; color: #9BA1AF">예시 화면 · 시뮬레이션 차트 · 실제 시세와 시그널이 아님 · <a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="text-decoration: underline; text-underline-offset: 2px">TradingView Lightweight Charts™</a></span>
@@ -112,7 +112,7 @@
 </div>
 </div>
 
-<div style="flex: 1 1 250px; display: flex; flex-direction: column; gap: 10px; padding: 24px; border-left: 1px solid rgba(255,255,255,0.1)">
+<div class="dk-plat" style="flex: 1 1 250px; display: flex; flex-direction: column; gap: 10px; padding: 24px; border-left: 1px solid rgba(255,255,255,0.1)">
 <p style="margin: 0; font-size: 12px; font-weight: 700; color: #9BA1AF">플랫폼 연결</p>
 <p style="margin: 0 0 6px; font-size: 19px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.4">이 시그널을 주문할<br>MT5 환경을 고르세요</p>
 <a href="#desk-platforms" style="display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 0 16px; background: #11151F; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 16px; font-weight: 700">HFM<span aria-hidden="true" style="color: #9BA1AF">→</span></a>
@@ -651,6 +651,13 @@
   <button class="x" type="button" aria-label="닫기" data-close-video>×</button>
   <div class="vframe" id="vframe"></div>
 </dialog>
+
+<div class="dock" id="dock" aria-label="빠른 메뉴">
+  <a class="dock-b dock-main only-desk" href="#desk-apply">상담 신청</a>
+  <a class="dock-b dock-sub only-desk" href="https://t.me/dealerne" target="_blank" rel="noopener">텔레그램</a>
+  <a class="dock-b dock-main only-academy" href="#apply">상담 신청</a>
+  <button class="dock-b dock-sub only-academy" type="button" data-open-quiz>레벨 진단</button>
+</div>
 
 <div class="sample-flag">SAMPLE DRAFT</div>
 

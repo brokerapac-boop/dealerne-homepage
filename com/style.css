@@ -320,3 +320,101 @@ dialog::backdrop{background:rgba(3,5,10,.8);backdrop-filter:blur(4px)}
 
 /* 영상 제목이 길어도 카드 높이가 흐트러지지 않게 3줄까지만 보여요 */
 .lc h4{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ===== 통합: 아카데미 / 데스크 전환 ===== */
+.view{display:none}
+body[data-view="academy"] .view-academy,body[data-view="desk"] .view-desk{display:block;animation:viewIn .45s cubic-bezier(.2,.7,.2,1) both}
+body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{display:none!important}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* 헤더 블러를 별도 레이어로: 모바일 메뉴(고정 위치)가 헤더 안에 갇혀 40px로 줄어들던 문제 수정 */
+.site-header{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.site-header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(7,9,15,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.header-l{display:flex;align-items:center;gap:22px}
+.vswitch{display:flex;gap:2px;padding:4px;border:1px solid var(--line2);border-radius:999px;background:rgba(255,255,255,.03)}
+.vswitch a{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:999px;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--muted);transition:background .25s,color .25s}
+.vswitch a:hover{color:var(--ink)}
+.vswitch a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.vswitch .vs-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+.vswitch a[aria-current="page"] .vs-dot{opacity:1}
+.nav a.btn{padding:0 20px}
+
+/* desk motion */
+@keyframes dnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.dn-float{animation:dnFloat 6s ease-in-out infinite}
+.dn-float-2{animation:dnFloat 7s ease-in-out -2s infinite}
+.dn-float-3{animation:dnFloat 8s ease-in-out -4s infinite}
+.dn-lift{transition:transform .3s ease,border-color .3s ease}
+.dn-lift:hover{transform:translateY(-6px);border-color:rgba(255,255,255,0.24)!important}
+
+/* bridge between the two services */
+.bridge{position:relative;overflow:hidden;padding:clamp(88px,11vw,150px) 0;background:var(--bg2);border-top:1px solid var(--line)}
+.bridge::before{content:"";position:absolute;right:-12%;top:-30%;width:62%;height:160%;background:radial-gradient(closest-side,rgba(255,194,71,.10),transparent);pointer-events:none}
+.bridge-in{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(40px,7vw,104px);align-items:center}
+.bridge .sub{max-width:28em}
+.door{display:flex;flex-direction:column;gap:10px;padding:22px;background:var(--bg);border:1px solid var(--line2);border-radius:24px;transform:perspective(1400px) rotateY(-12deg) rotateX(5deg);box-shadow:0 60px 100px -50px #000,0 30px 90px -50px rgba(255,194,71,.3);transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .3s}
+.door:hover{transform:perspective(1400px) rotateY(-4deg) rotateX(2deg) translateY(-4px);border-color:rgba(255,194,71,.5)}
+.door-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.door-tag{padding:3px 10px;border-radius:6px;background:var(--accent);color:var(--accent-ink);font:700 12px/1.6 'Space Grotesk',var(--font);letter-spacing:.1em}
+.door-sub{font-size:12px;color:var(--muted)}
+.door-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--bg3);font-size:15px}
+.door-row b{font-weight:700}
+.pill{font-style:normal;padding:2px 10px;border-radius:999px;border:1px solid var(--line2);color:#C5CBD8;font-size:12px;font-weight:700}
+.pill.up{background:var(--up);border-color:var(--up);color:#24040A}
+.pill.down{background:var(--down);border-color:var(--down);color:#04122B}
+.door-foot{margin-top:6px;display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted)}
+.door-lv{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:var(--bg3);font-size:15px;font-weight:600}
+.door-lv em{flex:none;width:30px;font:700 12px 'Space Grotesk',var(--font);font-style:normal;color:var(--accent)}
+.door-lv:nth-child(n+5){opacity:.55}
+.door-go{margin-top:6px;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:999px;border:1px solid var(--line2);font-size:14px;font-weight:700}
+
+.foot-biz{flex-basis:100%;padding-top:20px;border-top:1px solid var(--line)}
+
+@media (max-width:1100px){
+  .nav{position:fixed;left:0;right:0;top:var(--header);bottom:0;display:none;flex-direction:column;align-items:stretch;gap:0;padding:8px 24px 32px;background:var(--bg);font-size:20px;overflow:auto}
+  .nav.open{display:flex}
+  .nav a{padding:20px 0;border-bottom:1px solid var(--line);min-height:56px}
+  .nav a.btn{padding:0 24px}
+  .nav-cta{margin-top:28px;min-height:56px;font-size:16px}
+  .burger{display:block}
+  .bridge-in{grid-template-columns:minmax(0,1fr)}
+  .door{max-width:440px;transform:none}
+  .door:hover{transform:translateY(-4px)}
+}
+@media (max-width:760px){
+  .header-l{gap:12px}
+  .vswitch a{min-height:38px;padding:0 13px;font-size:13px}
+  .vswitch .vs-dot{display:none}
+}
+@media (max-width:420px){
+  .brand-name{display:none}
+}
+
+
+/* ===== 데스크 다듬기: 아카데미와 같은 글자 크기·굵기·간격으로 맞춤 =====
+   데스크 영역은 태그에 직접 스타일이 적혀 있어서, 여기서는 !important 로 덮어씁니다. */
+.view-desk #desk-top{padding:clamp(48px,6vw,96px) 0 clamp(88px,10vw,140px)!important}
+.view-desk #desk-top h1{font-size:clamp(46px,6.8vw,104px)!important;line-height:1.06!important;font-weight:700!important}
+.view-desk #desk-instruments h2,.view-desk #desk-demo h2,.view-desk #desk-platforms h2{font-size:clamp(32px,4.4vw,64px)!important;line-height:1.16!important;font-weight:700!important}
+.view-desk #desk-apply h2,.view-desk #desk-demo h3{font-weight:700!important}
+.view-desk #desk-instruments,.view-desk #desk-demo,.view-desk #desk-platforms{padding:clamp(88px,11vw,160px) 0!important}
+.view-desk #desk-apply{padding:0 0 clamp(88px,11vw,160px)!important}
+/* 본문 폭을 아카데미(.wrap)와 같게 */
+.view-desk section>div[style*="max-width: 1200px"]{max-width:none!important;width:min(var(--max),100% - 48px)!important;padding-left:0!important;padding-right:0!important}
+.view-desk article h3{font-weight:700}
+.view-desk form button[type=submit]{transition:transform .15s ease,filter .2s ease}
+.view-desk form button[type=submit]:hover{filter:brightness(1.06)}
+.view-desk form button[type=submit]:active{transform:scale(.985)}
+.view-desk input:focus-visible,.view-desk select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 스크롤 등장 (script.js 가 data-rv 를 붙였을 때만 숨김) */
+.rv-ready .view-desk [data-rv]{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms),transform .7s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms),border-color .3s ease}
+.rv-ready .view-desk [data-rv].in{opacity:1;transform:none}
+.rv-ready .view-desk [data-rv].in.dn-lift:hover{transform:translateY(-6px);transition-delay:0ms}
+
+@media (max-width:760px){
+  .view-desk #desk-top h1{font-size:clamp(40px,12.4vw,56px)!important}
+  .view-desk #desk-instruments h2,.view-desk #desk-demo h2,.view-desk #desk-platforms h2{font-size:clamp(28px,8.4vw,36px)!important}
+  .view-desk section>div[style*="max-width: 1200px"]{width:calc(100% - 40px)!important}
+}
+@media (prefers-reduced-motion:reduce){.dn-float,.dn-float-2,.dn-float-3{animation:none}}

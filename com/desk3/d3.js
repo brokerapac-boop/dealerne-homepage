@@ -6,6 +6,7 @@
 
   /* ---------- 기록 (5장): 단계별로 남깁니다. 측정 도구가 연결되면 dataLayer 를 읽어 갑니다 ---------- */
   window.dataLayer = window.dataLayer || [];
+  function setUnits(el, parts) { el.textContent = ''; parts.forEach(function (x, i) { if (i) el.appendChild(document.createTextNode(' ')); var sp = document.createElement('span'); sp.className = 's'; sp.textContent = x; el.appendChild(sp); }); }
   function track(name, data) { window.dataLayer.push(Object.assign({ event: name, page: 'desk3' }, data || {})); }
   /* 들어온 길(3-8): 링크에 붙은 출처 표시를 기록하고, 상담 신청에도 함께 남깁니다 */
   var SRC = '';
@@ -42,7 +43,7 @@
     $('rStop').textContent = '−' + money(stop);
     $('rTgtL').textContent = '목표 (+' + c.tgtLabel + ')에 닿으면';
     $('rTgt').textContent = '+' + money(tgt);
-    $('rNote').textContent = '가정: ' + c.name + ' 1랏 = ' + c.sizeText(c.size) + ' · 손절 ' + c.stopLabel + ' · 목표 ' + c.tgtLabel + ' · 수수료 제외. 계약 크기는 브로커마다 다릅니다.';
+    setUnits($('rNote'), ['가정: ' + c.name + ' 1랏 = ' + c.sizeText(c.size) + ' ·', '손절 ' + c.stopLabel + ' · 목표 ' + c.tgtLabel + ' · 수수료 제외.', '계약 크기는 브로커마다 다릅니다.']);
     var carry = c.name + ' ' + calc.lot.toFixed(2) + '랏';                 // 계산해 본 내용을 상담으로 이어 줍니다
     $('calcField').value = calc.touched ? carry : '';
     $('calcCarry').hidden = !calc.touched;

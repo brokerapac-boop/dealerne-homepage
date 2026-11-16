@@ -599,3 +599,7 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 .cta-bar{padding-left:14px}
 @media (max-width:820px){.cta-logo{width:30px;height:30px}.cta-bar{padding-left:10px}}
 @media (max-width:380px){.cta-bar{gap:8px}.cta-bar p{font-size:14px}.cta-bar .btn{padding:0 14px}.cta-logo{width:28px;height:28px}}
+
+/* 상담 폼 두 카드: 높이를 맞추고 입력 칸과 버튼을 같은 줄에 */
+.forms{align-items:stretch}
+.apply .form{margin-top:auto}

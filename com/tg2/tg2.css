@@ -150,3 +150,14 @@
   .plat-strip p{font-size:19px;line-height:1.4}
   .plat-strip .chips{grid-template-columns:1fr;margin-top:18px}
 }
+
+/* 좌측 상단 전환 스위치: 데스크 | 아카데미 (대표님 원본과 같은 위치) */
+.vswitch{display:flex;gap:2px;padding:4px;border:1px solid var(--line2);border-radius:999px;background:rgba(255,255,255,.03)}
+.vswitch a{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 13px;border-radius:999px;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--muted);white-space:nowrap}
+.vswitch a:hover{color:var(--ink)}
+.vswitch a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.vswitch i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+.vswitch a[aria-current="page"] i{opacity:1}
+.top-in{gap:10px}
+@media (max-width:899px){.brand span{display:none}.vswitch i{display:none}.top .btn-sm{padding:0 14px}}
+@media (min-width:900px){.top-in{gap:22px}.vswitch a{min-height:40px;padding:0 18px}}

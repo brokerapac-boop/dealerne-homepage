@@ -501,6 +501,10 @@
   }
   btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-inst')); }); });
   show('nas');
+  window.addEventListener('dn:inst', function (e) {            // 아래 종목 카드에서 보낸 요청
+    show(e.detail);
+    var on = document.querySelector('.dk-inst.on'); if (on && on.scrollIntoView && window.matchMedia('(max-width:760px)').matches) { var l = on.parentNode; l.scrollLeft = on.offsetLeft - l.offsetLeft - 12; }
+  });
 
   /* 화면에 보일 때만 한 봉씩 움직입니다 */
   if (reduce) return;
@@ -550,4 +554,65 @@
   window.addEventListener('resize', req);
   window.addEventListener('dn:view', req);
   update();
+})();
+
+/* ---------- 거래 종목 카드: 미니 차트(예시)와 '보드에서 보기' ----------
+   미니 차트는 실제 시세가 아닙니다. 카드마다 정해진 씨앗값으로 만든 선이 조금씩 움직입니다.
+   오르내림을 색으로 구분하지 않고 한 가지 색으로만 그립니다(성과처럼 보이지 않게). */
+(function () {
+  var canvases = [].slice.call(document.querySelectorAll('canvas.dk-spark')); if (!canvases.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SEED = { nas: 11, gold: 23, wti: 37, spx: 41, eur: 53, btc: 67 }, N = 48;
+  function rng(seed) { var s = seed * 2654435761 % 4294967296; return function () { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; }; }
+  var items = canvases.map(function (cv) {
+    var r = rng(SEED[cv.getAttribute('data-spark')] || 7), pts = [], v = 0;
+    function next() { v += (r() + r() + r() - 1.5) * 0.9 - v * 0.06; return v; }
+    for (var i = 0; i < N; i++) pts.push(next());
+    return { cv: cv, ctx: cv.getContext('2d'), pts: pts, next: next, w: 0, h: 0 };
+  });
+  function size(it) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), b = it.cv.getBoundingClientRect();
+    if (!b.width || !b.height) return false;
+    it.w = b.width; it.h = b.height; it.cv.width = Math.round(b.width * dpr); it.cv.height = Math.round(b.height * dpr);
+    it.ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return true;
+  }
+  function draw(it) {
+    if (!it.w && !size(it)) return;
+    var c = it.ctx, w = it.w, h = it.h, p = it.pts, lo = Math.min.apply(null, p), hi = Math.max.apply(null, p), pad = 6, rng_ = (hi - lo) || 1;
+    function X(i) { return pad + (w - pad * 2 - 4) * i / (p.length - 1); }
+    function Y(v) { return pad + (h - pad * 2) * (1 - (v - lo) / rng_); }
+    c.clearRect(0, 0, w, h);
+    var g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(255,194,71,.26)'); g.addColorStop(1, 'rgba(255,194,71,0)');
+    c.beginPath(); c.moveTo(X(0), Y(p[0])); for (var i = 1; i < p.length; i++) c.lineTo(X(i), Y(p[i]));
+    c.lineJoin = 'round'; c.lineCap = 'round'; c.lineWidth = 2; c.strokeStyle = '#FFC247'; c.stroke();
+    c.lineTo(X(p.length - 1), h); c.lineTo(X(0), h); c.closePath(); c.fillStyle = g; c.fill();
+    var lx = X(p.length - 1), ly = Y(p[p.length - 1]);
+    c.beginPath(); c.arc(lx, ly, 6, 0, Math.PI * 2); c.fillStyle = 'rgba(255,194,71,.22)'; c.fill();
+    c.beginPath(); c.arc(lx, ly, 3, 0, Math.PI * 2); c.fillStyle = '#FFC247'; c.fill();
+  }
+  function drawAll() { items.forEach(function (it) { it.w = 0; draw(it); }); }
+  drawAll();
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(drawAll, 150); });
+  window.addEventListener('dn:view', function (e) { if (e.detail === 'desk') requestAnimationFrame(drawAll); });
+
+  if (!reduce) {
+    var sec = document.getElementById('desk-instruments'), visible = false, timer = null;
+    function tick() { items.forEach(function (it) { it.pts.push(it.next()); it.pts.shift(); draw(it); }); }
+    function run() { if (!timer && visible && !document.hidden) timer = setInterval(tick, 700); }
+    function halt() { clearInterval(timer); timer = null; }
+    if ('IntersectionObserver' in window && sec) new IntersectionObserver(function (e) { visible = e[e.length - 1].isIntersecting; if (visible) { drawAll(); run(); } else halt(); }).observe(sec);
+    document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
+    window.addEventListener('dn:view', function (e) { if (e.detail !== 'desk') { visible = false; halt(); } });
+  }
+
+  /* 카드를 누르면 위 시그널 보드에서 그 종목을 크게 보여 줍니다 */
+  function open(card) {
+    var key = card.getAttribute('data-inst-card'), board = document.querySelector('.dk-board');
+    try { window.dispatchEvent(new CustomEvent('dn:inst', { detail: key })); } catch (e) {}
+    if (board) board.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  }
+  [].forEach.call(document.querySelectorAll('[data-inst-card]'), function (card) {
+    card.addEventListener('click', function () { open(card); });
+    card.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card); } });
+  });
 })();

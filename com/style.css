@@ -515,3 +515,18 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
 
 /* 데스크 바깥 틀이 옆으로 밀리지 않게 (overflow:hidden 은 스크립트나 포커스로 스크롤될 수 있음) */
 @supports (overflow:clip){.view-desk>div{overflow:clip!important}}
+
+/* ===== 거래 종목 카드: 3D 아이콘 + 미니 차트 ===== */
+.dk-card{cursor:pointer}
+.dk-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.dk-vis{display:flex;align-items:center;gap:16px;padding:6px 0 2px;min-width:0}
+.dk-vis img{flex:none;width:104px;height:104px;object-fit:contain;filter:drop-shadow(0 14px 18px rgba(0,0,0,.45))}
+.dk-spark{flex:1 1 0;min-width:0;width:100%;height:72px;display:block}
+.dk-card>div:first-child>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.dk-card>div:first-child>span:last-child{flex:none}
+@media (max-width:760px){
+  .view-desk #desk-instruments article>div:first-child>span:first-child{word-break:normal}
+  .dk-vis{gap:8px;padding:2px 0!important}
+  .dk-vis img{width:58px;height:58px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.45))}
+  .dk-spark{height:44px}
+}

@@ -216,3 +216,4 @@ p,li,summary,td,th,small,label,.s{text-wrap:pretty}
 .cmp th:first-child{padding-left:14px}
 .rows dd.mv::after{content:" 변동";font-size:13px;font-weight:600;color:var(--dim)}
 .faq li b{display:block;color:var(--ink);font-weight:600}
+.field .label{display:block}

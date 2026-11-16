@@ -1,7 +1,7 @@
 'use client';
-import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
-import { KAKAO, SPRING, SOFT, usePin, Up } from './kit';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useInView } from 'motion/react';
+import { KAKAO, SPRING, SOFT, Up } from './kit';
 import { VizJargon, VizLot, VizNoStop } from './Viz';
 
 /* ---------- 모의거래: 막히는 세 곳 + 미션 네 개 ---------- */
@@ -13,13 +13,18 @@ const MISSIONS = [
 ];
 
 export function Demo() {
-  const [ref, p] = usePin();
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.45 });
   const [done, setDone] = useState(0);
-  useMotionValueEvent(p, 'change', (v) => setDone(Math.min(4, Math.floor(v * 5.2))));
-  const ring = useTransform(p, [0, 0.77], [0, 1]);
+  // 화면에 들어오면 미션이 하나씩 체크됨
+  useEffect(() => {
+    if (!inView || done >= 4) return;
+    const t = setTimeout(() => setDone((d) => d + 1), done ? 1000 : 500);
+    return () => clearTimeout(t);
+  }, [inView, done]);
   return (
     <>
-      <section className="sec stuck-sec" id="demo" data-tone="dark" data-ch="6">
+      <section className="sec stuck-sec" id="demo" data-tone="dark" data-ch="5">
         <div className="wrap">
           <Up as="p" className="eyebrow">처음이라면</Up>
           <Up as="h2" className="big">처음엔 누구나<br />같은 곳에서 막힙니다</Up>
@@ -35,8 +40,7 @@ export function Demo() {
         </div>
       </section>
 
-      <section ref={ref} className="pin demo-sec" data-tone="dark" data-ch="6" style={{ height: '420svh' }}>
-        <div className="pin-stage">
+      <section ref={ref} className="sec demo-sec" data-tone="dark" data-ch="5">
           <div className="wrap demo-in">
             <div className="demo-copy">
               <h2 className="big">그래서 데스크는 <br />모의거래부터 시작합니다</h2>
@@ -59,12 +63,11 @@ export function Demo() {
                 ))}
               </ul>
               <div className="acct-prog">
-                <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="4" /><motion.circle cx="22" cy="22" r="18" fill="none" stroke="#FFC247" strokeWidth="4" strokeLinecap="round" transform="rotate(-90 22 22)" style={{ pathLength: ring }} /></svg>
+                <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="4" /><motion.circle cx="22" cy="22" r="18" fill="none" stroke="#FFC247" strokeWidth="4" strokeLinecap="round" transform="rotate(-90 22 22)" initial={false} animate={{ pathLength: done / 4 }} transition={SPRING} /></svg>
                 <p><span>미션 진행</span><strong>{done} / 4</strong></p>
               </div>
             </div>
           </div>
-        </div>
       </section>
     </>
   );
@@ -94,7 +97,7 @@ export function Platforms() {
   const stack = useRef(null);
   const { scrollYProgress } = useScroll({ target: stack, offset: ['start 0.25', 'end 0.75'] });
   return (
-    <section className="sec plat-sec" id="platforms" data-tone="light" data-ch="7">
+    <section className="sec plat-sec" id="platforms" data-tone="light" data-ch="6">
       <div className="wrap plat-in">
         <div className="plat-copy">
           <Up as="p" className="eyebrow">실전 플랫폼</Up>
@@ -104,72 +107,6 @@ export function Platforms() {
         </div>
         <div className="plat-stack" ref={stack}>{PLATS.map((d, i) => <PlatCard key={d[0]} i={i} n={PLATS.length} p={scrollYProgress} data={d} />)}</div>
       </div>
-    </section>
-  );
-}
-
-/* ---------- 강사: 사진이 열리며 문장이 한 줄씩 ---------- */
-export function Instructor() {
-  const [ref, p] = usePin();
-  const clip = useTransform(p, [0, 0.55], ['inset(18% 22% 18% 22% round 40px)', 'inset(0% 0% 0% 0% round 0px)']);
-  const zoom = useTransform(p, [0, 1], [1.25, 1]);
-  const lines = ['기준이 있어야', '흔들려도', '돌아옵니다'];
-  const l0 = useTransform(p, [0.3, 0.45], [0, 1]), l1 = useTransform(p, [0.45, 0.6], [0, 1]), l2 = useTransform(p, [0.6, 0.75], [0, 1]);
-  const y0 = useTransform(p, [0.3, 0.45], [40, 0]), y1 = useTransform(p, [0.45, 0.6], [40, 0]), y2 = useTransform(p, [0.6, 0.75], [40, 0]);
-  const who = useTransform(p, [0.72, 0.9], [0, 1]);
-  const os = [l0, l1, l2], ys = [y0, y1, y2];
-  return (
-    <section ref={ref} className="pin ins-sec" id="instructor" data-tone="dark" data-ch="9" style={{ height: '300svh' }}>
-      <div className="pin-stage">
-        <motion.div className="ins-photo" style={{ clipPath: clip }}><motion.img src="/instructor2.webp" alt="딜러네 아카데미 강사 송프로" width="608" height="648" style={{ scale: zoom }} /></motion.div>
-        <div className="wrap ins-copy dark-scope">
-          <h2 className="big">{lines.map((t, k) => <motion.span key={k} style={{ opacity: os[k], y: ys[k] }}>{t}</motion.span>)}</h2>
-          <motion.div className="ins-who" style={{ opacity: who }}><b>송프로</b><span>딜러네 아카데미 강사</span><p>금리와 상품의 흐름으로 시장의 큰 그림을 설명합니다.</p></motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- 영상: 두 줄이 스크롤에 따라 서로 반대로 흐름 ---------- */
-const VIDS = [
-  ['ZkFaC6Of3VY', '손절은 바닥 맞히는 기술이 아닙니다'],
-  ['ntGobt2x9U4', '분할매수했는데 손실이 더 커진 이유'],
-  ['A7yYcCHm4-k', '본전 생각나는 순간 손실이 커지는 이유'],
-  ['TiUQks72WDo', '외국인이 주식을 사면서 선물을 파는 이유'],
-  ['5N8hgHyW0sY', '미 국채금리 5% 턱밑에 골드·오일·엔비디아 급락'],
-  ['EnN5Peg8zas', '미국 증시 오늘의 요약'],
-  ['meV4eo_ueiQ', '외국인 선물 매수 유지'],
-  ['J1RuC3TUqtY', '오늘 아침 9시 브리핑'],
-  ['mTvGZc3ViKg', '만기일 수급 브리핑'],
-  ['KXeZ3HSWt9U', '오후 3시 20분 만기 주의보'],
-];
-function VidRow({ items, x }) {
-  return (
-    <motion.ul className="vids" style={{ x }}>
-      {items.map(([id, t]) => (
-        <li key={id}><a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener"><span className="thumb"><img src={`https://i.ytimg.com/vi/${id}/mqdefault.jpg`} alt="" width="320" height="180" /><i aria-hidden="true" /></span><b>{t}</b></a></li>
-      ))}
-    </motion.ul>
-  );
-}
-export function Videos() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  // 줄 전체가 화면을 지나가도록: 0이면 왼쪽 끝, 1이면 오른쪽 끝이 화면에 맞음
-  const a = useTransform(scrollYProgress, (v) => `calc(${-v * 100}% + ${v * 100}vw)`);
-  const b = useTransform(scrollYProgress, (v) => `calc(${-(1 - v) * 100}% + ${(1 - v) * 100}vw)`);
-  return (
-    <section ref={ref} className="sec vid-sec" id="videos" data-tone="dark" data-ch="10">
-      <div className="wrap">
-        <Up as="p" className="eyebrow">유튜브 @딜러네</Up>
-        <Up as="h2" className="big">딜러네 최신 영상</Up>
-      </div>
-      <div className="vid-rows">
-        <VidRow items={VIDS.slice(0, 5)} x={a} />
-        <VidRow items={VIDS.slice(5)} x={b} />
-      </div>
-      <div className="wrap"><Up as="p"><a className="link" href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener">유튜브에서 전체 영상 보기 ↗</a></Up></div>
     </section>
   );
 }
@@ -213,7 +150,7 @@ function ApplyForm({ name, children, label, dark }) {
 const Tick = () => <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 export function Forms() {
   return (
-    <section className="sec forms-sec" id="apply" data-tone="dark" data-ch="12">
+    <section className="sec forms-sec" id="apply" data-tone="dark" data-ch="8">
       <div className="wrap forms">
         <motion.div className="apply demo" id="apply-demo" initial={{ opacity: 0, x: -60, rotate: -2 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true, amount: 0.25 }} transition={SOFT}>
           <p className="kicker">처음이라면</p>

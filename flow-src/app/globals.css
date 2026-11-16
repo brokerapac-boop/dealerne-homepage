@@ -528,3 +528,36 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 .plat header span{border-color:var(--pc-tagline);color:var(--pc-tag)}
 .plat li i{color:var(--pc-mark)}
 .plat li.minus,.plat li.dot{color:var(--pc-sub)}
+
+/* ================= 일반 스크롤 구성 (고정 장면 없음) ================= */
+.hero{position:relative;min-height:100svh;overflow:hidden}
+.frame{box-shadow:none}
+.principles{padding-top:clamp(80px,12vw,170px)}
+.say-h{margin-bottom:clamp(40px,6vw,80px)}
+.story{padding-top:0}
+.acc button{display:flex;align-items:baseline;gap:14px;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer}
+.acc h3{display:block}
+.board-sec{padding-top:clamp(80px,12vw,170px)}
+.board{margin-top:clamp(36px,5vw,64px)}
+.insts-sec{padding-top:0}
+.demo-sec{padding-top:0}
+.end-sec{text-align:center}
+.end-sec .big{font-size:clamp(34px,6.4vw,84px);margin-bottom:36px}
+.forms-sec{padding-top:0}
+@media (min-width:821px){
+  .insts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(1120px,100% - 40px);margin:clamp(40px,6vw,72px) auto 0;padding:0}
+}
+@media (max-width:820px){
+  .insts{display:flex;margin-left:0}
+  .story-in{height:auto;padding:0}
+  .phone-col{flex:none;height:56svh;padding:8px 0}
+  .acc{min-height:0}
+  .acc-t{display:block;font-size:26px;margin-bottom:14px}
+  .acc-t br{display:none}
+  .acc li{border-top:1px solid var(--line);padding:14px 0 0}
+  .acc li:not(.on){display:list-item}
+  .acc h3{font-size:19px}
+  .acc-bar{margin-top:14px}
+  .demo-in{height:auto;padding:0}
+  .end-sec .btn{width:min(340px,100%)}
+}

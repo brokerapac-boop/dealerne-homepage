@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>딜러네 데스크 | 가상 자금으로 먼저 연습하고 실전으로</title>
+<meta name="description" content="가상 자금 $10,000 모의 계좌에서 주문과 손절 설정을 먼저 연습합니다. 딜러네 데스크가 1:1로 같이 봅니다.">
+<meta property="og:title" content="딜러네 데스크 | 가상 자금으로 먼저 연습하고 실전으로">
+<meta property="og:description" content="가상 자금 $10,000 모의 계좌에서 주문과 손절 설정을 먼저 연습합니다.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://dealerne.com/og.png">
+<meta name="theme-color" content="#07090F">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="d3.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#start" aria-label="딜러네 데스크 처음으로"><img src="../logo.webp" alt="" width="32" height="32"><span>딜러네 데스크</span></a>
+  <a class="top-link" href="https://dealerne.com/#academy">아카데미</a>
+</header>
+<p class="sample-flag">SAMPLE DRAFT · 줄인 시안</p>
+
+<main id="start">
+
+  <!-- 1. 약속 -->
+  <section class="sec hero" aria-labelledby="h-hero">
+    <p class="tag">주식은 해 봤지만 선물은 처음인 분</p>
+    <h1 id="h-hero">가상 자금 <em class="hl">$10,000</em>로 먼저 연습하고, 실전으로 넘어갑니다</h1>
+    <ul class="checks">
+      <li>첫 주문부터 손절 설정까지 1:1로 같이 봅니다</li>
+      <li>모의 계좌라서 실제 돈은 들어가지 않습니다</li>
+      <li>상담은 카카오톡으로, 무료입니다</li>
+    </ul>
+  </section>
+
+  <!-- 2. 내 경우 -->
+  <section class="sec" id="calc" aria-labelledby="h-calc">
+    <h2 id="h-calc">0.01과 1.00은 <em class="hl">100배</em> 차이입니다</h2>
+    <p class="body">처음에 가장 많이 하는 실수가 수량입니다. 직접 바꿔 보세요.</p>
+
+    <p class="label" id="l-inst">종목</p>
+    <div class="seg" role="radiogroup" aria-labelledby="l-inst" id="calcInst">
+      <button type="button" role="radio" aria-checked="true" data-k="gold">골드</button>
+      <button type="button" role="radio" aria-checked="false" data-k="nas">나스닥100</button>
+      <button type="button" role="radio" aria-checked="false" data-k="wti">WTI 오일</button>
+      <button type="button" role="radio" aria-checked="false" data-k="eur">EUR/USD</button>
+    </div>
+
+    <p class="label" id="l-lot">수량 (랏)</p>
+    <div class="seg" role="radiogroup" aria-labelledby="l-lot" id="calcLot">
+      <button type="button" role="radio" aria-checked="true" data-v="0.01">0.01</button>
+      <button type="button" role="radio" aria-checked="false" data-v="0.1">0.10</button>
+      <button type="button" role="radio" aria-checked="false" data-v="1">1.00</button>
+    </div>
+
+    <div class="result" aria-live="polite">
+      <p class="result-size"><span id="rLot">0.01랏</span><b id="rSize">1온스</b></p>
+      <dl class="rows">
+        <div><dt id="rMoveL">가격이 $1 움직이면</dt><dd id="rMove">$1.00</dd></div>
+        <div><dt id="rStopL">손절 (−$5)에 닿으면</dt><dd class="neg" id="rStop">−$5.00</dd></div>
+        <div><dt id="rTgtL">목표 (+$10)에 닿으면</dt><dd class="pos" id="rTgt">+$10.00</dd></div>
+      </dl>
+      <p class="note" id="rNote">가정: 골드 1랏 = 100온스 · 손절 $5 · 목표 $10 · 수수료 제외. 계약 크기는 브로커마다 다릅니다.</p>
+      <p class="note warn">레버리지 상품은 원금을 넘는 손실이 날 수 있습니다. 계산 예시이며 수익을 뜻하지 않습니다.</p>
+    </div>
+  </section>
+
+  <!-- 3. 화면 예시 -->
+  <section class="sec" id="board" aria-labelledby="h-board">
+    <h2 id="h-board">주문 전에 <em class="hl">나올 자리</em>부터 정합니다</h2>
+    <div class="tabs" role="tablist" aria-label="예시 종목" id="bdTabs">
+      <button type="button" role="tab" aria-selected="true" data-k="nas">나스닥100 <i class="st buy">매수</i></button>
+      <button type="button" role="tab" aria-selected="false" data-k="gold">골드 <i class="st sell">매도</i></button>
+      <button type="button" role="tab" aria-selected="false" data-k="wti">WTI 오일 <i class="st wait">대기</i></button>
+    </div>
+    <div class="chart" id="bdChart" role="img" aria-label="선택한 종목의 예시 차트. 실제 시세가 아닙니다."></div>
+    <dl class="rows three">
+      <div><dt>진입</dt><dd id="bdEntry">—</dd></div>
+      <div><dt>손절</dt><dd id="bdStop">—</dd></div>
+      <div><dt>목표</dt><dd id="bdTarget">—</dd></div>
+    </dl>
+    <p class="note">예시 화면 · 300틱 시뮬레이션 · 실제 시세와 시그널이 아닙니다. <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a></p>
+  </section>
+
+  <!-- 4. 방법 -->
+  <section class="sec" id="how" aria-labelledby="h-how">
+    <h2 id="h-how"><em class="hl">세 단계</em>로 진행합니다</h2>
+    <ol class="steps">
+      <li><b>상담 신청</b><span>이름과 번호를 남기면 카톡 상담방이 열립니다</span></li>
+      <li><b>모의 계좌 연습</b><span>미션 네 가지를 마치면 주문 크기와 손절을 스스로 계산합니다</span></li>
+      <li><b>실전 플랫폼 연결</b><span>조건을 비교해 고르고, 세팅을 함께 합니다</span></li>
+    </ol>
+  </section>
+
+  <!-- 5. 비교 -->
+  <section class="sec" id="platforms" aria-labelledby="h-plat">
+    <h2 id="h-plat">실전 플랫폼은 <em class="hl">비교해서</em> 고릅니다</h2>
+    <table class="cmp">
+      <caption>실전 플랫폼 조건 비교</caption>
+      <thead><tr><th scope="col"></th><th scope="col">HFM</th><th scope="col">XM</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">최소 입금</th><td>$0 <small>프로 외 계좌</small></td><td>$5</td></tr>
+        <tr><th scope="row">계좌 유형</th><td>센트 · 프리미엄 · 제로 · 프로</td><td>마이크로 <small>1랏 = 1,000 통화 단위</small></td></tr>
+        <tr><th scope="row">유의할 점</th><td>센트 계좌는 외환과 골드만</td><td>가입 법인마다 계좌 유형이 다름</td></tr>
+      </tbody>
+    </table>
+    <p class="note">이지스퀘어와 국내 증권사 HTS는 조건을 확인하는 중입니다. 상담에서 안내합니다.</p>
+    <p class="note warn">브로커는 가입 법인마다 규제 기관과 조건이 다릅니다. 가입 전에 함께 확인합니다.</p>
+  </section>
+
+  <!-- 6. 걸리는 점: 필요한 사람만 열어 봅니다 -->
+  <section class="sec" id="faq" aria-labelledby="h-faq">
+    <h2 id="h-faq">궁금한 것만 <em class="hl">눌러서</em> 확인합니다</h2>
+    <div class="faq">
+      <details data-q="signal">
+        <summary>시그널대로만 따라 하면 됩니까</summary>
+        <p>아닙니다. 시그널은 참고 자료이고 맞지 않는 날도 있습니다. 주문할지, 얼마나 할지, 어디서 나올지는 본인이 정합니다.</p>
+      </details>
+      <details data-q="beginner">
+        <summary>용어를 하나도 모르는데 할 수 있습니까</summary>
+        <p>할 수 있습니다. 랏, 핍, 증거금부터 같이 봅니다. 기초부터 배우려면 <a href="https://dealerne.com/#academy">딜러네 아카데미</a>가 있습니다.</p>
+      </details>
+      <details data-q="money">
+        <summary>돈을 넣어야 시작할 수 있습니까</summary>
+        <p>아닙니다. 상담은 무료이고 처음은 가상 자금입니다. 실제 입금은 미션을 마친 뒤의 일이고, 넣을지는 본인이 정합니다.</p>
+      </details>
+      <details data-q="timing">
+        <summary>지금 바로 시작해야 합니까</summary>
+        <p>서두를 이유는 없습니다. 모의 계좌는 언제든 시작할 수 있고, 실전으로 넘어가는 시점은 본인이 정합니다.</p>
+      </details>
+      <details data-q="profit">
+        <summary>수익이 보장됩니까</summary>
+        <p>아닙니다. 수익은 보장되지 않습니다. 선물, CFD, FX 같은 레버리지 상품은 투자 원금을 넘는 손실이 날 수 있습니다.</p>
+      </details>
+      <details data-q="why-demo">
+        <summary>왜 모의 계좌부터 합니까</summary>
+        <p>처음에는 누구나 같은 곳에서 막힙니다. 실제 돈으로 겪기 전에 먼저 겪어 보게 합니다.</p>
+        <ul>
+          <li>랏, 핍, 증거금 같은 용어가 낯섭니다</li>
+          <li>수량 한 자리를 잘못 넣으면 주문이 100배가 됩니다</li>
+          <li>손절가를 비워 두면 손실이 어디서 멈출지 정해지지 않습니다</li>
+        </ul>
+      </details>
+      <details data-q="foreign-futures">
+        <summary>영상에서 듣던 "외국인 선물"은 무엇입니까</summary>
+        <p>선물은 지수나 원자재를 정해진 크기로 미리 사고파는 계약입니다. 선물 매매가 현물 시장의 프로그램 매매로 이어질 수 있어서 시황에서 함께 봅니다. 다만 선물 수급이 다음 날 지수를 정하지는 않습니다.</p>
+      </details>
+      <details data-q="not-for">
+        <summary>어떤 분께는 권하지 않습니까</summary>
+        <ul>
+          <li>짧은 기간에 큰 수익을 기대하는 분</li>
+          <li>생활비나 빌린 돈으로 시작하려는 분</li>
+          <li>손절 없이 매매하려는 분</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- 7. 시작 -->
+  <section class="sec" id="apply" aria-labelledby="h-apply">
+    <h2 id="h-apply">상담을 <em class="hl">신청</em>합니다</h2>
+    <p class="body">남기면 카톡 상담방이 열리고, 모의 계좌 첫 미션부터 안내받습니다.</p>
+
+    <form name="desk3-consult" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="form" novalidate>
+      <input type="hidden" name="form-name" value="desk3-consult">
+      <p hidden><label>Skip <input name="bot-field"></label></p>
+
+      <p class="label" id="l-kind">어디서부터 시작할지</p>
+      <div class="opts" role="radiogroup" aria-labelledby="l-kind">
+        <label class="opt"><input type="radio" name="kind" value="모의투자부터" checked><span><b>모의투자부터</b><small>처음이거나 MT5가 낯설 때</small></span></label>
+        <label class="opt"><input type="radio" name="kind" value="실전 플랫폼 연결"><span><b>실전 플랫폼 연결</b><small>이미 거래 경험이 있을 때</small></span></label>
+      </div>
+
+      <label class="field"><span class="label">이름</span><input name="fullname" required autocomplete="name" maxlength="20" placeholder="홍길동"></label>
+      <label class="field"><span class="label">휴대폰 번호 <small>상담 연락에만 씁니다</small></span><input name="phone" type="tel" inputmode="numeric" required autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></label>
+      <label class="agree"><input type="checkbox" name="consent" required><span>상담 목적의 개인정보(이름, 휴대폰 번호) 수집·이용에 동의합니다.</span></label>
+
+      <input type="hidden" name="calc" id="calcField" value="">
+      <input type="hidden" name="src" id="srcField" value="">
+      <p class="note" id="calcCarry" hidden></p>
+      <p class="err" id="formErr" role="alert" hidden></p>
+      <button class="btn-main" type="submit" id="submitBtn">신청하고 카카오톡 열기</button>
+      <p class="note">계좌를 열 의무는 없습니다. 투자자문이나 수익 보장을 제공하지 않습니다.</p>
+    </form>
+
+    <div class="done" id="done" role="status" hidden>
+      <h3>신청이 접수됐습니다</h3>
+      <p class="body">지금 하실 일은 하나입니다. 상담방에 들어와 <b id="doneName"></b> 이름을 남겨 주세요.</p>
+      <a class="btn-main" href="https://open.kakao.com/o/gZ4c0RWi" target="_blank" rel="noopener" id="doneKakao">카카오톡 상담방 열기</a>
+      <h3 class="sub-h">상담방에서 이어서 하는 일</h3>
+      <ol class="mini">
+        <li>MT5 설치와 모의 계좌 만들기</li>
+        <li>첫 주문 넣기 (0.01랏)</li>
+        <li>손절과 익절 함께 설정하기</li>
+        <li>시그널대로 주문해 보고 매매 일지 남기기</li>
+      </ol>
+      <a class="btn-sub" href="https://t.me/dealerne" target="_blank" rel="noopener">텔레그램 채널 보기</a>
+    </div>
+
+    <ul class="list who-mini" aria-label="운영 주체와 채널">
+      <li><div class="row static"><span class="row-t">운영</span><span class="row-v">(주)맨큐</span></div></li>
+      <li><a class="row" href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener"><span class="row-t">유튜브</span><span class="row-v">@딜러네 <i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://t.me/dealerne" target="_blank" rel="noopener"><span class="row-t">텔레그램</span><span class="row-v">@dealerne <i aria-hidden="true">›</i></span></a></li>
+    </ul>
+  </section>
+
+  <section class="sec risk" aria-labelledby="h-risk">
+    <h2 id="h-risk">투자위험 고지</h2>
+    <p>이 사이트의 영상, 시그널과 자료는 교육용 정보이며, 특정 상품의 매매 권유나 투자자문이 아닙니다. 수익을 보장하지 않습니다. 선물, CFD, FX 같은 레버리지 상품은 투자 원금을 넘는 손실이 날 수 있고, 과거 사례가 앞으로의 결과를 뜻하지 않습니다. 투자 판단과 그 결과는 본인의 책임입니다.</p>
+    <p class="foot">(주)맨큐 · © 2026 딜러네 데스크 · <a href="https://open.kakao.com/o/gZ4c0RWi" target="_blank" rel="noopener">문의</a></p>
+  </section>
+</main>
+
+<div class="bar" id="bar"><a class="btn-main" href="#apply" id="barBtn">상담 신청하기</a></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<script src="d3.js"></script>
+</body>
+</html>

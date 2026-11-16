@@ -431,3 +431,87 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
 .dk-side.sell{background:#4B8BFF;color:#04122B}
 .dk-side.wait{border:1px solid rgba(255,255,255,.3);color:#C5CBD8;font-weight:700}
 @media (max-width:760px){.dk-chart{height:260px}}
+
+/* ===== 모바일 UX 개선 (2026-11-16) =====
+   1) 폰 첫 화면: 제목 2줄, 종목을 가로 탭으로, 차트가 첫 화면에 보이게
+   2) 데스크 길이 줄이기: 카드 압축, 2열 배치
+   3) 따라다니는 하단 버튼 */
+
+/* 하단 고정 버튼: 폰에서만, 첫 화면을 지나면 나타나고 상담 폼이 보이면 숨음 */
+.dock{display:none}
+@media (max-width:760px){
+  .dock{position:fixed;left:0;right:0;bottom:0;z-index:55;display:flex;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(7,9,15,.96) 62%,rgba(7,9,15,0));transform:translateY(110%);transition:transform .32s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+  .dock.show{transform:none;pointer-events:auto}
+  .dock-b{flex:1 1 0;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 14px;border-radius:999px;font:700 16px/1 var(--font);letter-spacing:-.01em;border:1px solid var(--line2);background:rgba(17,21,31,.96);color:var(--ink)}
+  .dock-main{flex:1.5 1 0;background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  body.dock-on .sample-flag{bottom:calc(78px + env(safe-area-inset-bottom))}
+  body.dock-on{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+  .nav.open~.dock,body:has(dialog[open]) .dock{transform:translateY(110%);pointer-events:none}
+}
+@media (prefers-reduced-motion:reduce){.dock{transition:none}}
+
+@media (max-width:760px){
+  /* --- 첫 화면 --- */
+  .view-desk #desk-top{padding:26px 0 64px!important}
+  .view-desk #desk-top>div[style*="gap: 52px"]{gap:22px!important}
+  .view-desk #desk-top h1{font-size:min(9.5vw,38px)!important;line-height:1.14!important}
+  .view-desk #desk-top h1+*,.view-desk #desk-top p{font-size:16px}
+  .dk-persp{perspective:none!important}
+  .dk-board{transform:none!important;border-radius:18px!important}
+  .dk-list{flex:1 1 100%!important;flex-direction:row!important;align-items:center;gap:8px;padding:12px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.1);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .dk-list::-webkit-scrollbar{display:none}
+  .dk-list>p{display:none}
+  .dk-inst{flex:none;width:auto;min-height:44px;margin:0;padding:0 14px;gap:8px;border:1px solid rgba(255,255,255,.14);border-radius:999px;font-size:15px;white-space:nowrap}
+  .dk-inst.on{border-color:#FFC247;background:rgba(255,194,71,.1)}
+  .dk-main{flex:1 1 100%!important;padding:16px 16px 18px!important;gap:12px!important}
+  .dk-chart{height:236px}
+  .dk-plat{flex:1 1 100%!important;display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important;padding:16px!important;border-left:0!important;border-top:1px solid rgba(255,255,255,.1)}
+  .dk-plat>p{grid-column:1/-1}
+  .dk-plat>a:last-child{grid-column:1/-1;margin-top:4px!important}
+
+  /* --- 섹션 간격 --- */
+  .view-desk #desk-instruments,.view-desk #desk-demo,.view-desk #desk-platforms{padding:64px 0!important}
+  .view-desk #desk-apply{padding:0 0 64px!important}
+  .view-desk section>div>div[style*="margin-top: 64px"]{margin-top:28px!important}
+  .view-desk section>div>div[style*="margin-top: 56px"]{margin-top:28px!important}
+  .bridge{padding:56px 0}
+
+  /* --- 거래 종목: 2열 작은 카드 --- */
+  .view-desk #desk-instruments div[style*="grid-template-columns"]{grid-template-columns:1fr 1fr!important;gap:10px!important}
+  .view-desk #desk-instruments article{padding:14px!important;gap:6px!important;border-radius:16px!important}
+  .view-desk #desk-instruments article>div:first-child{min-height:22px}
+  .view-desk #desk-instruments article>div:first-child>span:first-child{font-size:11px!important;line-height:1.3;word-break:break-all}
+  .view-desk #desk-instruments article>div:first-child>span:last-child{padding:1px 7px!important;font-size:11px!important;white-space:nowrap}
+  .view-desk #desk-instruments article .dn-float,.view-desk #desk-instruments article>div:nth-child(2){padding:2px 0!important}
+  .view-desk #desk-instruments article svg{width:auto!important;height:58px!important}
+  .view-desk #desk-instruments article h3{font-size:19px!important}
+  .view-desk #desk-instruments article h3+p{font-size:13px!important;line-height:1.45}
+  .view-desk #desk-instruments article p:last-child{flex-direction:column;gap:2px!important;margin-top:auto!important;padding-top:10px!important;font-size:12px!important}
+  .view-desk #desk-instruments article p:last-child span:last-child{font-size:13px}
+
+  /* --- 처음이라면: 그림 높이와 여백 줄이기 --- */
+  .view-desk #desk-demo article{padding:18px!important;gap:14px!important;border-radius:18px!important}
+  .view-desk #desk-demo article>div[aria-hidden="true"]{height:104px!important}
+  .view-desk #desk-demo article h3{font-size:20px!important}
+
+  /* --- 플랫폼 카드 --- */
+  .view-desk #desk-platforms article{padding:20px!important;gap:14px!important;border-radius:18px!important}
+  .view-desk #desk-platforms article h3{font-size:26px!important}
+  .view-desk #desk-platforms article svg{width:60px!important;height:50px!important}
+}
+
+/* 누르기 작은 링크와 대비 보정 */
+:root{--muted2:#7F8799}
+.lib-more .link-u,.contact a{display:inline-flex;align-items:center;min-height:44px}
+.tbl .up{color:#C72D45}.tbl .down{color:#1F5FD6}
+
+/* 폰: '처음이라면' 3장과 플랫폼 3장은 옆으로 넘겨 보게 해서 세로 길이를 줄임 */
+@media (max-width:760px){
+  .view-desk #desk-demo div[style*="repeat(auto-fit"]:has(>article),.view-desk #desk-platforms div[style*="repeat(auto-fit"]:has(>article){display:flex!important;gap:12px!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-left:-20px;margin-right:-20px;padding:0 20px 6px;scroll-padding-left:20px}
+  .view-desk #desk-demo div[style*="repeat(auto-fit"]:has(>article)::-webkit-scrollbar,.view-desk #desk-platforms div[style*="repeat(auto-fit"]:has(>article)::-webkit-scrollbar{display:none}
+  .view-desk #desk-demo div[style*="repeat(auto-fit"]:has(>article)>article,.view-desk #desk-platforms div[style*="repeat(auto-fit"]:has(>article)>article{flex:0 0 84%;scroll-snap-align:start}
+  .rv-ready .view-desk #desk-demo div[style*="repeat(auto-fit"]:has(>article)>[data-rv],.rv-ready .view-desk #desk-platforms div[style*="repeat(auto-fit"]:has(>article)>[data-rv]{opacity:1;transform:none}
+}
+
+/* 데스크 바깥 틀이 옆으로 밀리지 않게 (overflow:hidden 은 스크립트나 포커스로 스크롤될 수 있음) */
+@supports (overflow:clip){.view-desk>div{overflow:clip!important}}

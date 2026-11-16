@@ -405,3 +405,109 @@
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
   els.forEach(function (el) { io.observe(el); });
 })();
+
+/* ---------- 데스크 시그널 보드: 예시 차트 엔진 (TradingView Lightweight Charts) ----------
+   실제 시세가 아닙니다. 종목마다 정해진 씨앗값으로 만든 시뮬레이션 캔들이 한 봉씩 움직입니다.
+   매수/매도 종목은 진입·손절·목표 선을 긋고, 대기 종목은 선 없이 차트만 보여 줍니다. */
+(function () {
+  var box = document.getElementById('deskChart'), LW = window.LightweightCharts;
+  if (!box || !LW) return;                                   // 라이브러리를 못 불러오면 원래 그림(SVG)을 그대로 둡니다
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var INST = {
+    nas:  { name: '나스닥100', sym: 'USA100 · US100Cash', side: 'buy',  base: 21480,  dec: 1, vol: 0.0011, seed: 11 },
+    gold: { name: '골드',      sym: 'XAUUSD · GOLD',      side: 'sell', base: 2652,   dec: 1, vol: 0.0008, seed: 23 },
+    wti:  { name: 'WTI 오일',  sym: 'USOIL · OILCash',    side: 'wait', base: 71.4,   dec: 2, vol: 0.0016, seed: 37 },
+    spx:  { name: 'S&P500',    sym: 'USA500 · US500Cash', side: 'wait', base: 5920,   dec: 1, vol: 0.0008, seed: 41 },
+    eur:  { name: 'EUR/USD',   sym: 'EURUSD',             side: 'wait', base: 1.0842, dec: 4, vol: 0.0005, seed: 53 },
+    btc:  { name: '비트코인',   sym: 'BTCUSD',             side: 'wait', base: 96200,  dec: 0, vol: 0.0019, seed: 67 }
+  };
+  var SIDE = { buy: '매수', sell: '매도', wait: '대기' };
+  var N = 70, STEP = 60;
+
+  function rng(seed) { var s = seed * 2654435761 % 4294967296; return function () { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; }; }
+  function fmt(v, dec) { return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }); }
+
+  function build(cfg) {                                       // 종목별 캔들과 진입·손절·목표 값을 만듭니다
+    var r = rng(cfg.seed), g = function () { return Math.sqrt(-2 * Math.log(1 - r())) * Math.cos(2 * Math.PI * r()); };
+    var t0 = Math.floor(Date.now() / 1000 / STEP) * STEP - N * STEP, px = cfg.base, data = [], rangeSum = 0;
+    for (var i = 0; i < N; i++) {
+      var o = px, h = o, l = o, c = o;
+      for (var k = 0; k < 8; k++) { c = c * (1 + cfg.vol / Math.sqrt(8) * g() - 0.02 * Math.log(c / cfg.base) / 8); if (c > h) h = c; if (c < l) l = c; }
+      px = c; rangeSum += h - l; data.push({ time: t0 + i * STEP, open: o, high: h, low: l, close: c });
+    }
+    var atr = rangeSum / N, entry = data[N - 12].close, lv = null;
+    if (cfg.side === 'buy')  lv = { entry: entry, stop: entry - atr * 3.2, target: entry + atr * 6.4 };
+    if (cfg.side === 'sell') lv = { entry: entry, stop: entry + atr * 3.2, target: entry - atr * 6.4 };
+    return { data: data, lv: lv, r: r, g: g, last: data[N - 1], ticks: 0 };
+  }
+
+  box.innerHTML = '';
+  var chart;
+  try {
+    chart = LW.createChart(box, {
+      autoSize: true,
+      layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#8B93A3', fontFamily: 'var(--font), sans-serif', fontSize: 11 },
+      grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(255,255,255,0.06)' } },
+      crosshair: { vertLine: { visible: false, labelVisible: false }, horzLine: { visible: false, labelVisible: false } },
+      rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.12, bottom: 0.12 } },
+      timeScale: { visible: false, borderVisible: false, rightOffset: 6, barSpacing: 9 },
+      handleScroll: false, handleScale: false
+    });
+  } catch (e) { return; }
+  var series = chart.addCandlestickSeries({ upColor: '#F0556B', downColor: '#4B8BFF', borderUpColor: '#F0556B', borderDownColor: '#4B8BFF', wickUpColor: '#F0556B', wickDownColor: '#4B8BFF', priceLineVisible: true, priceLineColor: 'rgba(255,255,255,.35)', lastValueVisible: true });
+
+  var state = {}, cur = null, lines = [];
+  var el = { name: document.getElementById('dkName'), sym: document.getElementById('dkSym'), side: document.getElementById('dkSide'), entry: document.getElementById('dkEntry'), stop: document.getElementById('dkStop'), target: document.getElementById('dkTarget') };
+  var btns = [].slice.call(document.querySelectorAll('.dk-inst'));
+
+  function show(key) {
+    var cfg = INST[key]; if (!cfg) return;
+    cur = key; if (!state[key]) state[key] = build(cfg);
+    var st = state[key];
+    lines.forEach(function (l) { series.removePriceLine(l); }); lines = [];
+    series.applyOptions({
+      priceFormat: { type: 'price', precision: cfg.dec, minMove: 1 / Math.pow(10, cfg.dec) },
+      autoscaleInfoProvider: function (orig) {              // 진입·손절·목표 선이 항상 화면 안에 들어오게 합니다
+        var res = orig(); if (!res || !res.priceRange || !st.lv) return res;
+        res.priceRange.minValue = Math.min(res.priceRange.minValue, st.lv.stop, st.lv.target);
+        res.priceRange.maxValue = Math.max(res.priceRange.maxValue, st.lv.stop, st.lv.target);
+        return res;
+      }
+    });
+    series.setData(st.data);
+    if (st.lv) {
+      lines.push(series.createPriceLine({ price: st.lv.target, color: '#C5CBD8', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '목표' }));
+      lines.push(series.createPriceLine({ price: st.lv.entry, color: '#FFC247', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '진입' }));
+      lines.push(series.createPriceLine({ price: st.lv.stop, color: '#8FB4FF', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '손절' }));
+    }
+    chart.timeScale().scrollToRealTime();
+    if (el.name) el.name.textContent = cfg.name;
+    if (el.sym) el.sym.textContent = cfg.sym;
+    if (el.side) { el.side.textContent = SIDE[cfg.side]; el.side.className = 'dk-side ' + cfg.side; }
+    if (el.entry) el.entry.textContent = st.lv ? fmt(st.lv.entry, cfg.dec) : '—';
+    if (el.stop) el.stop.textContent = st.lv ? fmt(st.lv.stop, cfg.dec) : '—';
+    if (el.target) el.target.textContent = st.lv ? fmt(st.lv.target, cfg.dec) : '—';
+    btns.forEach(function (b) { var on = b.getAttribute('data-inst') === key; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-inst')); }); });
+  show('nas');
+
+  /* 화면에 보일 때만 한 봉씩 움직입니다 */
+  if (reduce) return;
+  var visible = false, timer = null;
+  function tick() {
+    var cfg = INST[cur], st = state[cur]; if (!st) return;
+    var b = st.last, c = b.close * (1 + cfg.vol / 2.6 * st.g() - 0.004 * Math.log(b.close / cfg.base));
+    st.ticks++;
+    if (st.ticks % 7 === 0) {                                 // 일곱 번에 한 번 새 봉을 엽니다
+      b = { time: b.time + STEP, open: b.close, high: Math.max(b.close, c), low: Math.min(b.close, c), close: c };
+      st.data.push(b); if (st.data.length > 160) st.data.shift();
+    } else { b.close = c; if (c > b.high) b.high = c; if (c < b.low) b.low = c; }
+    st.last = b; series.update(b);
+  }
+  function run() { if (!timer && visible) timer = setInterval(tick, 850); }
+  function halt() { clearInterval(timer); timer = null; }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; visible ? run() : halt(); }).observe(box);
+  else { visible = true; run(); }
+  document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
+})();

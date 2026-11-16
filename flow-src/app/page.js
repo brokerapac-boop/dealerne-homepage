@@ -262,11 +262,17 @@ export default function Page() {
 
   useEffect(() => {
     // 예전 주소로 들어온 경우: 아카데미 구역은 /academy 로, 데스크 구역은 새 위치로 보냄
-    const h = location.hash;
-    if (ACADEMY_HASH.includes(h)) { location.replace('/academy' + h); return; }
-    const target = DESK_HASH[h] || (/^#[a-z-]+$/.test(h) ? h : null);
-    // 화면 폭에 따라 구간 높이가 정해진 뒤에 이동해야 위치가 맞음
-    if (target) setTimeout(() => document.querySelector(target)?.scrollIntoView(), 700);
+    const route = (wait) => {
+      const h = location.hash;
+      if (ACADEMY_HASH.includes(h)) { location.replace('/academy' + h); return true; }
+      const target = DESK_HASH[h] || (wait && /^#[a-z-]+$/.test(h) ? h : null);
+      // 화면 폭에 따라 구간 높이가 정해진 뒤에 이동해야 위치가 맞음
+      if (target) setTimeout(() => document.querySelector(target)?.scrollIntoView(), wait);
+      return false;
+    };
+    if (route(700)) return;
+    const onHash = () => route(0);
+    window.addEventListener('hashchange', onHash);
     setSmooth(!window.matchMedia('(prefers-reduced-motion:reduce)').matches);
     const mq = window.matchMedia('(max-width:820px)');
     const onMq = () => setMobile(mq.matches); onMq(); mq.addEventListener('change', onMq);
@@ -288,7 +294,7 @@ export default function Page() {
     window.addEventListener('scroll', req, { passive: true });
     window.addEventListener('resize', req);
     update();
-    return () => { mq.removeEventListener('change', onMq); window.removeEventListener('scroll', req); window.removeEventListener('resize', req); };
+    return () => { window.removeEventListener('hashchange', onHash); mq.removeEventListener('change', onMq); window.removeEventListener('scroll', req); window.removeEventListener('resize', req); };
   }, []);
 
   return (

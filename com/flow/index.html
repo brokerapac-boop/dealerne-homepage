@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>딜러네 | 스크롤 시안</title>
+<meta name="description" content="딜러네 메인 페이지 스크롤 시안입니다.">
+<meta name="theme-color" content="#07090F">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="flow.css">
+</head>
+<body data-tone="dark">
+
+<header class="hd" id="hd">
+  <div class="wrap hd-in">
+    <a class="brand" href="#top" aria-label="딜러네 홈"><img src="../logo.webp" alt="" width="34" height="34"><span>딜러네</span></a>
+    <nav class="hd-nav" aria-label="서비스 선택">
+      <a href="../#desk">데스크</a>
+      <a href="../#academy">아카데미</a>
+    </nav>
+    <a class="btn btn-sm" href="https://t.me/dealerne" target="_blank" rel="noopener">시그널 받기</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- 1. 첫 화면 -->
+<section class="hero" data-tone="dark">
+  <canvas class="hero-cv" id="heroCv" aria-hidden="true"></canvas>
+  <div class="wrap hero-in" id="heroIn">
+    <p class="eyebrow hl" style="--d:0">해외선물 매매 어드바이저 · 나스닥 골드 오일</p>
+    <h1>
+      <span class="hl" style="--d:1">매매 전에</span>
+      <span class="hl" style="--d:2">먼저 여는</span>
+      <span class="hl hi" style="--d:3">나의 트레이딩 데스크</span>
+    </h1>
+    <p class="lede hl" style="--d:4">종목별 시그널을 확인하고,<br>연결된 MT5 플랫폼으로 바로 넘어갑니다.</p>
+    <div class="hl" style="--d:5"><a class="btn" href="https://t.me/dealerne" target="_blank" rel="noopener">텔레그램에서 시그널 받기</a></div>
+  </div>
+  <p class="note hero-note">시뮬레이션 차트(300틱) · 실제 시세가 아닙니다</p>
+  <span class="scroll-cue" aria-hidden="true"></span>
+</section>
+
+<!-- 2. 원칙 (밝은 화면) -->
+<section class="sec principles" data-tone="light">
+  <div class="wrap">
+    <h2 class="big up">같은 실수를 반복하는 이유는<br>매매에 <b>기준이 없기</b> 때문입니다.</h2>
+    <div class="three">
+      <article class="card up" style="--i:0"><span class="num">01</span><h3>먼저 기준을 세웁니다</h3><p>방향을 맞히려 하기보다 어디서 들어가고, 어디서 틀렸다고 인정할지 먼저 적어 둡니다.</p></article>
+      <article class="card up" style="--i:1"><span class="num">02</span><h3>순서를 지켜 배웁니다</h3><p>한 번에 하나의 레벨만 봅니다. 앞 단계가 몸에 붙어야 다음 단계로 올라갑니다.</p></article>
+      <article class="card up" style="--i:2"><span class="num">03</span><h3>기록으로 확인합니다</h3><p>결과가 아니라 정한 대로 했는지를 일지에 남기고, 복기해서 기준을 고칩니다.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 고정 화면 + 단계 전환 -->
+<section class="story" id="story" data-tone="light">
+  <div class="wrap story-in">
+    <div class="phone-col">
+      <div class="phone" aria-hidden="true">
+        <div class="phone-top"><span>딜러네 데스크</span><em>예시 화면</em></div>
+        <div class="screens">
+          <div class="screen on" data-screen="0">
+            <p class="s-title">종목</p>
+            <ul class="s-list">
+              <li><img src="../icons/nas.webp" alt="" width="36" height="36"><span>나스닥100</span><i class="tag buy">매수</i></li>
+              <li><img src="../icons/gold.webp" alt="" width="36" height="36"><span>골드</span><i class="tag sell">매도</i></li>
+              <li><img src="../icons/wti.webp" alt="" width="36" height="36"><span>WTI 오일</span><i class="tag">대기</i></li>
+              <li><img src="../icons/spx.webp" alt="" width="36" height="36"><span>S&amp;P500</span><i class="tag">대기</i></li>
+              <li><img src="../icons/eur.webp" alt="" width="36" height="36"><span>EUR/USD</span><i class="tag">대기</i></li>
+              <li><img src="../icons/btc.webp" alt="" width="36" height="36"><span>비트코인</span><i class="tag">대기</i></li>
+            </ul>
+          </div>
+          <div class="screen" data-screen="1">
+            <p class="s-title">나스닥100 <i class="tag buy">매수</i></p>
+            <canvas class="s-chart" id="phoneCv"></canvas>
+            <dl class="s-lv">
+              <div><dt class="c-t">목표</dt><dd>21,853.6</dd></div>
+              <div><dt class="c-e">진입</dt><dd>21,621.3</dd></div>
+              <div><dt class="c-s">손절</dt><dd>21,505.2</dd></div>
+            </dl>
+          </div>
+          <div class="screen" data-screen="2">
+            <p class="s-title">플랫폼 연결</p>
+            <ul class="s-plat">
+              <li><b>HFM</b><span>MT5</span></li>
+              <li><b>XM</b><span>MT5</span></li>
+              <li><b>이지스퀘어</b><span>조건 확인 중</span></li>
+              <li class="dash"><b>증권사 HTS</b><span>상담 시 안내</span></li>
+            </ul>
+          </div>
+          <div class="screen" data-screen="3">
+            <p class="s-title">시그널 채널</p>
+            <div class="s-chat">
+              <p class="bubble"><b>나스닥100 · 매수</b>진입 21,621.3<br>손절 21,505.2<br>목표 21,853.6</p>
+              <p class="bubble sm">기준에 닿지 않으면 주문하지 않습니다.</p>
+              <p class="s-fine">예시 메시지 · 실제 시그널이 아닙니다</p>
+            </div>
+          </div>
+        </div>
+        <div class="phone-dots"><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <ol class="steps">
+      <li class="step on" data-step="0"><span class="num">01</span><h2>종목을 <br>고릅니다</h2><p>나스닥, 골드, 오일부터 통화와 비트코인까지 여섯 종목을 봅니다.</p></li>
+      <li class="step" data-step="1"><span class="num">02</span><h2>기준가를 <br>먼저 확인합니다</h2><p>진입, 손절, 목표를 주문하기 전에 정해 둡니다.</p></li>
+      <li class="step" data-step="2"><span class="num">03</span><h2>MT5 환경을 <br>연결합니다</h2><p>HFM, XM, 이지스퀘어, 증권사 HTS 가운데 맞는 곳을 함께 고릅니다.</p></li>
+      <li class="step" data-step="3"><span class="num">04</span><h2>시그널은 <br>텔레그램으로 받습니다</h2><p>채널에서 같은 기준을 확인하고, 주문은 직접 합니다.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 4. 어두운 화면으로 전환: 차트 -->
+<section class="sec board-sec" id="board" data-tone="dark">
+  <div class="wrap">
+    <p class="eyebrow up">시그널 보드</p>
+    <h2 class="big up">주문 전에,<br><b>세 개의 가격</b>부터 봅니다.</h2>
+    <div class="board up">
+      <div class="board-hd"><strong>나스닥100</strong><span>USA100 · US100Cash</span><i class="tag buy">매수</i></div>
+      <canvas class="board-cv" id="boardCv" aria-hidden="true"></canvas>
+      <dl class="lv" id="lv">
+        <div><dt class="c-e">진입</dt><dd data-count="21621.3">21,621.3</dd></div>
+        <div><dt class="c-s">손절</dt><dd data-count="21505.2">21,505.2</dd></div>
+        <div><dt class="c-t">목표</dt><dd data-count="21853.6">21,853.6</dd></div>
+      </dl>
+    </div>
+    <p class="note">예시 화면 · 300틱 시뮬레이션 차트 · 실제 시세와 시그널이 아닙니다</p>
+  </div>
+</section>
+
+<!-- 5. 거래 종목 -->
+<section class="sec insts-sec" data-tone="dark">
+  <div class="wrap">
+    <p class="eyebrow up">거래 종목</p>
+    <h2 class="big up">여섯 종목,<br>데스크가 함께 봅니다</h2>
+  </div>
+  <ul class="insts">
+    <li class="up" style="--i:0"><img src="../icons/nas.webp" alt="" width="96" height="96" loading="lazy"><h3>나스닥100</h3><p>기술주 중심의 미국 대표 지수</p></li>
+    <li class="up" style="--i:1"><img src="../icons/gold.webp" alt="" width="96" height="96" loading="lazy"><h3>골드</h3><p>금리와 달러에 민감한 대표 안전자산</p></li>
+    <li class="up" style="--i:2"><img src="../icons/wti.webp" alt="" width="96" height="96" loading="lazy"><h3>WTI 오일</h3><p>변동성이 큰 대표 원자재</p></li>
+    <li class="up" style="--i:3"><img src="../icons/spx.webp" alt="" width="96" height="96" loading="lazy"><h3>S&amp;P500</h3></li>
+    <li class="up" style="--i:4"><img src="../icons/eur.webp" alt="" width="96" height="96" loading="lazy"><h3>FX 통화쌍</h3></li>
+    <li class="up" style="--i:5"><img src="../icons/btc.webp" alt="" width="96" height="96" loading="lazy"><h3>비트코인</h3></li>
+  </ul>
+</section>
+
+<!-- 6. 로드맵 (다시 밝은 화면) -->
+<section class="sec road-sec" id="road" data-tone="light">
+  <div class="wrap">
+    <p class="eyebrow up">딜러네 아카데미</p>
+    <h2 class="big up">다섯 단계를<br>차례로 채웁니다</h2>
+    <ol class="road" id="roadList">
+      <li class="up" style="--i:0"><span>Lv1</span><b>입문</b><p>선물이 움직이는 방식을 이해합니다</p></li>
+      <li class="up" style="--i:1"><span>Lv2</span><b>차트</b><p>차트를 같은 순서로 읽습니다</p></li>
+      <li class="up" style="--i:2"><span>Lv3</span><b>진입 기준</b><p>들어가는 조건을 글로 적습니다</p></li>
+      <li class="up" style="--i:3"><span>Lv4</span><b>리스크</b><p>잃을 수 있는 크기를 먼저 정합니다</p></li>
+      <li class="up" style="--i:4"><span>Lv5</span><b>실전</b><p>계획대로 실행하고 복기합니다</p></li>
+    </ol>
+    <p class="up"><a class="link" href="../#academy">아카데미에서 3분 레벨 진단하기 →</a></p>
+  </div>
+</section>
+
+<!-- 7. 마무리 -->
+<section class="sec end-sec" data-tone="dark">
+  <div class="wrap">
+    <h2 class="big up">기준은 차트로,<br>시그널은 텔레그램으로.</h2>
+    <p class="up"><a class="btn" href="https://t.me/dealerne" target="_blank" rel="noopener">텔레그램에서 시그널 받기</a></p>
+    <div class="doors">
+      <a class="door up" style="--i:0" href="../#desk-apply-demo"><span>처음이라면</span><b>모의투자 상담 신청</b><i aria-hidden="true">→</i></a>
+      <a class="door up" style="--i:1" href="../#desk-apply-live"><span>바로 매매하려면</span><b>실전 매매 상담 신청</b><i aria-hidden="true">→</i></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<section class="risk">
+  <div class="wrap">
+    <b>투자위험 고지</b>
+    <p>이 사이트의 영상, 시그널과 자료는 교육용 정보이며, 특정 상품의 매매 권유나 투자자문이 아닙니다. 수익을 보장하지 않습니다. 선물, CFD, FX 같은 레버리지 상품은 투자 원금을 넘는 손실이 날 수 있고, 과거 사례가 앞으로의 결과를 뜻하지 않습니다. 투자 판단과 그 결과는 본인의 책임입니다.</p>
+    <p class="foot">© 2026 딜러네 아카데미 · 딜러네 데스크 · (주)맨큐</p>
+  </div>
+</section>
+
+<div class="sample-flag">SAMPLE DRAFT</div>
+<script src="flow.js"></script>
+</body>
+</html>

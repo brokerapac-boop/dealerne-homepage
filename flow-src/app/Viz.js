@@ -89,37 +89,47 @@ export function VizNoStop() {
   );
 }
 
-/* 종목 카드의 흐르는 미니 차트 (시뮬레이션) */
+/* 종목 카드의 흐르는 미니 차트 (시뮬레이션). 틱처럼 빠르게 움직이고, 보이는 구간에 맞춰 위아래를 꽉 채움 */
 export function Spark({ seed = 1 }) {
   const ref = useRef(null);
   useEffect(() => {
     const cv = ref.current, ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-    let s = seed * 9973 + 17, W = 0, H = 0, raf = 0, visible = false, t0 = 0;
+    let s = seed * 9973 + 17, W = 0, H = 0, raf = 0, visible = false, t0 = 0, lo = 0, hi = 1;
     const rnd = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-    const N = 34, STEP = 900, pts = [];
-    let v = 0.5, d = 0;
-    const next = () => { d = d * 0.7 + (rnd() - 0.5) * 0.16 + (0.5 - v) * 0.06; v = Math.min(0.92, Math.max(0.08, v + d)); return v; };
+    const N = 30, STEP = 260 + (seed % 3) * 40, pts = [];
+    let v = 50, d = 0, trend = 0;
+    const next = () => {
+      trend *= 0.86;
+      if (rnd() < 0.12) trend = (rnd() - 0.5) * 6;              // 가끔 방향이 바뀌고 곧 잦아듦
+      const jump = rnd() < 0.1 ? (rnd() - 0.5) * 22 : 0;         // 가끔 크게 튐
+      d = d * 0.2 + (rnd() - 0.5) * 10 + trend + jump;
+      v += d; return v;
+    };
     for (let i = 0; i < N + 2; i++) pts.push(next());
     const size = () => { const dpr = Math.min(2, window.devicePixelRatio || 1), r = cv.getBoundingClientRect(); W = Math.round(r.width); H = Math.round(r.height); if (!W || !H) return; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+    const range = () => { let a = Infinity, b = -Infinity; for (const p of pts) { if (p < a) a = p; if (p > b) b = p; } const pad = Math.max(2, (b - a) * 0.12); return [a - pad, b + pad]; };
+    [lo, hi] = range();
     const draw = (now) => {
       raf = 0; if (!W) return;
       if (!t0) t0 = now;
       let f = (now - t0) / STEP;
       while (f >= 1) { pts.shift(); pts.push(next()); t0 += STEP; f -= 1; }
-      const dx = W / (N - 1), x = (i) => (i - f) * dx, y = (p) => 6 + (1 - p) * (H - 12);
+      const [a, b] = range(); lo += (a - lo) * 0.08; hi += (b - hi) * 0.08;   // 세로 범위는 부드럽게 따라감
+      const R = 8, dx = (W - R) / (N - 1), x = (i) => (i - f) * dx, y = (p) => 5 + (1 - (p - lo) / (hi - lo)) * (H - 10);
+      const tipV = pts[N - 1] + (pts[N] - pts[N - 1]) * f, tx = W - R, ty = y(tipV);
       ctx.clearRect(0, 0, W, H);
-      ctx.beginPath();
-      for (let i = 0; i < pts.length; i++) { const px = x(i), py = y(pts[i]); if (!i) ctx.moveTo(px, py); else { const qx = x(i - 1), qy = y(pts[i - 1]); ctx.bezierCurveTo((qx + px) / 2, qy, (qx + px) / 2, py, px, py); } }
-      // 마지막 점은 화면 오른쪽 끝에 머물도록 보간
-      const lastI = N - 1 + f, a = pts[N - 1], b = pts[N], ty = y(a + (b - a) * f), tx = W - 6;
-      ctx.lineWidth = 2; ctx.strokeStyle = '#FFC247'; ctx.stroke();
-      ctx.lineTo(x(pts.length - 1), H); ctx.lineTo(x(0), H); ctx.closePath();
-      const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, 'rgba(255,194,71,.22)'); g.addColorStop(1, 'rgba(255,194,71,0)'); ctx.fillStyle = g; ctx.fill();
-      ctx.clearRect(tx, 0, W - tx, H);
-      ctx.beginPath(); ctx.arc(tx, ty, 4, 0, Math.PI * 2); ctx.fillStyle = '#FFC247'; ctx.fill();
-      ctx.beginPath(); ctx.arc(tx, ty, 9, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,194,71,.18)'; ctx.fill();
-      void lastI;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, tx, H); ctx.clip();
+      ctx.beginPath(); ctx.moveTo(x(0), y(pts[0]));
+      for (let i = 1; i < N; i++) ctx.lineTo(x(i), y(pts[i]));
+      ctx.lineTo(tx, ty);
+      ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.strokeStyle = '#FFC247'; ctx.stroke();
+      ctx.lineTo(tx, H); ctx.lineTo(x(0), H); ctx.closePath();
+      const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, 'rgba(255,194,71,.26)'); g.addColorStop(1, 'rgba(255,194,71,0)'); ctx.fillStyle = g; ctx.fill();
+      ctx.restore();
+      const pulse = 7 + 3 * Math.sin(now / 180);
+      ctx.beginPath(); ctx.arc(tx, ty, pulse, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,194,71,.2)'; ctx.fill();
+      ctx.beginPath(); ctx.arc(tx, ty, 3.5, 0, Math.PI * 2); ctx.fillStyle = '#FFC247'; ctx.fill();
       if (visible && !reduce) raf = requestAnimationFrame(draw);
     };
     size(); draw(performance.now());

@@ -105,6 +105,9 @@ main{max-width:var(--max);margin:0 auto;display:flex;flex-direction:column;gap:v
 .row-v i{font-style:normal;margin-left:6px;color:var(--dim)}
 a.row:hover .row-v{color:var(--ink)}
 
+.row.col{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:14px 0}
+.row-d{font-size:15px;color:var(--sub)}
+
 /* 단계 */
 .steps{counter-reset:s;margin-top:20px;display:grid;gap:8px}
 .steps li{counter-increment:s;position:relative;padding:18px 18px 18px 62px;border-radius:var(--r-btn);background:var(--fill)}

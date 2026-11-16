@@ -7,7 +7,15 @@
   /* ---------- 기록 (5장): 단계별로 남깁니다. 측정 도구가 연결되면 dataLayer 를 읽어 갑니다 ---------- */
   window.dataLayer = window.dataLayer || [];
   function track(name, data) { window.dataLayer.push(Object.assign({ event: name, page: 'desk2' }, data || {})); }
-  track('page_view');
+  /* 들어온 길(3-8): 링크에 붙은 출처 표시를 기록하고, 상담 신청에도 함께 남깁니다 */
+  var SRC = '';
+  try {
+    var q = new URLSearchParams(location.search);
+    SRC = (q.get('utm_source') || q.get('src') || '').slice(0, 40).replace(/[^\w\-.가-힣]/g, '');
+    if (!SRC && document.referrer) { var h = new URL(document.referrer).hostname; SRC = /youtube|youtu\.be/.test(h) ? 'youtube' : /t\.me|telegram/.test(h) ? 'telegram' : /kakao/.test(h) ? 'kakao' : /dealerne/.test(h) ? '' : h.slice(0, 40); }
+    if (SRC) sessionStorage.setItem('dn_desk2_src', SRC); else SRC = sessionStorage.getItem('dn_desk2_src') || '';
+  } catch (e) {}
+  track('page_view', { source: SRC || 'direct' });
 
   /* ---------- 기준값은 한곳에 (5장) ----------
      계약 크기는 기존 데스크 페이지에 적힌 값입니다. 브로커와 계좌 유형에 따라 다를 수 있습니다. */
@@ -133,6 +141,7 @@
   })();
 
   /* ---------- 8. 상담 신청 ---------- */
+  $('srcField').value = SRC;
   var form = $('form'), err = $('formErr'), btn = $('submitBtn'), phone = form.elements.phone, nameEl = form.elements.fullname;
   var KEY = 'dn_desk2_form';
   try {                                                         // 뒤로 가거나 새로고침해도 적은 것이 남습니다
@@ -180,7 +189,7 @@
   /* 단계별 보기 기록 */
   if ('IntersectionObserver' in window) {
     var seen = {}, io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting && !seen[en.target.id]) { seen[en.target.id] = 1; track('section_view', { section: en.target.id }); } }); }, { threshold: 0.35 });
-    ['calc', 'board', 'who', 'why', 'fit', 'how', 'platforms', 'faq', 'apply'].forEach(function (id) { io.observe($(id)); });
+    ['bridge', 'calc', 'board', 'who', 'why', 'fit', 'how', 'platforms', 'faq', 'apply'].forEach(function (id) { io.observe($(id)); });
   }
   document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href^="http"]'); if (a) track('outbound_click', { to: a.hostname }); });
 })();

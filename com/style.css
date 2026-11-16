@@ -390,3 +390,31 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
   .brand-name{display:none}
 }
 
+
+/* ===== 데스크 다듬기: 아카데미와 같은 글자 크기·굵기·간격으로 맞춤 =====
+   데스크 영역은 태그에 직접 스타일이 적혀 있어서, 여기서는 !important 로 덮어씁니다. */
+.view-desk #desk-top{padding:clamp(48px,6vw,96px) 0 clamp(88px,10vw,140px)!important}
+.view-desk #desk-top h1{font-size:clamp(46px,6.8vw,104px)!important;line-height:1.06!important;font-weight:700!important}
+.view-desk #desk-instruments h2,.view-desk #desk-demo h2,.view-desk #desk-platforms h2{font-size:clamp(32px,4.4vw,64px)!important;line-height:1.16!important;font-weight:700!important}
+.view-desk #desk-apply h2,.view-desk #desk-demo h3{font-weight:700!important}
+.view-desk #desk-instruments,.view-desk #desk-demo,.view-desk #desk-platforms{padding:clamp(88px,11vw,160px) 0!important}
+.view-desk #desk-apply{padding:0 0 clamp(88px,11vw,160px)!important}
+/* 본문 폭을 아카데미(.wrap)와 같게 */
+.view-desk section>div[style*="max-width: 1200px"]{max-width:none!important;width:min(var(--max),100% - 48px)!important;padding-left:0!important;padding-right:0!important}
+.view-desk article h3{font-weight:700}
+.view-desk form button[type=submit]{transition:transform .15s ease,filter .2s ease}
+.view-desk form button[type=submit]:hover{filter:brightness(1.06)}
+.view-desk form button[type=submit]:active{transform:scale(.985)}
+.view-desk input:focus-visible,.view-desk select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 스크롤 등장 (script.js 가 data-rv 를 붙였을 때만 숨김) */
+.rv-ready .view-desk [data-rv]{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms),transform .7s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms),border-color .3s ease}
+.rv-ready .view-desk [data-rv].in{opacity:1;transform:none}
+.rv-ready .view-desk [data-rv].in.dn-lift:hover{transform:translateY(-6px);transition-delay:0ms}
+
+@media (max-width:760px){
+  .view-desk #desk-top h1{font-size:clamp(40px,12.4vw,56px)!important}
+  .view-desk #desk-instruments h2,.view-desk #desk-demo h2,.view-desk #desk-platforms h2{font-size:clamp(28px,8.4vw,36px)!important}
+  .view-desk section>div[style*="max-width: 1200px"]{width:calc(100% - 40px)!important}
+}
+@media (prefers-reduced-motion:reduce){.dn-float,.dn-float-2,.dn-float-3{animation:none}}

@@ -337,7 +337,7 @@
     var h = location.hash.slice(1);
     if (h === 'desk' || h === 'academy') return h;
     if (h) { var v = viewOf(document.getElementById(h)); if (v) return v; }
-    return 'academy';
+    return 'desk';   // 첫 화면은 데스크
   }
   function apply(v) {
     document.body.setAttribute('data-view', v);
@@ -383,3 +383,25 @@
   window.addEventListener('load', toHash);   // #desk-platforms 같은 주소로 들어오면 그 섹션까지 내려가요
 })();
 
+
+/* ---------- 데스크: 스크롤하면 제목과 카드가 차례로 나타나요 ---------- */
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) return;
+  var els = [];
+  document.querySelectorAll('.view-desk section').forEach(function (sec) {
+    var wrap = sec.querySelector(':scope > div:not([aria-hidden])'); if (!wrap) return;
+    [].slice.call(wrap.children).forEach(function (block) {
+      var cards = block.querySelectorAll(':scope > article, :scope > form, :scope > div > article');
+      if (cards.length > 1) [].forEach.call(cards, function (c, i) { c.style.setProperty('--rv-d', Math.min(i, 5) * 70 + 'ms'); els.push(c); });
+      else els.push(block);
+    });
+  });
+  if (!els.length) return;
+  els.forEach(function (el) { el.setAttribute('data-rv', ''); });
+  document.body.classList.add('rv-ready');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  els.forEach(function (el) { io.observe(el); });
+})();

@@ -542,3 +542,70 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
 
 /* 왼쪽 아래 SAMPLE DRAFT 배지가 맨 아래에서 푸터 글자에 붙지 않게 여백 확보 */
 .site-footer{padding-bottom:72px}
+
+/* ---------- 화면 다듬기 (개선 명세서 반영) ---------- */
+/* 헤더: 보기 전환은 무채색, 노란색은 오른쪽 전환 버튼에만 */
+.vswitch a[aria-current="page"]{background:rgba(255,255,255,.11);color:var(--ink)}
+.vswitch a[aria-current="page"] .vs-dot{background:var(--accent)}
+.nav .nav-cta{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.nav .nav-cta:hover{background:#FFD070;border-color:#FFD070}
+
+/* 숫자 폭 고정: 틱마다 글자가 흔들리지 않게 */
+#dkEntry,#dkStop,#dkTarget,.quiz-step,.rm-lv{font-variant-numeric:tabular-nums}
+
+/* 시그널 보드: 1 → 2 → 3 순서 표시 */
+.dk-step{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;background:rgba(255,194,71,.12);color:#FFC247;font:700 11px/1.5 'Space Grotesk',var(--font);letter-spacing:.06em;vertical-align:1px}
+.dk-steplabel{margin:0 0 -6px;font-size:12px;font-weight:700;color:#9BA1AF}
+
+/* 거래 종목 카드: 누를 수 있다는 표시 */
+.dk-card{position:relative}
+@media (hover:hover){
+  .dk-card::after{content:"시그널 보드에서 보기 ↑";position:absolute;right:20px;bottom:calc(100% - 96px);padding:4px 10px;border-radius:999px;background:#FFC247;color:#1A1300;font-size:12px;font-weight:700;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}
+  .dk-card:hover::after,.dk-card:focus-visible::after{opacity:1;transform:none}
+  .dk-card:hover{border-color:rgba(255,194,71,.45)!important}
+}
+
+/* 카카오톡 버튼 */
+.kakao-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:12px;background:#FEE500;color:#191919;font-size:15px;font-weight:600;letter-spacing:-.01em;transition:background .2s}
+.kakao-btn:hover{background:#F5DC00}
+.dk-alt{max-width:1200px;margin:28px auto 0;padding:0 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 18px;font-size:15px;color:#C5CBD8;text-align:center}
+
+/* 아카데미 상담 폼: 제출 버튼을 주 버튼 색으로 */
+.apply-form .btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.apply-form .btn-primary:hover{background:#F2B02E;border-color:#F2B02E}
+
+/* 선택 칸: 브라우저 기본 화살표 대신 같은 모양의 화살표 */
+.apply-form select,.view-desk select{-webkit-appearance:none;appearance:none;padding-right:44px!important;background-repeat:no-repeat!important;background-position:right 16px center!important;background-size:14px 14px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 6l5 5 5-5' fill='none' stroke='%235F6677' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important}
+#desk-apply-live select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 6l5 5 5-5' fill='none' stroke='%23C5CBD8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important}
+
+/* 레벨 진단 선택지: 버튼임이 보이게 */
+.opt{display:flex;align-items:center;gap:14px;cursor:pointer}
+.opt::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid #6B7280;transition:border-color .2s,box-shadow .2s,background .2s}
+.opt:hover::before,.opt:focus-visible::before{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 4px var(--bg2)}
+
+/* 원칙 3단: 01 · 02 · 03 */
+.three{counter-reset:pr}
+.three>div{counter-increment:pr}
+.three>div::before{content:"0" counter(pr);display:block;margin-bottom:14px;font:700 13px/1 'Space Grotesk',var(--font);letter-spacing:.08em;color:#8A6A12}
+
+/* 로드맵: 아직 지나지 않은 단계도 읽히게 */
+.rm-i{opacity:.62}
+
+/* 데스크톱 우측 하단 버튼 */
+.fab{display:none}
+@media (min-width:761px){
+  .fab{position:fixed;right:24px;bottom:24px;z-index:50;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s,transform .3s}
+  .fab.show{opacity:1;transform:none;pointer-events:auto}
+  .fab-k{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#FEE500;color:#191919;box-shadow:0 10px 30px -10px rgba(0,0,0,.7)}
+  .fab-k svg{width:26px;height:26px}
+  .fab-m{display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:700 15px/1 var(--font);letter-spacing:-.01em;cursor:pointer;box-shadow:0 10px 30px -10px rgba(0,0,0,.7)}
+  .fab-m:hover{background:#FFD070}
+  body:has(dialog[open]) .fab{opacity:0;pointer-events:none}
+}
+@media (prefers-reduced-motion:reduce){.fab{transition:none}}
+
+/* 아카데미 첫 화면: 제목 글자 뒤로 캔들이 비치지 않게 왼쪽 가림 폭을 넓힘 (넓은 화면만) */
+@media (min-width:1025px){
+  .hero-chart{-webkit-mask-image:linear-gradient(to right,transparent 0,transparent 30%,#000 56%);mask-image:linear-gradient(to right,transparent 0,transparent 30%,#000 56%)}
+}
+@media (max-width:760px){.dk-step,.dk-steplabel{display:none}}

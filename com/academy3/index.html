@@ -15,14 +15,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>tailwind.config = { theme: { extend: { colors: { amber: { 200: '#FFE1A6', 300: '#FFD27A', 400: '#FFC247' } } } } };</script>
   <style>
     /* 데스크 시안(/desk3/)과 같은 바탕 규칙 */
     :root { --bg-base: #07090f; --card-base: #111520; --card-elevated: #161b2a; --gold-main: #f5c451; --kakao-yellow: #fee500; }
     body {
-      background-color: var(--bg-base);
-      background-image:
-        radial-gradient(circle at 50% 0%, rgba(245, 196, 81, 0.08) 0%, rgba(7, 9, 15, 0) 52%),
-        radial-gradient(circle at 85% 35%, rgba(56, 189, 248, 0.04) 0%, rgba(7, 9, 15, 0) 45%);
+      background-color: #0a0c11;
       color: #f3f4f6;
       font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -33,48 +31,41 @@
     h1, h2 { text-wrap: balance; }
     p, li, span, label, td, div { text-wrap: pretty; }
     .num-tab { font-family: 'Inter', 'Pretendard', sans-serif; font-variant-numeric: tabular-nums; }
-    .gold-highlight-form {
-      background: linear-gradient(155deg, rgba(245, 196, 81, 0.13) 0%, rgba(18, 23, 36, 0.98) 36%, rgba(245, 196, 81, 0.06) 100%);
-      border: 1.5px solid rgba(245, 196, 81, 0.48);
-      box-shadow: 0 20px 50px -15px rgba(245, 196, 81, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-    .demo-account-widget {
-      background: linear-gradient(135deg, rgba(25, 33, 52, 0.95) 0%, rgba(15, 20, 32, 0.98) 100%);
-      border: 1px solid rgba(245, 196, 81, 0.28);
-    }
+    .gold-highlight-form { background: #171a24; border: 1px solid rgba(255, 194, 71, 0.38); }
+    .demo-account-widget { background: rgba(255, 255, 255, 0.04); }
     @keyframes pulseSoft { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.55; transform: scale(0.92); } }
-    .pulse-dot { animation: pulseSoft 2s infinite ease-in-out; }
+    .pulse-dot { animation: none; }
     select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
 <body class="min-h-screen pb-32">
 
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#07090f]/85 border-b border-white/10">
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#07090f]/85 border-b border-white/[0.08]">
     <div class="max-w-[560px] mx-auto px-4 h-14 flex items-center justify-between gap-2">
       <a href="#top-hero" class="flex items-center gap-2.5 group">
-        <span class="w-8 h-8 rounded-lg bg-amber-400 text-gray-950 font-extrabold text-sm flex items-center justify-center shadow-sm">딜</span>
+        <img src="../logo.webp" alt="" width="32" height="32" class="w-8 h-8 rounded-full ring-1 ring-white/20">
         <div class="flex flex-col">
           <span class="font-bold text-[15px] tracking-tight text-white leading-none">딜러네 아카데미</span>
-          <span class="hidden sm:block text-[11px] text-amber-300/90 mt-0.5 font-medium">레벨 진단 · 5단계 커리큘럼</span>
+          <span class="hidden sm:block text-xs text-amber-300/90 mt-0.5 font-medium">레벨 진단 · 5단계 커리큘럼</span>
         </div>
       </a>
-      <a href="../desk3/" class="whitespace-nowrap text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10 transition font-medium">딜러네 데스크</a>
+      <a href="../desk3/" class="whitespace-nowrap text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 border border-white/[0.08] transition font-medium">딜러네 데스크</a>
     </div>
   </header>
 
-  <p class="max-w-[560px] mx-auto px-4 pt-3 text-[11px] font-bold tracking-wider text-amber-400">SAMPLE DRAFT · 전환형 시안</p>
+  <p class="max-w-[560px] mx-auto px-4 pt-3 text-xs font-bold tracking-wider text-amber-400">SAMPLE DRAFT · 전환형 시안</p>
 
   <!-- 데스크톱 우측 요약 카드 -->
-  <aside class="hidden xl:flex fixed right-8 top-24 w-64 flex-col gap-3 bg-[#111520]/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 z-30">
+  <aside class="hidden fixed right-8 top-24 w-64 flex-col gap-3 bg-[#111520]/90 backdrop-blur-md border border-white/[0.08] rounded-2xl p-4 z-30">
     <div class="flex items-center justify-between">
       <span class="text-xs font-semibold text-amber-300">내 진단 결과</span>
-      <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">실시간 연동</span>
+      <span class="text-xs px-2 py-0.5 rounded-full bg-white/5 text-gray-300 border border-white/[0.08]">실시간 연동</span>
     </div>
-    <div class="bg-[#0b0e17] rounded-xl p-3 border border-white/5">
+    <div class="bg-white/[0.04] rounded-xl p-3 border border-white/[0.06]">
       <div class="text-xs text-gray-400">추천 시작 단계</div>
       <div id="aside-level" class="text-sm font-bold text-white mt-0.5">아직 진단 전</div>
-      <div id="aside-level-sub" class="text-xs text-emerald-400 mt-1">3분 진단으로 확인해 보세요</div>
+      <div id="aside-level-sub" class="text-xs text-gray-300 mt-1">3분 진단으로 확인해 보세요</div>
     </div>
     <nav class="flex flex-col gap-1 text-xs text-gray-300">
       <a href="#sec-quiz" class="px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition flex justify-between"><span>1. 3분 레벨 진단</span><span>→</span></a>
@@ -84,42 +75,31 @@
     </nav>
   </aside>
 
-  <main id="top-hero" class="max-w-[560px] mx-auto px-4 pt-5 space-y-5">
+  <main id="top-hero" class="max-w-[560px] mx-auto px-4 pt-5 space-y-3">
 
     <!-- SECTION 1: 히어로 + 5단계 진행 표시 -->
-    <section class="relative bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
-      <div class="flex flex-wrap items-center gap-2 mb-3.5">
-        <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
-          <span class="w-2 h-2 rounded-full bg-red-500"></span>
-          @딜러네 유튜브 시황 공식 아카데미
-        </span>
-        <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
-          어디서부터 시작할지 막막한 분
-        </span>
-      </div>
+    <section class="relative bg-[#13161e] rounded-3xl p-6 sm:p-7">
+      <p class="text-[13px] font-semibold text-amber-400 mb-3">어디서부터 시작할지 막막한 분</p>
 
-      <h1 class="text-[26px] sm:text-[30px] font-extrabold leading-[1.32] tracking-tight text-white">
+      <h1 class="text-[26px] sm:text-[30px] font-bold leading-[1.32] tracking-tight text-white">
         <span class="text-amber-400">기준</span>부터 세우는<br />
         선물 트레이딩
       </h1>
 
       <!-- 5단계 로드맵 미니 위젯 -->
       <div class="demo-account-widget rounded-2xl p-4 mt-5">
-        <div class="flex items-center justify-between gap-2 pb-3 border-b border-white/10">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 pulse-dot shrink-0"></span>
-            <span class="text-xs font-semibold tracking-wide text-gray-200 num-tab">5-LEVEL ROADMAP · 내 레벨부터 진단</span>
-          </div>
-          <span class="whitespace-nowrap text-[11px] font-semibold px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">진단 무료</span>
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-[13px] font-semibold text-gray-300">5단계 로드맵 · 내 레벨부터 진단</span>
+          <span class="whitespace-nowrap text-xs font-semibold text-amber-400">진단 무료</span>
         </div>
         <ol id="hero-levels" class="relative grid grid-cols-5 gap-1 pt-4 text-center">
-          <li data-lv="Lv1 입문" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border-2 border-amber-400 bg-amber-400"></span><span class="block mt-2 text-[11px] font-bold text-white num-tab">Lv1</span><span class="block text-[11px] text-gray-400">입문</span></li>
-          <li data-lv="Lv2 차트" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border-2 border-amber-400/70 bg-[#0b0e17]"></span><span class="block mt-2 text-[11px] font-bold text-white num-tab">Lv2</span><span class="block text-[11px] text-gray-400">차트</span></li>
-          <li data-lv="Lv3 진입 기준" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border-2 border-amber-400/70 bg-[#0b0e17]"></span><span class="block mt-2 text-[11px] font-bold text-white num-tab">Lv3</span><span class="block text-[11px] text-gray-400">진입 기준</span></li>
-          <li data-lv="Lv4 리스크" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border-2 border-amber-400/70 bg-[#0b0e17]"></span><span class="block mt-2 text-[11px] font-bold text-white num-tab">Lv4</span><span class="block text-[11px] text-gray-400">리스크</span></li>
-          <li data-lv="Lv5 실전" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border-2 border-amber-400/70 bg-[#0b0e17]"></span><span class="block mt-2 text-[11px] font-bold text-white num-tab">Lv5</span><span class="block text-[11px] text-gray-400">실전</span></li>
+          <li data-lv="Lv1 입문" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border border-amber-400 bg-amber-400"></span><span class="block mt-2 text-xs font-bold text-white num-tab">Lv1</span><span class="block text-xs text-gray-400">입문</span></li>
+          <li data-lv="Lv2 차트" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border border-amber-400/70 bg-white/[0.04]"></span><span class="block mt-2 text-xs font-bold text-white num-tab">Lv2</span><span class="block text-xs text-gray-400">차트</span></li>
+          <li data-lv="Lv3 진입 기준" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border border-amber-400/70 bg-white/[0.04]"></span><span class="block mt-2 text-xs font-bold text-white num-tab">Lv3</span><span class="block text-xs text-gray-400">진입 기준</span></li>
+          <li data-lv="Lv4 리스크" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border border-amber-400/70 bg-white/[0.04]"></span><span class="block mt-2 text-xs font-bold text-white num-tab">Lv4</span><span class="block text-xs text-gray-400">리스크</span></li>
+          <li data-lv="Lv5 실전" class="hero-lv"><span class="hero-dot mx-auto block w-3.5 h-3.5 rounded-full border border-amber-400/70 bg-white/[0.04]"></span><span class="block mt-2 text-xs font-bold text-white num-tab">Lv5</span><span class="block text-xs text-gray-400">실전</span></li>
         </ol>
-        <p id="hero-level-note" class="mt-3 pt-3 border-t border-white/10 text-[11px] text-gray-400">아래 3분 진단을 마치면 추천 시작 단계가 여기에 표시됩니다.</p>
+        <p id="hero-level-note" class="mt-3 pt-3 border-t border-white/[0.08] text-xs text-gray-400">아래 3분 진단을 마치면 추천 시작 단계가 여기에 표시됩니다.</p>
       </div>
 
       <ul class="space-y-2.5 mt-5 text-[14px] sm:text-[15px] text-gray-200">
@@ -137,7 +117,7 @@
         </li>
       </ul>
 
-      <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between gap-2">
+      <div class="mt-5 pt-4 border-t border-white/[0.06] flex items-center justify-between gap-2">
         <span class="text-xs text-gray-400">내 레벨이 어디인지 아래에서 바로 확인해 보세요</span>
         <a href="#sec-quiz" class="text-xs font-semibold text-amber-300 hover:text-amber-200 inline-flex items-center gap-1 shrink-0 whitespace-nowrap">
           <span>3분 레벨 진단</span><span>↓</span>
@@ -146,13 +126,13 @@
     </section>
 
     <!-- SECTION 2: 3분 레벨 진단 -->
-    <section id="sec-quiz" class="bg-[#141927] border border-white/10 rounded-3xl p-6 sm:p-7 scroll-mt-20">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+    <section id="sec-quiz" class="bg-[#13161e] rounded-3xl p-6 sm:p-7 scroll-mt-20">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         3분 진단으로 <span class="text-amber-400">내 레벨</span>부터 확인하세요
       </h2>
       <p class="text-sm text-gray-300 mt-1.5 leading-relaxed">8문항에 답하면 추천 시작 단계를 알려드립니다.</p>
 
-      <div class="mt-5 bg-[#0b0e17] border border-white/10 rounded-2xl p-4 sm:p-5" aria-live="polite">
+      <div class="mt-5 bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 sm:p-5" aria-live="polite">
         <div id="quizAsk">
           <div class="flex items-center justify-between gap-2">
             <span id="quizStep" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 num-tab">1 / 8</span>
@@ -164,121 +144,119 @@
         </div>
         <div id="quizResult" class="hidden">
           <div class="text-xs text-gray-400">추천 시작 단계</div>
-          <div id="resLv" tabindex="-1" class="text-2xl sm:text-[28px] font-extrabold text-amber-400 tracking-tight mt-0.5 outline-none"></div>
+          <div id="resLv" tabindex="-1" class="text-2xl sm:text-[28px] font-bold text-amber-400 tracking-tight mt-0.5 outline-none"></div>
           <p id="resText" class="text-sm text-gray-200 mt-2 leading-relaxed"></p>
-          <p class="text-[11px] text-gray-400 mt-3 pt-3 border-t border-white/5">진단 결과는 참고용이며, 상담에서 함께 다시 확인합니다.</p>
+          <p class="text-xs text-gray-400 mt-3 pt-3 border-t border-white/[0.06]">진단 결과는 참고용이며, 상담에서 함께 다시 확인합니다.</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
-            <a id="resApply" href="#sec-apply" class="py-3 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-extrabold text-sm text-center transition">이 레벨로 무료 상담 신청</a>
-            <button id="quizReset" type="button" class="py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 font-semibold text-sm transition">다시 진단하기</button>
+            <a id="resApply" href="#sec-apply" class="py-3 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-sm text-center transition">이 레벨로 무료 상담 신청</a>
+            <button id="quizReset" type="button" class="py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/[0.08] text-gray-200 font-semibold text-sm transition">다시 진단하기</button>
           </div>
         </div>
       </div>
     </section>
 
     <!-- SECTION 3: 5단계 로드맵 + 매매일지 양식 -->
-    <section id="sec-road" class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7 scroll-mt-20">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+    <section id="sec-road" class="bg-[#13161e] rounded-3xl p-6 sm:p-7 scroll-mt-20">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         기초 개념부터 실전 복기까지, <span class="text-amber-400">5단계</span>로 완성합니다
       </h2>
       <p class="text-sm text-gray-300 mt-1.5">단계마다 통과 기준이 정해져 있습니다. 통과할 때마다 다음 레벨이 열립니다.</p>
       <div id="lvList" class="space-y-2.5 mt-4"></div>
 
-      <div class="mt-5 rounded-2xl overflow-hidden border border-white/10 bg-[#0b0e17]">
-        <div class="px-4 py-2.5 bg-white/[0.04] border-b border-white/10 flex items-center justify-between">
+      <div class="mt-5 rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.04]">
+        <div class="px-4 py-2.5 bg-white/[0.04] border-b border-white/[0.08] flex items-center justify-between">
           <span class="text-xs font-bold text-gray-100">매매일지 · 복기 양식</span>
-          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/5 text-gray-300 border border-white/10">양식 예시</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-white/5 text-gray-300 border border-white/[0.08]">양식 예시</span>
         </div>
-        <dl class="divide-y divide-white/10 text-xs sm:text-sm">
+        <dl class="divide-y divide-white/10 text-sm">
           <div class="flex items-center justify-between gap-3 px-4 py-3"><dt class="text-gray-300">진입 근거</dt><dd class="font-semibold text-white">주문 전에 기록</dd></div>
           <div class="flex items-center justify-between gap-3 px-4 py-3"><dt class="text-gray-300">손절가 · 목표가</dt><dd class="font-semibold text-white">주문 전에 기록</dd></div>
           <div class="flex items-center justify-between gap-3 px-4 py-3"><dt class="text-gray-300">주문 수량</dt><dd class="font-semibold text-white">손실 한도 안에서 계산</dd></div>
-          <div class="flex items-center justify-between gap-3 px-4 py-3"><dt class="text-gray-300">원칙 준수 여부</dt><dd class="font-semibold text-emerald-300">매매 후 체크</dd></div>
+          <div class="flex items-center justify-between gap-3 px-4 py-3"><dt class="text-gray-300">원칙 준수 여부</dt><dd class="font-semibold text-gray-300">매매 후 체크</dd></div>
         </dl>
       </div>
-      <p class="text-[11px] text-gray-400 mt-3">Lv3부터 매매마다 이 항목을 기록하고, Lv5에서 월간 복기 리포트로 정리합니다.</p>
+      <p class="text-xs text-gray-400 mt-3">Lv3부터 매매마다 이 항목을 기록하고, Lv5에서 월간 복기 리포트로 정리합니다.</p>
     </section>
 
     <!-- SECTION 4: 영상 -->
-    <section id="sec-vid" class="bg-[#141927] border border-white/10 rounded-3xl p-6 sm:p-7 scroll-mt-20">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+    <section id="sec-vid" class="bg-[#13161e] rounded-3xl p-6 sm:p-7 scroll-mt-20">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         손절은 저점을 맞히는 <span class="text-amber-400">기술이 아닙니다</span>
       </h2>
       <p class="text-sm text-gray-300 mt-1.5">핵심 원칙을 짧은 영상에 담았습니다. 영상은 유튜브에서 열립니다.</p>
       <div id="vid-list" class="space-y-2 mt-4"></div>
-      <a href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener noreferrer" class="mt-3 flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[#0b0e17] border border-white/10 hover:border-white/25 transition text-sm">
+      <a href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener noreferrer" class="mt-3 flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/25 transition text-sm">
         <span class="font-semibold text-gray-100">전체 영상 보기</span><span class="text-xs text-amber-300 font-semibold">딜러네 유튜브 ›</span>
       </a>
     </section>
 
     <!-- SECTION 5: 강사 -->
-    <section class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+    <section class="bg-[#13161e] rounded-3xl p-6 sm:p-7">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         <span class="text-amber-400">기준</span>이 있어야 흔들려도 돌아옵니다
       </h2>
-      <div class="mt-4 rounded-2xl overflow-hidden border border-amber-400/25 bg-[#0b0e17] flex">
-        <img src="../instructor2.webp" alt="딜러네 아카데미 강사 송프로" width="128" height="168" loading="lazy" class="w-28 sm:w-36 shrink-0 object-cover object-top bg-[#090c14]" />
+      <div class="mt-4 rounded-2xl overflow-hidden border border-amber-400/25 bg-white/[0.04] flex">
+        <img src="../instructor2.webp" alt="딜러네 아카데미 강사 송프로" width="128" height="168" loading="lazy" class="w-28 sm:w-36 shrink-0 object-cover object-top bg-black/30" />
         <div class="p-4 min-w-0">
-          <div class="text-[11px] font-semibold text-amber-300">INSTRUCTOR</div>
-          <div class="text-lg font-extrabold text-white mt-0.5">송프로</div>
+          <div class="text-lg font-bold text-white mt-0.5">송프로</div>
           <div class="text-xs text-gray-400">딜러네 아카데미 강사</div>
           <div class="flex flex-wrap gap-1.5 mt-2.5">
-            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">거시경제(매크로)</span>
-            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">시장심리</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">거시경제(매크로)</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">시장심리</span>
           </div>
-          <p class="text-xs sm:text-sm text-gray-300 mt-2.5 leading-relaxed">금리와 원자재(골드·원유)의 흐름을 연결해 시장의 큰 그림을 쉽게 풀어냅니다.</p>
+          <p class="text-sm text-gray-300 mt-2.5 leading-relaxed">금리와 원자재(골드·원유)의 흐름을 연결해 시장의 큰 그림을 쉽게 풀어냅니다.</p>
         </div>
       </div>
     </section>
 
     <!-- SECTION 6: FAQ -->
-    <section class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
+    <section class="bg-[#13161e] rounded-3xl p-6 sm:p-7">
       <div class="flex items-center justify-between mb-4 gap-3">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight"><span class="text-amber-400">자주 묻는</span> 질문</h2>
+        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight"><span class="text-amber-400">자주 묻는</span> 질문</h2>
         <span class="text-xs text-gray-400 shrink-0">궁금한 항목을 눌러보세요</span>
       </div>
-      <div id="faq-list" class="space-y-2"></div>
+      <div id="faq-list"></div>
     </section>
 
     <!-- SECTION 7: 상담 신청 -->
     <section id="sec-apply" class="gold-highlight-form rounded-3xl p-6 sm:p-7 relative scroll-mt-20">
-      <div class="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35 mb-3">
-        <span>안심 상담 약속</span><span>·</span><span>전화 권유 0건 · 100% 카톡 채팅 진행</span>
-      </div>
-      <h2 class="text-2xl font-extrabold text-white tracking-tight">1:1 무료 레벨 상담 신청</h2>
+      <p class="text-[13px] font-semibold text-amber-400 mb-2">전화 권유 0건 · 100% 카톡 채팅 진행</p>
+
+      <h2 class="text-2xl font-bold text-white tracking-tight">1:1 무료 레벨 상담 신청</h2>
       <p class="text-sm text-gray-200 mt-1.5 leading-relaxed">신청해 주시면 카카오톡 상담방으로 연결되며, 현재 레벨과 시작 단계를 함께 확인합니다.</p>
 
       <!-- 카톡 상담 예시 -->
-      <div class="mt-5 rounded-2xl overflow-hidden border border-[#fee500]/30 bg-[#1b202c]">
-        <div class="px-4 py-2.5 bg-[#121620] border-b border-white/10 flex items-center justify-between gap-2">
+      <div class="mt-5 rounded-2xl overflow-hidden bg-black/25">
+        <div class="px-4 py-2.5 bg-[#121620] border-b border-white/[0.08] flex items-center justify-between gap-2">
           <div class="flex items-center gap-2 min-w-0">
-            <span class="w-6 h-6 rounded-full bg-[#fee500] text-gray-950 font-extrabold text-[11px] flex items-center justify-center shrink-0">톡</span>
+            <span class="w-6 h-6 rounded-full bg-white/10 text-gray-200 font-bold text-xs flex items-center justify-center shrink-0">톡</span>
             <span class="text-xs font-bold text-gray-100">신청 직후 열리는 1:1 카톡 상담 예시</span>
           </div>
-          <span class="whitespace-nowrap text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">전화 통화 없음</span>
+          <span class="whitespace-nowrap text-xs font-semibold px-2 py-0.5 rounded-full bg-white/5 text-gray-300">전화 통화 없음</span>
         </div>
         <div class="p-4 space-y-3 text-xs leading-relaxed">
           <div class="flex justify-end">
-            <div class="max-w-[82%] rounded-2xl rounded-tr-sm px-3.5 py-2.5 bg-[#fee500] text-gray-950 font-medium shadow-sm">
+            <div class="max-w-[82%] rounded-2xl rounded-tr-sm px-3.5 py-2.5 bg-amber-400/20 text-amber-50">
               안녕하세요! 홈페이지에서 레벨 상담 신청했습니다. <span id="kakao-preview-lv">아직 제 레벨을 잘 모르겠어요.</span>
             </div>
           </div>
           <div class="flex items-start gap-2.5">
-            <div class="w-7 h-7 rounded-xl bg-amber-400 text-gray-950 font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">딜</div>
+            <img src="../logo.webp" alt="" width="28" height="28" class="w-7 h-7 rounded-full ring-1 ring-white/20 shrink-0 mt-0.5">
             <div class="space-y-2 max-w-[84%]">
-              <div class="text-[11px] text-gray-400">딜러네 아카데미</div>
-              <div class="rounded-2xl rounded-tl-sm px-3.5 py-2.5 bg-[#283042] text-gray-100">
+              <div class="text-xs text-gray-400">딜러네 아카데미</div>
+              <div class="rounded-2xl rounded-tl-sm px-3.5 py-2.5 bg-white/[0.07] text-gray-100">
                 반갑습니다! 딜러네 아카데미는 <strong>불편한 전화 권유 없이 100% 카톡 채팅으로만</strong> 차근차근 안내해 드립니다.
               </div>
-              <div class="rounded-2xl px-3.5 py-3 bg-[#0e121c] border border-amber-400/35 text-gray-200">
-                <div class="text-[11px] text-amber-300 font-bold mb-1">상담에서 함께 정하는 것</div>
+              <div class="rounded-2xl px-3.5 py-3 bg-white/[0.07] text-gray-200">
+                <div class="text-xs text-amber-300 font-bold mb-1">상담에서 함께 정하는 것</div>
                 <div class="font-semibold text-white">현재 레벨 확인 &amp; 시작 단계 · 모의계좌 연습 방법</div>
-                <div class="text-[11px] text-gray-400 mt-1">준비되실 때 편하게 확인 후 답장 주세요.</div>
+                <div class="text-xs text-gray-400 mt-1">준비되실 때 편하게 확인 후 답장 주세요.</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <p class="text-[11px] text-gray-400 mt-2">이해를 돕기 위한 예시 화면이며, 실제 안내 내용은 다를 수 있습니다.</p>
+      <p class="text-xs text-gray-400 mt-2">이해를 돕기 위한 예시 화면이며, 실제 안내 내용은 다를 수 있습니다.</p>
 
       <form id="consult-form" name="academy3-consult" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="mt-5 space-y-4" novalidate>
         <input type="hidden" name="form-name" value="academy3-consult">
@@ -287,14 +265,14 @@
         <input type="hidden" name="src" id="field-src" value="">
 
         <!-- 진단 결과 연동 배지 -->
-        <div id="quizBadge" class="hidden rounded-xl px-3.5 py-2.5 bg-[#090c14]/90 border border-amber-400/30 flex items-center justify-between gap-2 text-xs">
+        <div id="quizBadge" class="hidden rounded-xl px-3.5 py-2.5 bg-black/30 border border-amber-400/30 flex items-center justify-between gap-2 text-xs">
           <span class="text-gray-200">진단 결과 · <strong id="quizBadgeLv" class="text-amber-300"></strong> 과정 추천도 함께 전달됩니다.</span>
-          <a href="#sec-quiz" class="text-[11px] text-amber-300 hover:underline shrink-0">다시 진단</a>
+          <a href="#sec-quiz" class="text-xs text-amber-300 hover:underline shrink-0">다시 진단</a>
         </div>
 
         <div>
           <label for="levelSel" class="block text-xs font-semibold text-gray-300 mb-1.5">관심 시작 레벨</label>
-          <select id="levelSel" name="level" class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white text-sm focus:outline-none focus:border-amber-400 transition cursor-pointer">
+          <select id="levelSel" name="level" class="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.08] text-white text-sm focus:outline-none focus:border-amber-400 transition cursor-pointer">
             <option>잘 모르겠어요</option><option>Lv1 입문</option><option>Lv2 차트</option><option>Lv3 진입 기준</option><option>Lv4 리스크</option><option>Lv5 실전</option>
           </select>
         </div>
@@ -302,16 +280,16 @@
         <div>
           <label for="input-name" class="block text-xs font-semibold text-gray-300 mb-1.5">이름 (또는 닉네임)</label>
           <input id="input-name" name="fullname" type="text" placeholder="홍길동" autocomplete="name" maxlength="20"
-            class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-amber-400 transition" />
+            class="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.08] text-white placeholder-gray-500 text-sm focus:outline-none focus:border-amber-400 transition" />
         </div>
 
         <div>
           <div class="flex flex-wrap items-center justify-between gap-x-2 mb-1.5">
             <label for="input-phone" class="text-xs font-semibold text-gray-300">휴대폰 번호</label>
-            <span class="text-[11px] text-emerald-300 font-medium">상담 안내 외 마케팅 스팸 연락은 절대 하지 않습니다</span>
+            <span class="text-xs text-gray-300 font-medium">상담 안내 외 마케팅 스팸 연락은 절대 하지 않습니다</span>
           </div>
           <input id="input-phone" name="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" maxlength="13" autocomplete="tel"
-            class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white placeholder-gray-500 text-sm num-tab focus:outline-none focus:border-amber-400 transition" />
+            class="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.08] text-white placeholder-gray-500 text-sm num-tab focus:outline-none focus:border-amber-400 transition" />
         </div>
 
         <div class="flex items-start justify-between gap-2 pt-1">
@@ -319,18 +297,18 @@
             <input id="input-agree" name="consent" type="checkbox" class="mt-0.5 w-4 h-4 rounded accent-amber-400 cursor-pointer shrink-0" />
             <span>[필수] 1:1 상담 안내를 위한 개인정보(이름 또는 닉네임, 휴대폰 번호) 수집·이용에 동의합니다.</span>
           </label>
-          <button id="btn-open-privacy" type="button" class="text-[11px] text-gray-400 underline hover:text-gray-200 shrink-0">내용 보기</button>
+          <button id="btn-open-privacy" type="button" class="text-xs text-gray-400 underline hover:text-gray-200 shrink-0">내용 보기</button>
         </div>
 
         <p id="form-error-msg" role="alert" class="hidden text-xs font-medium text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></p>
 
         <button type="submit" id="submitBtn"
-          class="w-full py-4 px-5 rounded-2xl bg-[#fee500] hover:bg-[#ffe812] active:scale-[0.99] transition text-gray-950 font-extrabold text-base flex items-center justify-center gap-2 shadow-lg">
+          class="w-full py-4 px-5 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-[0.99] transition text-gray-950 font-bold text-base flex items-center justify-center gap-2">
           <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
           <span>무료 레벨 상담 신청하고 카톡방 열기</span>
         </button>
 
-        <p class="text-[11px] text-gray-300/80 text-center leading-relaxed">
+        <p class="text-xs text-gray-300/80 text-center leading-relaxed">
           본 상담은 교육 과정 안내를 목적으로 합니다.<br />
           딜러네 아카데미는 불법 투자자문·리딩 및 수익 보장을 일절 제공하지 않습니다.
         </p>
@@ -338,14 +316,14 @@
     </section>
 
     <footer class="pt-4 pb-8 px-2 text-xs text-gray-400 space-y-3">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] pt-5">
         <div class="font-semibold text-gray-300">운영: (주)맨큐 · 딜러네 아카데미</div>
         <div class="flex items-center gap-4">
           <a href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-amber-300 transition font-medium">유튜브 @딜러네 ›</a>
           <a href="../desk3/" class="text-gray-300 hover:text-amber-300 transition font-medium">딜러네 데스크 ›</a>
         </div>
       </div>
-      <p class="text-[11px] text-gray-500 leading-relaxed">
+      <p class="text-xs text-gray-500 leading-relaxed">
         투자위험 고지: 본 사이트에서 제공하는 모든 영상·시그널 및 학습 자료는 이해를 돕기 위한 교육용 정보이며, 특정 금융상품에 대한 매매 권유나 투자자문이 아닙니다. 어떠한 경우에도 수익을 보장하지 않으며, 해외선물·CFD·FX 등 레버리지 파생상품은 시장 변동에 따라 투자 원금을 초과하는 손실이 발생할 수 있습니다. 과거의 데이터나 사례가 미래의 수익을 보장하지 않으며, 모든 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.
       </p>
     </footer>
@@ -353,30 +331,25 @@
 
   <!-- 하단 고정 CTA 바 -->
   <div id="sticky-cta-bar" class="fixed bottom-0 inset-x-0 z-30 pointer-events-none transition-all duration-300">
-    <div class="max-w-[560px] mx-auto px-4 pb-4 pt-2 pointer-events-auto">
-      <div class="rounded-2xl bg-[#0d111b]/95 backdrop-blur-md border border-amber-400/35 p-2.5 shadow-2xl">
-        <div class="flex items-center justify-center gap-2 text-[11px] text-gray-200 mb-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>전화 권유 없음 · <strong class="text-amber-300">3분 레벨 진단</strong> 후 무료 안내</span>
-        </div>
-        <a href="#sec-apply" id="barBtn" class="w-full py-3.5 px-4 rounded-xl bg-[#fee500] hover:bg-[#ffe812] text-gray-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition">
-          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
-          <span>무료 레벨 상담 신청하기</span>
-        </a>
-      </div>
+    <div class="max-w-[560px] mx-auto px-4 pt-6 pb-[calc(12px+env(safe-area-inset-bottom))] pointer-events-auto bg-gradient-to-t from-[#0a0c11] via-[#0a0c11]/95 to-transparent">
+      <a href="#sec-apply" id="barBtn" class="w-full h-14 px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-base flex items-center justify-center gap-2 transition">
+        <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+        <span>무료 레벨 상담 신청하기</span>
+      </a>
+      <p class="mt-1.5 text-center text-xs text-gray-400">전화 권유 없음 · 3분 레벨 진단 후 무료 안내</p>
     </div>
   </div>
 
   <!-- 모달 (신청 접수 / 개인정보 동의 안내) -->
   <div id="common-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#141927] border border-amber-400/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="bg-[#141927] border border-amber-400/40 rounded-3xl max-w-md w-full p-6 space-y-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="flex items-center justify-between">
         <span id="modal-badge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300">안내</span>
         <button id="btn-close-modal" type="button" aria-label="닫기" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-bold">✕</button>
       </div>
-      <h3 id="modal-title" class="text-lg font-extrabold text-white"></h3>
+      <h3 id="modal-title" class="text-lg font-bold text-white"></h3>
       <div id="modal-body" class="text-sm text-gray-300 space-y-2 leading-relaxed"></div>
-      <button id="btn-confirm-modal" type="button" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-extrabold text-sm transition">확인</button>
+      <button id="btn-confirm-modal" type="button" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-sm transition">확인</button>
     </div>
   </div>
 
@@ -453,7 +426,7 @@
       Q[state.qi].o.forEach((text, idx) => {
         const b = document.createElement('button');
         b.type = 'button'; b.textContent = text;
-        b.className = 'w-full text-left py-3 px-4 rounded-xl text-sm font-semibold border transition bg-[#111520] border-white/10 text-gray-100 hover:border-amber-400 hover:bg-amber-400/10';
+        b.className = 'w-full text-left py-3 px-4 rounded-xl text-sm font-semibold border transition bg-[#111520] border-white/[0.08] text-gray-100 hover:border-amber-400 hover:bg-amber-400/10';
         b.addEventListener('click', () => {
           if (!state.started) { state.started = true; track('quiz_start'); }
           state.score += idx; state.qi++;
@@ -468,15 +441,15 @@
       $('lvList').innerHTML = LEVELS.map((l, i) => {
         const on = state.level === l.lv;
         return `
-          <div data-lv="${l.lv}" class="lv-card${on ? ' on' : ''} rounded-2xl p-4 flex items-start gap-3.5 border transition ${on ? 'bg-amber-400/10 border-amber-400' : 'bg-[#0b0e17] border-white/10'}">
-            <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">0${i + 1}</span>
+          <div data-lv="${l.lv}" class="lv-card${on ? ' on' : ''} rounded-2xl p-4 flex items-start gap-3.5 border transition ${on ? 'bg-amber-400/10 border-amber-400/70' : 'bg-white/[0.04] border-white/[0.08]'}">
+            <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-bold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">0${i + 1}</span>
             <div class="min-w-0">
               <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-[11px] font-bold text-amber-300">${l.tag}</span>
-                ${on ? '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-gray-950">진단 결과 추천</span>' : ''}
+                <span class="text-xs font-bold text-amber-300">${l.tag}</span>
+                ${on ? '<span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-400 text-gray-950">진단 결과 추천</span>' : ''}
               </div>
               <h3 class="text-sm sm:text-base font-bold text-white mt-0.5">${l.t}</h3>
-              <p class="text-xs sm:text-sm text-gray-300 mt-0.5">${l.pass}</p>
+              <p class="text-sm text-gray-300 mt-0.5">${l.pass}</p>
             </div>
           </div>`;
       }).join('');
@@ -488,10 +461,10 @@
       document.querySelectorAll('#hero-levels .hero-lv').forEach((li) => {
         const on = lv ? li.dataset.lv === lv : li.dataset.lv === 'Lv1 입문';
         li.classList.toggle('on', !!lv && li.dataset.lv === lv);
-        li.querySelector('.hero-dot').className = 'hero-dot mx-auto block w-3.5 h-3.5 rounded-full border-2 ' + (on ? 'border-amber-400 bg-amber-400' : 'border-amber-400/70 bg-[#0b0e17]');
+        li.querySelector('.hero-dot').className = 'hero-dot mx-auto block w-3.5 h-3.5 rounded-full border ' + (on ? 'border-amber-400 bg-amber-400' : 'border-amber-400/70 bg-white/[0.04]');
       });
       $('hero-level-note').textContent = lv ? `진단 결과 · ${lv} 과정부터 시작을 추천합니다.` : '아래 3분 진단을 마치면 추천 시작 단계가 여기에 표시됩니다.';
-      $('hero-level-note').className = 'mt-3 pt-3 border-t border-white/10 text-[11px] ' + (lv ? 'text-amber-300 font-semibold' : 'text-gray-400');
+      $('hero-level-note').className = 'mt-3 pt-3 border-t border-white/[0.08] text-xs ' + (lv ? 'text-amber-300 font-semibold' : 'text-gray-400');
       renderLevels();
       $('kakao-preview-lv').textContent = lv ? `레벨 진단 결과는 [${lv}]입니다.` : '아직 제 레벨을 잘 모르겠어요.';
       $('quizBadge').classList.toggle('hidden', !lv);
@@ -516,11 +489,11 @@
 
     function renderVideos() {
       $('vid-list').innerHTML = VIDEOS.map((v) => `
-        <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-2.5 rounded-2xl bg-[#0b0e17] border border-white/10 hover:border-amber-400/50 transition">
-          <span class="relative shrink-0 w-28 h-16 rounded-xl overflow-hidden bg-[#090c14]">
+        <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-amber-400/50 transition">
+          <span class="relative shrink-0 w-28 h-16 rounded-xl overflow-hidden bg-black/30">
             <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" width="112" height="64" class="w-full h-full object-cover" />
-            <span class="absolute inset-0 flex items-center justify-center bg-black/25"><span class="w-8 h-8 rounded-full bg-black/70 ring-1 ring-white/60 flex items-center justify-center text-white text-[11px] pl-0.5">▶</span></span>
-            <span class="absolute left-1 bottom-1 text-[10px] font-bold px-1.5 rounded bg-amber-400 text-gray-950">쇼츠</span>
+            <span class="absolute inset-0 flex items-center justify-center bg-black/25"><span class="w-8 h-8 rounded-full bg-black/70 ring-1 ring-white/60 flex items-center justify-center text-white text-xs pl-0.5">▶</span></span>
+            <span class="absolute left-1 bottom-1 text-xs font-semibold px-1.5 rounded bg-black/70 text-white">쇼츠</span>
           </span>
           <span class="text-sm font-semibold text-gray-100 leading-snug">${v.t}</span>
         </a>`).join('');
@@ -530,12 +503,12 @@
       $('faq-list').innerHTML = FAQS.map((item, idx) => {
         const isOpen = state.openFaqIndex === idx;
         return `
-          <div class="rounded-2xl border transition ${isOpen ? 'bg-[#161d2f] border-amber-400/40' : 'bg-[#0b0e17] border-white/10 hover:border-white/20'}">
-            <button type="button" data-faq="${idx}" aria-expanded="${isOpen}" class="faq-btn w-full px-4 py-3.5 text-left flex items-center justify-between gap-3">
-              <span class="text-sm font-semibold ${isOpen ? 'text-amber-300' : 'text-gray-100'}">Q. ${item.q}</span>
-              <span class="text-xs font-bold text-gray-400 shrink-0">${isOpen ? '▲' : '▼'}</span>
+          <div class="border-b border-white/[0.08] last:border-b-0">
+            <button type="button" data-faq="${idx}" aria-expanded="${isOpen}" class="faq-btn w-full min-h-[56px] py-3 text-left flex items-center justify-between gap-4">
+              <span class="text-[15px] font-semibold ${isOpen ? 'text-white' : 'text-gray-200'}">${item.q}</span>
+              <span class="text-lg leading-none text-gray-500 shrink-0">${isOpen ? '−' : '+'}</span>
             </button>
-            <div class="${isOpen ? 'block' : 'hidden'} px-4 pb-4 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">${item.a}</div>
+            <div class="${isOpen ? 'block' : 'hidden'} pb-4 text-sm text-gray-400 leading-relaxed">${item.a}</div>
           </div>`;
       }).join('');
     }
@@ -608,12 +581,12 @@
           if (!ok) return fail('접수가 저장되지 않았습니다. 열린 카카오톡 상담방에 이름과 연락처를 남겨 주시면 바로 이어서 도와드립니다.');
           openModal('신청 접수', `${esc(nameVal)}님, 신청이 접수됐습니다`,
             `<p>열린 카카오톡 상담방에 들어와 이름을 남겨 주세요.</p>
-             <div class="bg-[#0b0e17] rounded-xl p-3.5 border border-amber-400/30 text-xs space-y-1.5 mt-2">
+             <div class="bg-white/[0.04] rounded-xl p-3.5 border border-amber-400/30 text-xs space-y-1.5 mt-2">
                <div><span class="text-gray-400">관심 시작 레벨:</span> <strong class="text-white">${esc(levelLabel)}</strong></div>
                <div><span class="text-gray-400">연락처:</span> <strong class="text-white num-tab">${esc(phoneVal)}</strong></div>
                <div><span class="text-gray-400">함께 전달된 진단 결과:</span> <strong class="text-amber-300">${state.level ? esc(state.level) : '없음'}</strong></div>
              </div>
-             <a href="${KAKAO_URL}" target="_blank" rel="noopener" class="block text-center mt-3 py-3 rounded-xl bg-[#fee500] text-gray-950 font-extrabold text-sm">카카오톡 상담방 열기</a>`);
+             <a href="${KAKAO_URL}" target="_blank" rel="noopener" class="block text-center mt-3 py-3 rounded-xl bg-amber-400 text-gray-950 font-bold text-sm">카카오톡 상담방 열기</a>`);
           $('input-name').value = ''; $('input-phone').value = ''; $('input-agree').checked = false;
           try { sessionStorage.removeItem(FORM_KEY); } catch (err) {}
         };

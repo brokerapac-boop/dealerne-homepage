@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>tailwind.config = { theme: { extend: { colors: { amber: { 200: '#FFE1A6', 300: '#FFD27A', 400: '#FFC247' } } } } };</script>
   <style>
     :root {
       --bg-base: #07090f;
@@ -24,10 +25,7 @@
       --kakao-yellow: #fee500;
     }
     body {
-      background-color: var(--bg-base);
-      background-image:
-        radial-gradient(circle at 50% 0%, rgba(245, 196, 81, 0.08) 0%, rgba(7, 9, 15, 0) 52%),
-        radial-gradient(circle at 85% 35%, rgba(56, 189, 248, 0.04) 0%, rgba(7, 9, 15, 0) 45%);
+      background-color: #0a0c11;
       color: #f3f4f6;
       font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -41,20 +39,9 @@
       font-family: 'Inter', 'Pretendard', sans-serif;
       font-variant-numeric: tabular-nums;
     }
-    .gold-highlight-form {
-      background: linear-gradient(155deg, rgba(245, 196, 81, 0.13) 0%, rgba(18, 23, 36, 0.98) 36%, rgba(245, 196, 81, 0.06) 100%);
-      border: 1.5px solid rgba(245, 196, 81, 0.48);
-      box-shadow: 0 20px 50px -15px rgba(245, 196, 81, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-    .demo-account-widget {
-      background: linear-gradient(135deg, rgba(25, 33, 52, 0.95) 0%, rgba(15, 20, 32, 0.98) 100%);
-      border: 1px solid rgba(245, 196, 81, 0.28);
-    }
-    .danger-loss-card {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(127, 29, 29, 0.24) 100%);
-      border: 1.5px solid rgba(248, 113, 113, 0.65);
-      box-shadow: 0 0 28px -6px rgba(239, 68, 68, 0.32);
-    }
+    .gold-highlight-form { background: #171a24; border: 1px solid rgba(255, 194, 71, 0.38); }
+    .demo-account-widget { background: rgba(255, 255, 255, 0.04); }
+    .danger-loss-card { background: rgba(240, 85, 107, 0.10); border: 1px solid rgba(240, 85, 107, 0.45); }
     .upgrade-badge {
       display: none;
     }
@@ -69,47 +56,42 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.55; transform: scale(0.92); }
     }
-    .pulse-dot {
-      animation: pulseSoft 2s infinite ease-in-out;
-    }
+    .pulse-dot { animation: none; }
   </style>
 </head>
 <body class="min-h-screen pb-32">
 
   <!-- 상단 고정 프로토타입 리뷰 컨트롤 바 & 네비게이션 -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#07090f]/85 border-b border-white/10">
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#07090f]/85 border-b border-white/[0.08]">
     <div class="max-w-[560px] mx-auto px-4 h-14 flex items-center justify-between gap-2">
       <a href="#top-hero" class="flex items-center gap-2.5 group">
-        <span class="w-8 h-8 rounded-lg bg-amber-400 text-gray-950 font-extrabold text-sm flex items-center justify-center shadow-sm">딜</span>
+        <img src="../logo.webp" alt="" width="32" height="32" class="w-8 h-8 rounded-full ring-1 ring-white/20">
         <div class="flex flex-col">
           <span class="font-bold text-[15px] tracking-tight text-white leading-none">딜러네 데스크</span>
-          <span class="hidden sm:block text-[11px] text-amber-300/90 mt-0.5 font-medium">모의계좌 · 실전 세팅 1:1 안내</span>
+          <span class="hidden sm:block text-xs text-amber-300/90 mt-0.5 font-medium">모의계좌 · 실전 세팅 1:1 안내</span>
         </div>
       </a>
 
       <div class="flex items-center gap-2">
-        <button id="btn-toggle-annotations" type="button" class="hidden sm:inline-flex whitespace-nowrap text-xs px-2.5 py-1.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35 hover:bg-amber-400/25 transition font-medium">
-          개선 배지 OFF
-        </button>
-        <button id="btn-open-academy" type="button" class="whitespace-nowrap text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10 transition font-medium">
+        <button id="btn-open-academy" type="button" class="whitespace-nowrap text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 border border-white/[0.08] transition font-medium">
           딜러네 아카데미
         </button>
       </div>
     </div>
   </header>
 
-  <p class="max-w-[560px] mx-auto px-4 pt-3 text-[11px] font-bold tracking-wider text-amber-400">SAMPLE DRAFT · 전환형 시안</p>
+  <p class="max-w-[560px] mx-auto px-4 pt-3 text-xs font-bold tracking-wider text-amber-400">SAMPLE DRAFT · 전환형 시안</p>
 
   <!-- 데스크톱 우측 플로팅 요약 카드 (넓은 화면 여백 해소) -->
-  <aside class="hidden xl:flex fixed right-8 top-24 w-64 flex-col gap-3 bg-[#111520]/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 z-30">
+  <aside class="hidden fixed right-8 top-24 w-64 flex-col gap-3 bg-[#111520]/90 backdrop-blur-md border border-white/[0.08] rounded-2xl p-4 z-30">
     <div class="flex items-center justify-between">
       <span class="text-xs font-semibold text-amber-300">현재 선택 조건</span>
-      <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">실시간 연동</span>
+      <span class="text-xs px-2 py-0.5 rounded-full bg-white/5 text-gray-300 border border-white/[0.08]">실시간 연동</span>
     </div>
-    <div class="bg-[#0b0e17] rounded-xl p-3 border border-white/5">
+    <div class="bg-white/[0.04] rounded-xl p-3 border border-white/[0.06]">
       <div class="text-xs text-gray-400">계산기 기준 종목 · 수량</div>
       <div id="aside-selected-lot" class="text-sm font-bold text-white mt-0.5 num-tab">골드 · 0.01랏 (1온스)</div>
-      <div id="aside-selected-risk" class="text-xs text-emerald-400 mt-1 num-tab">손절 시 -$5.00 (입문 권장)</div>
+      <div id="aside-selected-risk" class="text-xs text-gray-300 mt-1 num-tab">손절 시 -$5.00 (입문 권장)</div>
     </div>
     <nav class="flex flex-col gap-1 text-xs text-gray-300">
       <a href="#sec-calc" class="px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition flex justify-between"><span>1. 주문 수량 계산기</span><span>→</span></a>
@@ -120,79 +102,52 @@
   </aside>
 
   <!-- 메인 단일 컬럼 컨테이너 -->
-  <main id="top-hero" class="max-w-[560px] mx-auto px-4 pt-5 space-y-5">
+  <main id="top-hero" class="max-w-[560px] mx-auto px-4 pt-5 space-y-3">
 
     <!-- SECTION 1: 히어로 카드 + $10,000 모의계좌 실체 배지 (개선 포인트 1) -->
-    <section class="relative bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7 upgrade-ring">
-      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+    <section class="relative bg-[#13161e] rounded-3xl p-6 sm:p-7 upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
         <span>UI 개선 01</span>
         <span>·</span>
         <span>첫 화면 $10,000 모의계좌 시각 훅 추가</span>
       </div>
 
-      <!-- 채널 신뢰 마이크로 배지 -->
-      <div class="flex flex-wrap items-center gap-2 mb-3.5">
-        <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
-          <span class="w-2 h-2 rounded-full bg-red-500"></span>
-          @딜러네 유튜브 시황 공식 데스크
-        </span>
-        <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
-          주식은 해봤지만 해외선물은 처음인 분
-        </span>
-      </div>
+      <p class="text-[13px] font-semibold text-amber-400 mb-3">주식은 해봤지만 해외선물은 처음인 분</p>
 
-      <h1 class="text-[26px] sm:text-[30px] font-extrabold leading-[1.32] tracking-tight text-white">
+      <h1 class="text-[26px] sm:text-[30px] font-bold leading-[1.32] tracking-tight text-white">
         모의투자금 <span class="text-amber-400 num-tab">$10,000</span>로<br class="sm:hidden" /> 충분히 연습한 뒤,<br />
         준비됐을 때 실전을 시작하세요
       </h1>
 
       <!-- 신규 추가된 MT5 $10,000 모의계좌 실체 프리뷰 위젯 -->
       <div class="demo-account-widget rounded-2xl p-4 mt-5">
-        <div class="flex items-center justify-between gap-2 pb-3 border-b border-white/10">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 pulse-dot"></span>
-            <span class="text-xs font-semibold tracking-wide text-gray-200 num-tab">MT5 DEMO ACCOUNT · 무료 실습 계좌</span>
-          </div>
-          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">
-            내 돈 입금 ₩0
-          </span>
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-[13px] font-semibold text-gray-300">MT5 모의계좌 · 무료 실습</span>
+          <span class="whitespace-nowrap text-xs font-semibold text-amber-400">내 돈 입금 0원</span>
         </div>
-
-        <div class="grid grid-cols-2 gap-3 pt-3 items-end">
+        <div class="flex items-end justify-between gap-3 mt-3">
           <div>
-            <div class="text-xs text-gray-400">기본 지급 가상 증거금</div>
-            <div class="text-xl min-[380px]:text-2xl sm:text-[28px] whitespace-nowrap font-extrabold text-white num-tab tracking-tight mt-0.5">$10,000.00</div>
+            <div class="text-[13px] text-gray-400">가상 증거금</div>
+            <div class="text-[28px] leading-tight whitespace-nowrap font-bold text-white num-tab tracking-tight">$10,000.00</div>
           </div>
-          <div class="bg-[#0a0d16] rounded-xl p-2.5 border border-white/5">
-            <div class="flex items-center justify-between text-[11px] text-gray-400">
-              <span>실습 미션 진행도</span>
-              <span class="text-amber-300 font-semibold num-tab">4단계 코칭</span>
-            </div>
-            <div class="grid grid-cols-4 gap-1 mt-2">
-              <div class="h-1.5 rounded-full bg-amber-400"></div>
-              <div class="h-1.5 rounded-full bg-amber-400/50"></div>
-              <div class="h-1.5 rounded-full bg-white/15"></div>
-              <div class="h-1.5 rounded-full bg-white/15"></div>
-            </div>
-            <button id="btn-preview-missions" type="button" class="text-[11px] text-amber-300 hover:underline mt-1.5 inline-flex items-center gap-1">
-              <span>4가지 기초 미션 미리보기</span>
-              <span id="mission-chevron">▾</span>
-            </button>
-          </div>
+          <button id="btn-preview-missions" type="button" class="whitespace-nowrap min-h-[44px] text-[13px] font-semibold text-gray-300 hover:text-white inline-flex items-center gap-1">
+            <span>기초 미션 4가지</span>
+            <span id="mission-chevron">▾</span>
+          </button>
         </div>
 
         <!-- 토글형 4가지 미션 요약 서랍 -->
-        <div id="mission-drawer" class="hidden mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs">
-          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+        <div id="mission-drawer" class="hidden mt-3 pt-3 border-t border-white/[0.08] grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-black/30 rounded-lg p-2.5 border border-white/[0.06]">
             <span class="text-amber-400 font-bold num-tab">M1.</span> <span class="text-gray-200">MT5 모의계좌 개설·로그인</span>
           </div>
-          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+          <div class="bg-black/30 rounded-lg p-2.5 border border-white/[0.06]">
             <span class="text-amber-400 font-bold num-tab">M2.</span> <span class="text-gray-200">0.01 최소 랏 주문 테스트</span>
           </div>
-          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+          <div class="bg-black/30 rounded-lg p-2.5 border border-white/[0.06]">
             <span class="text-amber-400 font-bold num-tab">M3.</span> <span class="text-gray-200">진입 전 손절·익절가 동시 입력</span>
           </div>
-          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+          <div class="bg-black/30 rounded-lg p-2.5 border border-white/[0.06]">
             <span class="text-amber-400 font-bold num-tab">M4.</span> <span class="text-gray-200">계좌 대비 1회 손실폭 계산</span>
           </div>
         </div>
@@ -214,7 +169,7 @@
         </li>
       </ul>
 
-      <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between gap-2">
+      <div class="mt-5 pt-4 border-t border-white/[0.06] flex items-center justify-between gap-2">
         <span class="text-xs text-gray-400">수량 실수가 왜 위험한지 아래에서 직접 눌러보세요</span>
         <a href="#sec-calc" class="text-xs font-semibold text-amber-300 hover:text-amber-200 inline-flex items-center gap-1 shrink-0">
           <span>수량 계산기 체험</span>
@@ -224,14 +179,14 @@
     </section>
 
     <!-- SECTION 2: 주문 수량(랏) 계산기 + 1.00랏 손실 경고 대비 극대화 (개선 포인트 2) -->
-    <section id="sec-calc" class="bg-[#141927] border border-white/10 rounded-3xl p-6 sm:p-7 upgrade-ring">
-      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+    <section id="sec-calc" class="bg-[#13161e] rounded-3xl p-6 sm:p-7 upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
         <span>UI 개선 02</span>
         <span>·</span>
         <span>1.00랏 클릭 시 100배 손실 레드 경고 대비 강화</span>
       </div>
 
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         0.01랏과 1.00랏, 손익은 <span class="text-amber-400 num-tab">100배</span> 차이 납니다
       </h2>
       <p class="text-sm text-gray-300 mt-1.5 leading-relaxed">
@@ -241,11 +196,11 @@
       <!-- 거래 종목 선택 탭 -->
       <div class="mt-5">
         <div class="text-xs font-semibold text-gray-400 mb-2">거래 종목</div>
-        <div id="asset-tabs" class="grid grid-cols-4 gap-2">
-          <button type="button" data-asset="gold" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-amber-400/15 border-amber-400 text-amber-300">골드</button>
-          <button type="button" data-asset="nasdaq" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">나스닥100</button>
-          <button type="button" data-asset="oil" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">WTI 원유</button>
-          <button type="button" data-asset="eurusd" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">EUR/USD</button>
+        <div id="asset-tabs" class="grid grid-cols-2 min-[420px]:grid-cols-4 gap-2">
+          <button type="button" data-asset="gold" class="calc-asset-btn whitespace-nowrap py-2.5 px-2 rounded-xl text-sm font-semibold border transition bg-amber-400/10 border-amber-400/70 text-amber-300">골드</button>
+          <button type="button" data-asset="nasdaq" class="calc-asset-btn whitespace-nowrap py-2.5 px-2 rounded-xl text-sm font-semibold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">나스닥100</button>
+          <button type="button" data-asset="oil" class="calc-asset-btn whitespace-nowrap py-2.5 px-2 rounded-xl text-sm font-semibold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">WTI 원유</button>
+          <button type="button" data-asset="eurusd" class="calc-asset-btn whitespace-nowrap py-2.5 px-2 rounded-xl text-sm font-semibold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">EUR/USD</button>
         </div>
       </div>
 
@@ -253,28 +208,28 @@
       <div class="mt-4">
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs font-semibold text-gray-400">주문 수량 (Lot)</span>
-          <span id="lot-risk-pill" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+          <span id="lot-risk-pill" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/5 text-gray-300 border border-white/[0.08]">
             입문 연습 권장 단위 (1배)
           </span>
         </div>
         <div id="lot-tabs" class="grid grid-cols-3 gap-2 num-tab">
-          <button type="button" data-lot="0.01" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-amber-400/15 border-amber-400 text-amber-300">
-            0.01 <span class="text-[11px] font-normal block sm:inline opacity-85">최소 연습</span>
+          <button type="button" data-lot="0.01" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-amber-400/10 border-amber-400/70 text-amber-300">
+            0.01 <span class="text-xs font-normal block sm:inline opacity-85">최소 연습</span>
           </button>
-          <button type="button" data-lot="0.10" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">
-            0.10 <span class="text-[11px] font-normal block sm:inline opacity-75">10배 변동</span>
+          <button type="button" data-lot="0.10" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">
+            0.10 <span class="text-xs font-normal block sm:inline opacity-75">10배 변동</span>
           </button>
-          <button type="button" data-lot="1.00" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-red-500/35 text-red-300 hover:bg-red-500/10">
-            1.00 <span class="text-[11px] font-semibold block sm:inline text-red-400">100배 주의!</span>
+          <button type="button" data-lot="1.00" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">
+            1.00 <span class="text-xs font-normal block sm:inline opacity-75">100배 주의</span>
           </button>
         </div>
       </div>
 
       <!-- 결과 요약 카드 -->
-      <div class="mt-5 bg-[#0b0e17] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-3">
-        <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
+      <div class="mt-5 bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex items-center justify-between pb-2.5 border-b border-white/[0.08]">
           <div class="flex items-center gap-2">
-            <span id="res-lot-badge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 num-tab">0.01랏</span>
+            <span id="res-lot-badge" class="whitespace-nowrap text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 num-tab">0.01랏</span>
             <span id="res-unit-badge" class="text-xs text-gray-300 font-medium">계약 크기 1온스</span>
           </div>
           <span id="res-mult-label" class="text-xs text-gray-400 num-tab">기준 변동폭 × 1배</span>
@@ -286,12 +241,12 @@
         </div>
 
         <!-- 손절 도달 시 (1.00랏 선택 시 강렬한 레드 경고 박스로 변신) -->
-        <div id="loss-highlight-box" class="rounded-xl p-3.5 bg-white/[0.03] border border-white/10 transition-all duration-200 flex items-center justify-between gap-2">
+        <div id="loss-highlight-box" class="rounded-xl p-3.5 bg-white/[0.03] border border-white/[0.08] transition-all duration-200 flex items-center justify-between gap-2">
           <div>
             <div id="res-sl-label" class="text-sm font-medium text-gray-200">손절가(-$5) 도달 시</div>
-            <div id="res-sl-sub" class="text-[11px] text-gray-400 mt-0.5">$10,000 모의계좌의 0.05% 수준</div>
+            <div id="res-sl-sub" class="text-xs text-gray-400 mt-0.5">$10,000 모의계좌의 0.05% 수준</div>
           </div>
-          <div id="res-sl-val" class="text-base sm:text-lg font-extrabold text-sky-400 num-tab shrink-0">-$5.00 손실</div>
+          <div id="res-sl-val" class="text-base sm:text-lg font-bold text-gray-100 num-tab shrink-0">-$5.00 손실</div>
         </div>
 
         <!-- 1.00랏 전용 경고 콜아웃 배너 -->
@@ -302,22 +257,22 @@
 
         <div class="flex items-center justify-between py-1 text-sm">
           <span id="res-tp-label" class="text-gray-300">목표가(+$10) 도달 시</span>
-          <span id="res-tp-val" class="font-bold text-emerald-400 num-tab">+$10.00 수익</span>
+          <span id="res-tp-val" class="font-bold text-gray-300 num-tab">+$10.00 수익</span>
         </div>
 
-        <p id="res-assumption" class="text-[11px] text-gray-400 pt-2 border-t border-white/5 leading-relaxed">
+        <p id="res-assumption" class="text-xs text-gray-400 pt-2 border-t border-white/[0.06] leading-relaxed">
           계산 기준: 골드 1랏 = 100온스 · 손절 -$5 · 목표 +$10 (수수료 제외) · 세부 계약 단위는 브로커마다 다를 수 있습니다.
         </p>
       </div>
 
-      <p class="text-[11px] text-gray-400 mt-3 leading-relaxed">
+      <p class="text-xs text-gray-400 mt-3 leading-relaxed">
         ※ 레버리지 상품은 투자 원금을 초과하는 손실이 발생할 수 있습니다. 위 수치는 이해를 돕기 위한 단순 계산 예시이며, 실제 수익을 보장하지 않습니다.
       </p>
     </section>
 
     <!-- SECTION 3: 차트 예시 섹션 -->
-    <section id="sec-chart" class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+    <section id="sec-chart" class="bg-[#13161e] rounded-3xl p-6 sm:p-7">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         진입하기 전에 <span class="text-amber-400">'어디서 나올지'</span>부터 먼저 정합니다
       </h2>
       <p class="text-sm text-gray-300 mt-1.5">
@@ -326,112 +281,112 @@
 
       <!-- 차트 종목 탭 -->
       <div class="grid grid-cols-3 gap-2 mt-4">
-        <button type="button" data-chart="nasdaq" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-amber-400/15 border-amber-400 text-white">
+        <button type="button" data-chart="nasdaq" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-amber-400/10 border-amber-400/70 text-white">
           <span>나스닥100</span>
-          <span class="text-[11px] px-1.5 py-0.5 rounded bg-rose-500/25 text-rose-300 font-bold">매수</span>
+          <span class="text-xs px-1.5 py-0.5 rounded bg-rose-500/25 text-rose-300 font-bold">매수</span>
         </button>
-        <button type="button" data-chart="gold" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">
+        <button type="button" data-chart="gold" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">
           <span>골드</span>
-          <span class="text-[11px] px-1.5 py-0.5 rounded bg-sky-500/25 text-sky-300 font-bold">매도</span>
+          <span class="text-xs px-1.5 py-0.5 rounded bg-sky-500/25 text-gray-100 font-bold">매도</span>
         </button>
-        <button type="button" data-chart="oil" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">
+        <button type="button" data-chart="oil" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25">
           <span>WTI 원유</span>
-          <span class="text-[11px] px-1.5 py-0.5 rounded bg-gray-500/25 text-gray-300 font-bold">관망</span>
+          <span class="text-xs px-1.5 py-0.5 rounded bg-gray-500/25 text-gray-300 font-bold">관망</span>
         </button>
       </div>
 
       <!-- 고정 높이 캔버스 차트 영역 -->
-      <div class="relative h-60 w-full mt-4 bg-[#090c14] rounded-2xl border border-white/10 overflow-hidden p-2">
+      <div class="relative h-60 w-full mt-4 bg-black/30 rounded-2xl border border-white/[0.08] overflow-hidden p-2">
         <canvas id="sim-chart-canvas" class="w-full h-full block"></canvas>
       </div>
 
       <!-- 진입 / 손절 / 목표 요약 카드 -->
       <div class="grid grid-cols-3 gap-2 mt-3 num-tab">
-        <div class="bg-[#0b0e17] border border-white/5 rounded-xl p-3 text-center">
-          <div class="text-[11px] text-amber-300 font-semibold">진입가</div>
+        <div class="bg-white/[0.04] border border-white/[0.06] rounded-xl p-3 text-center">
+          <div class="text-xs text-amber-300 font-semibold">진입가</div>
           <div id="chart-entry-val" class="text-sm sm:text-base font-bold text-white mt-0.5">21,590.5</div>
         </div>
-        <div class="bg-[#0b0e17] border border-white/5 rounded-xl p-3 text-center">
-          <div class="text-[11px] text-sky-400 font-semibold">손절가</div>
-          <div id="chart-sl-val" class="text-sm sm:text-base font-bold text-sky-300 mt-0.5">21,476.2</div>
+        <div class="bg-white/[0.04] border border-white/[0.06] rounded-xl p-3 text-center">
+          <div class="text-xs text-gray-100 font-semibold">손절가</div>
+          <div id="chart-sl-val" class="text-sm sm:text-base font-bold text-gray-100 mt-0.5">21,476.2</div>
         </div>
-        <div class="bg-[#0b0e17] border border-white/5 rounded-xl p-3 text-center">
-          <div class="text-[11px] text-emerald-400 font-semibold">목표가</div>
-          <div id="chart-tp-val" class="text-sm sm:text-base font-bold text-emerald-300 mt-0.5">21,819.0</div>
+        <div class="bg-white/[0.04] border border-white/[0.06] rounded-xl p-3 text-center">
+          <div class="text-xs text-gray-300 font-semibold">목표가</div>
+          <div id="chart-tp-val" class="text-sm sm:text-base font-bold text-gray-300 mt-0.5">21,819.0</div>
         </div>
       </div>
 
-      <p class="text-[11px] text-gray-400 mt-3">
+      <p class="text-xs text-gray-400 mt-3">
         이해를 돕기 위한 300틱 시뮬레이션 화면이며, 실시간 시세나 매매 시그널이 아닙니다.
       </p>
     </section>
 
     <!-- SECTION 4: 3단계 진행 가이드 + 실제 카카오톡 말풍선 목업 (개선 포인트 3) -->
-    <section id="sec-kakao" class="bg-[#141927] border border-white/10 rounded-3xl p-6 sm:p-7 upgrade-ring">
-      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+    <section id="sec-kakao" class="bg-[#13161e] rounded-3xl p-6 sm:p-7 upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
         <span>UI 개선 03</span>
         <span>·</span>
         <span>전화 영업 경계심을 없애는 실제 카톡 대화 목업 추가</span>
       </div>
 
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         입문부터 실전까지, <span class="text-amber-400">3단계</span>로 안전하게 시작하세요
       </h2>
 
       <div class="space-y-2.5 mt-4">
-        <div class="bg-[#0b0e17] border border-white/10 rounded-2xl p-4 flex items-start gap-3.5">
-          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">01</span>
+        <div class="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 flex items-start gap-3.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-bold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">01</span>
           <div>
             <h3 class="text-sm sm:text-base font-bold text-white">1:1 카톡 상담 신청</h3>
-            <p class="text-xs sm:text-sm text-gray-300 mt-0.5">간단히 이름과 연락처를 남기시면 전용 카카오톡 상담방이 열립니다.</p>
+            <p class="text-sm text-gray-300 mt-0.5">간단히 이름과 연락처를 남기시면 전용 카카오톡 상담방이 열립니다.</p>
           </div>
         </div>
-        <div class="bg-[#0b0e17] border border-white/10 rounded-2xl p-4 flex items-start gap-3.5">
-          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">02</span>
+        <div class="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 flex items-start gap-3.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-bold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">02</span>
           <div>
             <h3 class="text-sm sm:text-base font-bold text-white">모의계좌 미션 연습</h3>
-            <p class="text-xs sm:text-sm text-gray-300 mt-0.5">4가지 기초 미션을 직접 실습하며 적정 주문 수량과 손절가 계산법을 익힙니다.</p>
+            <p class="text-sm text-gray-300 mt-0.5">4가지 기초 미션을 직접 실습하며 적정 주문 수량과 손절가 계산법을 익힙니다.</p>
           </div>
         </div>
-        <div class="bg-[#0b0e17] border border-white/10 rounded-2xl p-4 flex items-start gap-3.5">
-          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">03</span>
+        <div class="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 flex items-start gap-3.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-bold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">03</span>
           <div>
             <h3 class="text-sm sm:text-base font-bold text-white">맞춤 플랫폼 비교·세팅</h3>
-            <p class="text-xs sm:text-sm text-gray-300 mt-0.5">거래 조건을 비교해 나에게 맞는 곳을 고르고, 초기 계좌·차트 세팅까지 함께 마칩니다.</p>
+            <p class="text-sm text-gray-300 mt-0.5">거래 조건을 비교해 나에게 맞는 곳을 고르고, 초기 계좌·차트 세팅까지 함께 마칩니다.</p>
           </div>
         </div>
       </div>
 
       <!-- 신규 추가: 실제 카카오톡 채팅방 미리보기 목업 -->
-      <div class="mt-5 rounded-2xl overflow-hidden border border-[#fee500]/30 bg-[#1b202c]">
-        <div class="px-4 py-2.5 bg-[#121620] border-b border-white/10 flex items-center justify-between">
+      <div class="mt-5 rounded-2xl overflow-hidden bg-black/25">
+        <div class="px-4 py-2.5 bg-[#121620] border-b border-white/[0.08] flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-[#fee500] text-gray-950 font-extrabold text-[11px] flex items-center justify-center">톡</span>
+            <span class="w-6 h-6 rounded-full bg-white/10 text-gray-200 font-bold text-xs flex items-center justify-center">톡</span>
             <span class="text-xs font-bold text-gray-100">신청 직후 열리는 1:1 카톡 상담 예시</span>
           </div>
-          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">전화 통화 없음</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-white/5 text-gray-300">전화 통화 없음</span>
         </div>
 
         <div class="p-4 space-y-3 text-xs leading-relaxed">
           <!-- 사용자 말풍선 (계산기 연동) -->
           <div class="flex justify-end">
-            <div class="max-w-[82%] rounded-2xl rounded-tr-sm px-3.5 py-2.5 bg-[#fee500] text-gray-950 font-medium shadow-sm">
-              안녕하세요! 홈페이지에서 상담 신청했습니다. 계산해 본 <strong id="kakao-preview-lot" class="font-extrabold">[골드 · 0.01랏]</strong> 기준으로 모의계좌부터 연습해보고 싶어요.
+            <div class="max-w-[82%] rounded-2xl rounded-tr-sm px-3.5 py-2.5 bg-amber-400/20 text-amber-50">
+              안녕하세요! 홈페이지에서 상담 신청했습니다. 계산해 본 <strong id="kakao-preview-lot" class="font-bold">[골드 · 0.01랏]</strong> 기준으로 모의계좌부터 연습해보고 싶어요.
             </div>
           </div>
 
           <!-- 상담 매니저 말풍선 -->
           <div class="flex items-start gap-2.5">
-            <div class="w-7 h-7 rounded-xl bg-amber-400 text-gray-950 font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">딜</div>
+            <img src="../logo.webp" alt="" width="28" height="28" class="w-7 h-7 rounded-full ring-1 ring-white/20 shrink-0 mt-0.5">
             <div class="space-y-2 max-w-[84%]">
-              <div class="text-[11px] text-gray-400">딜러네 데스크 전담 매니저</div>
-              <div class="rounded-2xl rounded-tl-sm px-3.5 py-2.5 bg-[#283042] text-gray-100">
+              <div class="text-xs text-gray-400">딜러네 데스크 전담 매니저</div>
+              <div class="rounded-2xl rounded-tl-sm px-3.5 py-2.5 bg-white/[0.07] text-gray-100">
                 반갑습니다! 딜러네 데스크는 <strong>불편한 전화 권유 없이 100% 카톡 채팅으로만</strong> 차근차근 안내해 드립니다.
               </div>
-              <div class="rounded-2xl px-3.5 py-3 bg-[#0e121c] border border-amber-400/35 text-gray-200">
-                <div class="text-[11px] text-amber-300 font-bold mb-1">첫 번째 무료 실습 가이드 도착</div>
+              <div class="rounded-2xl px-3.5 py-3 bg-white/[0.07] text-gray-200">
+                <div class="text-xs text-amber-300 font-bold mb-1">첫 번째 무료 실습 가이드 도착</div>
                 <div class="font-semibold text-white">내 돈 0원 · $10,000 모의계좌 개설 &amp; 0.01랏 손절 세팅법</div>
-                <div class="text-[11px] text-gray-400 mt-1">준비되실 때 편하게 확인 후 답장 주세요.</div>
+                <div class="text-xs text-gray-400 mt-1">준비되실 때 편하게 확인 후 답장 주세요.</div>
               </div>
             </div>
           </div>
@@ -440,18 +395,18 @@
     </section>
 
     <!-- SECTION 5: 실전 플랫폼 비교 섹션 -->
-    <section class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+    <section class="bg-[#13161e] rounded-3xl p-6 sm:p-7">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
         실전 거래 플랫폼, 조건을 투명하게 <span class="text-amber-400">비교하고</span> 고르세요
       </h2>
 
-      <div class="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-[#0b0e17]">
-        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+      <div class="mt-4 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04]">
+        <table class="w-full text-left border-collapse text-sm">
           <thead>
-            <tr class="bg-white/[0.04] border-b border-white/10">
+            <tr class="bg-white/[0.04] border-b border-white/[0.08]">
               <th class="py-3 px-3.5 text-gray-400 font-semibold w-[28%]">비교 항목</th>
-              <th class="py-3 px-3.5 text-amber-300 font-extrabold w-[36%]">HFM</th>
-              <th class="py-3 px-3.5 text-sky-300 font-extrabold w-[36%]">XM</th>
+              <th class="py-3 px-3.5 text-amber-300 font-bold w-[36%]">HFM</th>
+              <th class="py-3 px-3.5 text-gray-100 font-bold w-[36%]">XM</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-white/10">
@@ -459,11 +414,11 @@
               <td class="py-3.5 px-3.5 text-gray-400 font-medium">최소 입금액</td>
               <td class="py-3.5 px-3.5">
                 <span class="font-bold text-white num-tab block">$0</span>
-                <span class="text-[11px] text-gray-400">프로(Pro) 외 일반 계좌</span>
+                <span class="text-xs text-gray-400">프로(Pro) 외 일반 계좌</span>
               </td>
               <td class="py-3.5 px-3.5">
                 <span class="font-bold text-white num-tab block">$5</span>
-                <span class="text-[11px] text-gray-400">소액 시작 가능</span>
+                <span class="text-xs text-gray-400">소액 시작 가능</span>
               </td>
             </tr>
             <tr>
@@ -471,7 +426,7 @@
               <td class="py-3.5 px-3.5 text-gray-200 leading-snug">센트 · 프리미엄 제로 · 프로</td>
               <td class="py-3.5 px-3.5 text-gray-200 leading-snug">
                 <span class="block font-semibold text-white">마이크로 계좌</span>
-                <span class="text-[11px] text-gray-400 num-tab">1랏 = 1,000단위 (소액 연습용)</span>
+                <span class="text-xs text-gray-400 num-tab">1랏 = 1,000단위 (소액 연습용)</span>
               </td>
             </tr>
             <tr>
@@ -490,32 +445,28 @@
     </section>
 
     <!-- SECTION 6: 자주 묻는 질문 (FAQ 8문 8답) -->
-    <section class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
+    <section class="bg-[#13161e] rounded-3xl p-6 sm:p-7">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
           <span class="text-amber-400">자주 묻는</span> 질문
         </h2>
         <span class="text-xs text-gray-400">궁금한 항목을 눌러보세요</span>
       </div>
 
-      <div id="faq-list" class="space-y-2"></div>
+      <div id="faq-list"></div>
     </section>
 
     <!-- SECTION 7: 골드 하이라이트 상담 신청 폼 (개선 포인트 4) -->
     <section id="sec-apply" class="gold-highlight-form rounded-3xl p-6 sm:p-7 relative upgrade-ring">
-      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+      <div class="upgrade-badge items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
         <span>UI 개선 04</span>
         <span>·</span>
         <span>골드 하이라이트 서피스 분리 &amp; 계산기 조건 실시간 매칭</span>
       </div>
 
-      <div class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35 mb-3">
-        <span>안심 상담 약속</span>
-        <span>·</span>
-        <span>전화 권유 0건 · 100% 카톡 채팅 진행</span>
-      </div>
+      <p class="text-[13px] font-semibold text-amber-400 mb-2">전화 권유 0건 · 100% 카톡 채팅 진행</p>
 
-      <h2 class="text-2xl font-extrabold text-white tracking-tight">
+      <h2 class="text-2xl font-bold text-white tracking-tight">
         1:1 무료 카카오톡 상담 신청
       </h2>
       <p class="text-sm text-gray-200 mt-1.5 leading-relaxed">
@@ -532,20 +483,20 @@
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-2">어떤 단계부터 시작하고 싶으신가요?</label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="track-radio-group">
-            <button type="button" data-track="demo" class="track-card text-left p-3.5 rounded-2xl border-2 transition bg-amber-400/15 border-amber-400">
+            <button type="button" data-track="demo" class="track-card text-left p-3.5 rounded-2xl border transition bg-amber-400/10 border-amber-400/70">
               <div class="flex items-center justify-between">
                 <span class="text-sm font-bold text-white">모의투자부터 차근차근</span>
-                <span class="track-dot w-4 h-4 rounded-full border-2 border-amber-400 flex items-center justify-center">
+                <span class="track-dot w-4 h-4 rounded-full border border-amber-400 flex items-center justify-center">
                   <span class="w-2 h-2 rounded-full bg-amber-400"></span>
                 </span>
               </div>
               <p class="text-xs text-gray-300 mt-1">선물 거래가 처음이거나 MT5 사용법이 낯선 분</p>
             </button>
 
-            <button type="button" data-track="live" class="track-card text-left p-3.5 rounded-2xl border transition bg-[#0b0e17]/90 border-white/15 hover:border-white/30">
+            <button type="button" data-track="live" class="track-card text-left p-3.5 rounded-2xl border transition bg-white/[0.04] border-white/[0.08] hover:border-white/30">
               <div class="flex items-center justify-between">
                 <span class="text-sm font-bold text-gray-200">실전 플랫폼 바로 연결</span>
-                <span class="track-dot w-4 h-4 rounded-full border-2 border-gray-500 flex items-center justify-center">
+                <span class="track-dot w-4 h-4 rounded-full border border-gray-500 flex items-center justify-center">
                   <span class="w-2 h-2 rounded-full bg-transparent"></span>
                 </span>
               </div>
@@ -558,23 +509,23 @@
         <div>
           <label for="input-name" class="block text-xs font-semibold text-gray-300 mb-1.5">이름 (또는 닉네임)</label>
           <input id="input-name" name="fullname" type="text" placeholder="홍길동" autocomplete="name" maxlength="20"
-            class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-amber-400 transition" />
+            class="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.08] text-white placeholder-gray-500 text-sm focus:outline-none focus:border-amber-400 transition" />
         </div>
 
         <!-- 휴대폰 번호 입력 -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label for="input-phone" class="text-xs font-semibold text-gray-300">휴대폰 번호</label>
-            <span class="text-[11px] text-emerald-300 font-medium">상담 안내 외 마케팅 스팸 연락은 절대 하지 않습니다</span>
+            <span class="text-xs text-gray-300 font-medium">상담 안내 외 마케팅 스팸 연락은 절대 하지 않습니다</span>
           </div>
           <input id="input-phone" name="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" maxlength="13" autocomplete="tel"
-            class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white placeholder-gray-500 text-sm num-tab focus:outline-none focus:border-amber-400 transition" />
+            class="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/[0.08] text-white placeholder-gray-500 text-sm num-tab focus:outline-none focus:border-amber-400 transition" />
         </div>
 
         <!-- 계산기 연동 배지 -->
-        <div class="rounded-xl px-3.5 py-2.5 bg-[#090c14]/90 border border-amber-400/30 flex items-center justify-between gap-2 text-xs">
+        <div class="rounded-xl px-3.5 py-2.5 bg-black/30 border border-amber-400/30 flex items-center justify-between gap-2 text-xs">
           <span class="text-gray-200">위에서 확인하신 <strong id="form-synced-lot" class="text-amber-300 num-tab">[골드 · 0.01랏]</strong> 계산 기준도 함께 전달됩니다.</span>
-          <a href="#sec-calc" class="text-[11px] text-amber-300 hover:underline shrink-0">변경</a>
+          <a href="#sec-calc" class="text-xs text-amber-300 hover:underline shrink-0">변경</a>
         </div>
 
         <!-- 개인정보 동의 -->
@@ -584,21 +535,21 @@
               class="mt-0.5 w-4 h-4 rounded accent-amber-400 cursor-pointer shrink-0" />
             <span>[필수] 1:1 상담 안내를 위한 개인정보(이름 또는 닉네임, 휴대폰 번호) 수집·이용에 동의합니다.</span>
           </label>
-          <button id="btn-open-privacy" type="button" class="text-[11px] text-gray-400 underline hover:text-gray-200 shrink-0">내용 보기</button>
+          <button id="btn-open-privacy" type="button" class="text-xs text-gray-400 underline hover:text-gray-200 shrink-0">내용 보기</button>
         </div>
 
         <p id="form-error-msg" class="hidden text-xs font-medium text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></p>
 
         <!-- 카카오 옐로우 제출 버튼 -->
         <button type="submit"
-          class="w-full py-4 px-5 rounded-2xl bg-[#fee500] hover:bg-[#ffe812] active:scale-[0.99] transition text-gray-950 font-extrabold text-base flex items-center justify-center gap-2 shadow-lg">
+          class="w-full py-4 px-5 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-[0.99] transition text-gray-950 font-bold text-base flex items-center justify-center gap-2">
           <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
           </svg>
           <span>무료 상담 신청하고 카톡방 열기</span>
         </button>
 
-        <p class="text-[11px] text-gray-300/80 text-center leading-relaxed">
+        <p class="text-xs text-gray-300/80 text-center leading-relaxed">
           상담 후 꼭 계좌를 개설하지 않으셔도 괜찮습니다.<br />
           딜러네 데스크는 불법 투자자문·리딩 및 수익 보장을 일절 제공하지 않습니다.
         </p>
@@ -607,7 +558,7 @@
 
     <!-- SECTION 8: 하단 푸터 -->
     <footer class="pt-4 pb-8 px-2 text-xs text-gray-400 space-y-3">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] pt-5">
         <div class="font-semibold text-gray-300">운영: (주)맨큐 · 딜러네 데스크</div>
         <div class="flex items-center gap-4">
           <a href="https://www.youtube.com/@딜러네" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-amber-300 transition font-medium">
@@ -618,7 +569,7 @@
           </a>
         </div>
       </div>
-      <p class="text-[11px] text-gray-500 leading-relaxed">
+      <p class="text-xs text-gray-500 leading-relaxed">
         투자위험 고지: 본 사이트에서 제공하는 모든 영상·시그널 및 학습 자료, 시뮬레이션과 계산 예시는 이해를 돕기 위한 교육용 정보이며, 특정 금융상품에 대한 매매 권유나 투자자문이 아닙니다. 어떠한 경우에도 수익을 보장하지 않으며, 해외선물·CFD·FX 등 레버리지 파생상품은 시장 변동에 따라 투자 원금을 초과하는 손실이 발생할 수 있습니다. 과거의 데이터나 사례가 미래의 수익을 보장하지 않으며, 모든 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.
       </p>
     </footer>
@@ -626,32 +577,25 @@
 
   <!-- 하단 고정(Sticky) CTA 바 + 마이크로 트러스트 (신청 폼 도달 시 자동 숨김) -->
   <div id="sticky-cta-bar" class="fixed bottom-0 inset-x-0 z-30 pointer-events-none transition-all duration-300">
-    <div class="max-w-[560px] mx-auto px-4 pb-4 pt-2 pointer-events-auto">
-      <div class="rounded-2xl bg-[#0d111b]/95 backdrop-blur-md border border-amber-400/35 p-2.5 shadow-2xl">
-        <div class="flex items-center justify-center gap-2 text-[11px] text-gray-200 mb-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>전화 권유 없음 · 내 돈 0원 <strong class="text-amber-300">$10,000 모의계좌</strong> 무료 안내</span>
-        </div>
-        <a href="#sec-apply" class="w-full py-3.5 px-4 rounded-xl bg-[#fee500] hover:bg-[#ffe812] text-gray-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition">
-          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
-          </svg>
-          <span>무료 카톡 상담 신청하기</span>
-        </a>
-      </div>
+    <div class="max-w-[560px] mx-auto px-4 pt-6 pb-[calc(12px+env(safe-area-inset-bottom))] pointer-events-auto bg-gradient-to-t from-[#0a0c11] via-[#0a0c11]/95 to-transparent">
+      <a href="#sec-apply" id="barBtn" class="w-full h-14 px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-base flex items-center justify-center gap-2 transition">
+        <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+        <span>무료 카톡 상담 신청하기</span>
+      </a>
+      <p class="mt-1.5 text-center text-xs text-gray-400">전화 권유 없음 · 내 돈 0원 · $10,000 모의계좌 무료 안내</p>
     </div>
   </div>
 
   <!-- 인페이지 모달 (신청 완료 시뮬레이션 / 아카데미 안내 / 개인정보 동의 전문) -->
   <div id="common-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#141927] border border-amber-400/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+    <div class="bg-[#141927] border border-amber-400/40 rounded-3xl max-w-md w-full p-6 space-y-4">
       <div class="flex items-center justify-between">
         <span id="modal-badge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300">안내</span>
         <button id="btn-close-modal" type="button" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-bold">✕</button>
       </div>
-      <h3 id="modal-title" class="text-lg font-extrabold text-white">모달 제목</h3>
+      <h3 id="modal-title" class="text-lg font-bold text-white">모달 제목</h3>
       <div id="modal-body" class="text-sm text-gray-300 space-y-2 leading-relaxed"></div>
-      <button id="btn-confirm-modal" type="button" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-extrabold text-sm transition">
+      <button id="btn-confirm-modal" type="button" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-bold text-sm transition">
         확인
       </button>
     </div>
@@ -830,21 +774,21 @@
       document.querySelectorAll('.calc-asset-btn').forEach((btn) => {
         const active = btn.dataset.asset === state.asset;
         btn.className = active
-          ? 'calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-amber-400/15 border-amber-400 text-amber-300'
-          : 'calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25';
+          ? 'calc-asset-btn whitespace-nowrap py-2.5 px-2 rounded-xl text-sm font-semibold border transition bg-amber-400/10 border-amber-400/70 text-amber-300'
+          : 'calc-asset-btn whitespace-nowrap py-2.5 px-2 rounded-xl text-sm font-semibold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25';
       });
 
       document.querySelectorAll('.calc-lot-btn').forEach((btn) => {
         const active = btn.dataset.lot === state.lot;
         const isDangerTab = btn.dataset.lot === '1.00';
         if (active && isDangerTab) {
-          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-extrabold border-2 transition bg-red-500/20 border-red-400 text-red-200';
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-red-500/10 border-red-400/60 text-red-200';
         } else if (active) {
-          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-amber-400/15 border-amber-400 text-amber-300';
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-amber-400/10 border-amber-400/70 text-amber-300';
         } else if (isDangerTab) {
-          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-red-500/35 text-red-300 hover:bg-red-500/10';
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25';
         } else {
-          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25';
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25';
         }
       });
 
@@ -869,21 +813,21 @@
 
       if (state.lot === '1.00') {
         riskPill.textContent = '고위험 수량 · 100배 변동 경고!';
-        riskPill.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-400/50';
+        riskPill.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-400/50';
         lossBox.className = 'danger-loss-card rounded-xl p-4 transition-all duration-200 flex items-center justify-between gap-2';
-        slValEl.className = 'text-xl sm:text-2xl font-extrabold text-red-400 num-tab shrink-0';
+        slValEl.className = 'text-xl sm:text-2xl font-bold text-red-400 num-tab shrink-0';
         dangerBanner.classList.remove('hidden');
       } else if (state.lot === '0.10') {
         riskPill.textContent = '중급 주의 단위 (10배 변동)';
-        riskPill.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35';
+        riskPill.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35';
         lossBox.className = 'rounded-xl p-3.5 bg-amber-400/10 border border-amber-400/30 transition-all duration-200 flex items-center justify-between gap-2';
-        slValEl.className = 'text-lg font-extrabold text-amber-300 num-tab shrink-0';
+        slValEl.className = 'text-lg font-bold text-amber-300 num-tab shrink-0';
         dangerBanner.classList.add('hidden');
       } else {
         riskPill.textContent = '입문 연습 권장 단위 (1배)';
-        riskPill.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
-        lossBox.className = 'rounded-xl p-3.5 bg-white/[0.03] border border-white/10 transition-all duration-200 flex items-center justify-between gap-2';
-        slValEl.className = 'text-base sm:text-lg font-extrabold text-sky-400 num-tab shrink-0';
+        riskPill.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/5 text-gray-300 border border-white/[0.08]';
+        lossBox.className = 'rounded-xl p-3.5 bg-white/[0.03] border border-white/[0.08] transition-all duration-200 flex items-center justify-between gap-2';
+        slValEl.className = 'text-base sm:text-lg font-bold text-gray-100 num-tab shrink-0';
         dangerBanner.classList.add('hidden');
       }
 
@@ -897,7 +841,7 @@
           ? `손절 시 -${formatUsd(slVal)} (100배 주의!)`
           : `손절 시 -${formatUsd(slVal)} (${state.lot === '0.01' ? '입문 권장' : '10배 변동'})`;
       document.getElementById('aside-selected-risk').className =
-        state.lot === '1.00' ? 'text-xs text-red-400 font-semibold mt-1 num-tab' : 'text-xs text-emerald-400 mt-1 num-tab';
+        state.lot === '1.00' ? 'text-xs text-red-400 font-semibold mt-1 num-tab' : 'text-xs text-gray-300 mt-1 num-tab';
     }
 
     // 캔버스 시뮬레이션 캔들 차트 렌더링
@@ -910,8 +854,8 @@
       document.querySelectorAll('.chart-tab-btn').forEach((btn) => {
         const active = btn.dataset.chart === state.chartKey;
         btn.className = active
-          ? 'chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-amber-400/15 border-amber-400 text-white'
-          : 'chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25';
+          ? 'chart-tab-btn py-2.5 px-2.5 rounded-xl border text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-amber-400/10 border-amber-400/70 text-white'
+          : 'chart-tab-btn py-2.5 px-2.5 rounded-xl border text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-white/[0.04] border-white/[0.08] text-gray-300 hover:border-white/25';
       });
 
       const canvas = document.getElementById('sim-chart-canvas');
@@ -963,7 +907,7 @@
         const [open, hi, lo, close] = c;
         const cx = chartLeft + step * idx + step * 0.5;
         const up = close >= open;
-        const color = up ? '#f43f5e' : '#38bdf8';
+        const color = up ? '#F0556B' : '#4B8BFF';
 
         ctx.strokeStyle = color;
         ctx.lineWidth = 1.4;
@@ -1004,9 +948,9 @@
       }
 
       if (data.mode !== 'wait') {
-        drawLevelLine(data.tp, `목표 ${data.tpText}`, '#34d399');
-        drawLevelLine(data.entry, `진입 ${data.entryText}`, '#f5c451');
-        drawLevelLine(data.sl, `손절 ${data.slText}`, '#38bdf8');
+        drawLevelLine(data.tp, `목표 ${data.tpText}`, '#C5CBD8');
+        drawLevelLine(data.entry, `진입 ${data.entryText}`, '#FFC247');
+        drawLevelLine(data.sl, `손절 ${data.slText}`, '#8FB4FF');
       } else {
         drawLevelLine(data.current, `대기 ${data.current}`, '#9ca3af');
         ctx.fillStyle = 'rgba(17, 21, 32, 0.88)';
@@ -1023,18 +967,13 @@
       container.innerHTML = FAQS.map((item, idx) => {
         const isOpen = state.openFaqIndex === idx;
         return `
-          <div class="rounded-2xl border transition ${
-            isOpen ? 'bg-[#161d2f] border-amber-400/40' : 'bg-[#0b0e17] border-white/10 hover:border-white/20'
-          }">
-            <button type="button" data-faq="${idx}" class="faq-btn w-full px-4 py-3.5 text-left flex items-center justify-between gap-3">
-              <span class="text-sm font-semibold ${isOpen ? 'text-amber-300' : 'text-gray-100'}">Q. ${item.q}</span>
-              <span class="text-xs font-bold text-gray-400 shrink-0">${isOpen ? '▲' : '▼'}</span>
+          <div class="border-b border-white/[0.08] last:border-b-0">
+            <button type="button" data-faq="${idx}" aria-expanded="${isOpen}" class="faq-btn w-full min-h-[56px] py-3 text-left flex items-center justify-between gap-4">
+              <span class="text-[15px] font-semibold ${isOpen ? 'text-white' : 'text-gray-200'}">${item.q}</span>
+              <span class="text-lg leading-none text-gray-500 shrink-0">${isOpen ? '−' : '+'}</span>
             </button>
-            <div class="${isOpen ? 'block' : 'hidden'} px-4 pb-4 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
-              ${item.a}
-            </div>
-          </div>
-        `;
+            <div class="${isOpen ? 'block' : 'hidden'} pb-4 text-sm text-gray-400 leading-relaxed">${item.a}</div>
+          </div>`;
       }).join('');
     }
 
@@ -1045,12 +984,12 @@
         const dotOuter = card.querySelector('.track-dot');
         const dotInner = dotOuter.querySelector('span');
         if (active) {
-          card.className = 'track-card text-left p-3.5 rounded-2xl border-2 transition bg-amber-400/15 border-amber-400';
-          dotOuter.className = 'track-dot w-4 h-4 rounded-full border-2 border-amber-400 flex items-center justify-center';
+          card.className = 'track-card text-left p-3.5 rounded-2xl border transition bg-amber-400/10 border-amber-400/70';
+          dotOuter.className = 'track-dot w-4 h-4 rounded-full border border-amber-400 flex items-center justify-center';
           dotInner.className = 'w-2 h-2 rounded-full bg-amber-400';
         } else {
-          card.className = 'track-card text-left p-3.5 rounded-2xl border transition bg-[#0b0e17]/90 border-white/15 hover:border-white/30';
-          dotOuter.className = 'track-dot w-4 h-4 rounded-full border-2 border-gray-500 flex items-center justify-center';
+          card.className = 'track-card text-left p-3.5 rounded-2xl border transition bg-white/[0.04] border-white/[0.08] hover:border-white/30';
+          dotOuter.className = 'track-dot w-4 h-4 rounded-full border border-gray-500 flex items-center justify-center';
           dotInner.className = 'w-2 h-2 rounded-full bg-transparent';
         }
       });
@@ -1070,13 +1009,6 @@
 
     // 이벤트 바인딩 초기화
     function initEvents() {
-      // 개선 배지 ON/OFF 토글
-      document.getElementById('btn-toggle-annotations').addEventListener('click', (e) => {
-        state.showAnnotations = !state.showAnnotations;
-        document.body.classList.toggle('show-annotations', state.showAnnotations);
-        e.currentTarget.textContent = state.showAnnotations ? '개선 배지 ON' : '개선 배지 OFF';
-      });
-
       // 아카데미 시안으로 이동
       document.getElementById('btn-open-academy').addEventListener('click', () => { location.href = '../academy3/'; });
 
@@ -1209,12 +1141,12 @@
             '신청 접수',
             `${esc(nameVal)}님, 신청이 접수됐습니다`,
             `<p>열린 카카오톡 상담방에 들어와 이름을 남겨 주세요.</p>
-             <div class="bg-[#0b0e17] rounded-xl p-3.5 border border-amber-400/30 text-xs space-y-1.5 mt-2">
+             <div class="bg-white/[0.04] rounded-xl p-3.5 border border-amber-400/30 text-xs space-y-1.5 mt-2">
                <div><span class="text-gray-400">희망 시작 단계:</span> <strong class="text-white">${trackLabel}</strong></div>
                <div><span class="text-gray-400">연락처:</span> <strong class="text-white num-tab">${esc(phoneVal)}</strong></div>
                <div><span class="text-gray-400">함께 전달된 조건:</span> <strong class="text-amber-300 num-tab">${assetLabel}</strong></div>
              </div>
-             <a href="${KAKAO_URL}" target="_blank" rel="noopener" class="block text-center mt-3 py-3 rounded-xl bg-[#fee500] text-gray-950 font-extrabold text-sm">카카오톡 상담방 열기</a>`
+             <a href="${KAKAO_URL}" target="_blank" rel="noopener" class="block text-center mt-3 py-3 rounded-xl bg-amber-400 text-gray-950 font-bold text-sm">카카오톡 상담방 열기</a>`
           );
           form.reset(); state.track = 'demo'; renderTrackSelection();
         };
@@ -1230,9 +1162,9 @@
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                stickyBar.classList.add('opacity-0', 'translate-y-6');
+                stickyBar.classList.add('opacity-0', 'translate-y-6'); stickyBar.firstElementChild.style.pointerEvents = 'none';
               } else {
-                stickyBar.classList.remove('opacity-0', 'translate-y-6');
+                stickyBar.classList.remove('opacity-0', 'translate-y-6'); stickyBar.firstElementChild.style.pointerEvents = '';
               }
             });
           },

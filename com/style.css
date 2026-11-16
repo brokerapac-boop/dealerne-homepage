@@ -418,3 +418,16 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
   .view-desk section>div[style*="max-width: 1200px"]{width:calc(100% - 40px)!important}
 }
 @media (prefers-reduced-motion:reduce){.dn-float,.dn-float-2,.dn-float-3{animation:none}}
+
+/* ===== 데스크 시그널 보드: 종목 버튼과 차트 ===== */
+.dk-inst{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:48px;padding:12px 20px 12px 23px;border:0;border-left:3px solid transparent;margin-left:-3px;background:none;color:#C5CBD8;font:500 16px/1.4 var(--font);text-align:left;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.dk-inst:hover{background:rgba(255,255,255,.04);color:#F3F4F7}
+.dk-inst.on{background:#11151F;border-left-color:#FFC247;color:#F3F4F7;font-weight:700}
+.dk-inst:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.dk-chart{position:relative;width:100%;height:clamp(240px,30vw,400px);min-width:0}
+.dk-chart>svg{width:100%;height:100%}
+.dk-side{display:inline-block;margin-left:6px;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:800;vertical-align:middle;letter-spacing:0}
+.dk-side.buy{background:#F0556B;color:#24040A}
+.dk-side.sell{background:#4B8BFF;color:#04122B}
+.dk-side.wait{border:1px solid rgba(255,255,255,.3);color:#C5CBD8;font-weight:700}
+@media (max-width:760px){.dk-chart{height:260px}}

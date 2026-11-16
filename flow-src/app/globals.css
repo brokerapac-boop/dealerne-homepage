@@ -202,3 +202,53 @@ body[data-tone="light"] .num{color:#8A6A12}
   body,.hd{transition:none}
   .scroll-cue{display:none}
 }
+
+/* ---------- Next.js 버전 추가분 ---------- */
+/* 움직임은 Motion이 맡으므로 CSS 전환은 색만 남김 */
+.screen{opacity:0;transition:none}
+.step{transition:none}
+.card,.board,.flow,.insts li,.road li,.door{transition:background-color .7s var(--ease),border-color .7s var(--ease),box-shadow .5s}
+.insts li{transition-delay:0s}
+.road li{transition-delay:0s}
+
+/* 데스크 | 아카데미 토글 */
+.vswitch{display:flex;gap:2px;padding:4px;margin-right:auto;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+.vswitch a{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:700;color:var(--sub);transition:background .25s,color .25s}
+.vswitch a:hover{color:var(--ink)}
+.vswitch a[aria-current="page"]{background:color-mix(in srgb,var(--ink) 12%,transparent);color:var(--ink)}
+.vs-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.5}
+.vswitch a[aria-current="page"] .vs-dot{background:var(--accent);opacity:1}
+
+/* 손절 폭 · 목표 폭 · 손익비 */
+.ratio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.ratio div{padding:14px 16px;border-radius:16px;background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.ratio dt{font-size:12px;font-weight:700;color:var(--sub)}
+.ratio dd{font:700 clamp(16px,2.4vw,24px)/1.4 'Space Grotesk',var(--font);font-variant-numeric:tabular-nums}
+.ratio small{font-size:.6em;color:var(--sub)}
+
+/* 수급 (더미) */
+.flow-sec{padding-top:0}
+.flow{margin:clamp(40px,6vw,72px) 0 16px;padding:clamp(20px,3vw,36px);border-radius:28px;background:var(--card);border:1px dashed color-mix(in srgb,var(--accent) 55%,transparent)}
+.flow-hd{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:22px}
+.flow-hd strong{font-size:20px;letter-spacing:-.03em}
+.flow-hd span{font-size:13px;color:var(--sub);margin-right:auto}
+.flow-hd em{font-style:normal;font-size:12px;font-weight:700;color:var(--accent);border:1px dashed currentColor;border-radius:999px;padding:2px 10px}
+.flow ul{display:flex;flex-direction:column;gap:18px}
+.flow li{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(96px,auto);align-items:center;gap:14px}
+.flow .who{font-size:16px;font-weight:700}
+.flow .bar{position:relative;height:14px;border-radius:999px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.flow .bar::after{content:"";position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:var(--line)}
+.flow .bar i{position:absolute;top:0;bottom:0;border-radius:999px}
+.flow .bar i.pos{left:50%;background:#F0556B;transform-origin:left}
+.flow .bar i.neg{right:50%;background:#4B8BFF;transform-origin:right}
+.flow .val{text-align:right;font:700 clamp(20px,3.4vw,36px)/1.2 'Space Grotesk',var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.flow .val.pos{color:#F0556B}
+.flow .val.neg{color:#6FA2FF}
+
+@media (max-width:820px){
+  .vswitch a{min-height:36px;padding:0 12px;font-size:13px}
+  .vs-dot{display:none}
+  .ratio{gap:8px}
+  .ratio div{padding:10px 12px}
+  .flow li{grid-template-columns:52px minmax(0,1fr) auto;gap:10px}
+}

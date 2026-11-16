@@ -58,6 +58,14 @@ main{max-width:var(--max);margin:0 auto;display:flex;flex-direction:column;gap:v
 .checks li{position:relative;padding-left:26px;font-size:15px;color:var(--sub)}
 .checks li::before{content:"";position:absolute;left:2px;top:.5em;width:12px;height:7px;border-left:2px solid var(--brand);border-bottom:2px solid var(--brand);transform:rotate(-45deg)}
 
+.sub-h{margin-top:24px;font-size:16px;font-weight:700;color:var(--ink)}
+.sub-h+.checks,.sub-h+.mini{margin-top:12px}
+.checks.no li::before{left:1px;top:.68em;width:12px;height:0;border-left:0;border-bottom:2px solid var(--dim);transform:none}
+.mini{counter-reset:m;display:grid;gap:8px}
+.mini li{counter-increment:m;position:relative;padding-left:30px;font-size:15px;color:var(--sub)}
+.mini li::before{content:counter(m);position:absolute;left:0;top:.1em;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--brand-weak);color:var(--brand);font-size:12px;font-weight:700}
+.done .btn-sub{margin-top:20px}
+
 /* 선택 (한 가지 모양: 채움 바탕, 선택되면 노란 테두리) */
 .label{margin:24px 0 10px;font-size:15px;font-weight:600;color:var(--sub)}
 .label small{font-weight:400;margin-left:6px}

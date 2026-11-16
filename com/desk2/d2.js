@@ -35,6 +35,10 @@
     $('rTgtL').textContent = '목표 (+' + c.tgtLabel + ')에 닿으면';
     $('rTgt').textContent = '+' + money(tgt);
     $('rNote').textContent = '가정: ' + c.name + ' 1랏 = ' + c.sizeText(c.size) + ', 손절 폭 ' + c.stopLabel + ', 목표 폭 ' + c.tgtLabel + '. 수수료와 스프레드는 뺀 금액입니다. 계약 크기는 브로커와 계좌 유형에 따라 다릅니다.';
+    var carry = c.name + ' ' + calc.lot.toFixed(2) + '랏';                 // 계산해 본 내용을 상담으로 이어 줍니다
+    $('calcField').value = calc.touched ? carry : '';
+    $('calcCarry').hidden = !calc.touched;
+    $('calcCarry').textContent = '계산해 보신 ' + carry + '도 함께 전달해서, 그 주문부터 같이 봅니다.';
   }
   function radioGroup(root, onPick) {
     var btns = [].slice.call(root.querySelectorAll('[role=radio],[role=tab]'));
@@ -52,8 +56,8 @@
       });
     });
   }
-  radioGroup($('calcInst'), function (b) { calc.k = b.getAttribute('data-k'); renderCalc(); track('calc_change', { inst: calc.k, lot: calc.lot }); });
-  radioGroup($('calcLot'), function (b) { calc.lot = parseFloat(b.getAttribute('data-v')); renderCalc(); track('calc_change', { inst: calc.k, lot: calc.lot }); });
+  radioGroup($('calcInst'), function (b) { calc.k = b.getAttribute('data-k'); calc.touched = true; renderCalc(); track('calc_change', { inst: calc.k, lot: calc.lot }); });
+  radioGroup($('calcLot'), function (b) { calc.lot = parseFloat(b.getAttribute('data-v')); calc.touched = true; renderCalc(); track('calc_change', { inst: calc.k, lot: calc.lot }); });
   renderCalc();
 
   /* ---------- 3. 예시 보드: 300틱 시뮬레이션 차트 (실제 시세 아님) ---------- */
@@ -171,11 +175,12 @@
   var bar = $('bar'), apply = $('apply');
   if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { bar.classList.toggle('off', e[e.length - 1].isIntersecting); }, { rootMargin: '0px 0px -25% 0px' }).observe(apply);
   $('barBtn').addEventListener('click', function () { track('cta_click', { from: 'bar' }); });
+  $('doneKakao').addEventListener('click', function () { track('kakao_open', { from: 'done' }); });
 
   /* 단계별 보기 기록 */
   if ('IntersectionObserver' in window) {
     var seen = {}, io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting && !seen[en.target.id]) { seen[en.target.id] = 1; track('section_view', { section: en.target.id }); } }); }, { threshold: 0.35 });
-    ['calc', 'board', 'who', 'how', 'platforms', 'faq', 'apply'].forEach(function (id) { io.observe($(id)); });
+    ['calc', 'board', 'who', 'why', 'fit', 'how', 'platforms', 'faq', 'apply'].forEach(function (id) { io.observe($(id)); });
   }
   document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href^="http"]'); if (a) track('outbound_click', { to: a.hostname }); });
 })();

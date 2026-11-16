@@ -109,6 +109,7 @@ function Story() {
 export default function Page() {
   const [smooth, setSmooth] = useState(false);
   const [ch, setCh] = useState(0);
+  const [bar, setBar] = useState(false);
 
   useEffect(() => {
     const route = (wait) => {
@@ -126,6 +127,9 @@ export default function Page() {
     const update = () => {
       tick = false;
       const mid = window.innerHeight * 0.5;
+      // 하단 안내 바: 첫 화면을 지나면 보이고, 상담 폼이 화면에 들어오면 숨김
+      const form = document.getElementById('apply')?.getBoundingClientRect();
+      setBar(window.scrollY > window.innerHeight * 0.7 && !(form && form.top < window.innerHeight * 0.85));
       // 화면 가운데에 있는 구역의 톤으로 전체 배경을 바꿈
       for (const el of document.querySelectorAll('main [data-tone]')) {
         const r = el.getBoundingClientRect();
@@ -260,7 +264,14 @@ export default function Page() {
         </div>
       </section>
 
-      <div className="sample-flag">SAMPLE DRAFT</div>
+      {/* 하단에 따라다니는 안내 바 */}
+      <motion.aside className="cta-bar" aria-label="텔레그램 시그널 안내" aria-hidden={!bar} initial={false} animate={{ y: bar ? 0 : 120, opacity: bar ? 1 : 0 }} transition={SPRING} style={{ pointerEvents: bar ? 'auto' : 'none' }}>
+        <span className="cta-tag">텔레그램</span>
+        <p><span className="long">딜러네 시그널을 텔레그램에서 받아 보세요</span><span className="short">딜러네 시그널, 텔레그램에서</span></p>
+        <a className="btn btn-sm" href={TG} target="_blank" rel="noopener" tabIndex={bar ? 0 : -1}>시그널 받기</a>
+      </motion.aside>
+
+      <div className={bar ? 'sample-flag up' : 'sample-flag'}>SAMPLE DRAFT</div>
     </MotionConfig>
   );
 }

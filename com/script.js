@@ -188,14 +188,19 @@
         if (price <= stop || price >= target) setLines();   // stop/target reached: set the next plan
       }
     }
+    // 데스크 화면에서 넘어오면 숨겨져 있던 차트의 위치를 다시 잡습니다
+    window.addEventListener('dn:view', function (e) { if (e.detail === 'academy') requestAnimationFrame(function () { chart.timeScale().scrollToPosition(10, false); }); });
     if (reduce) return true;                    // static snapshot for reduced-motion
     var timer = null, visible = true;
     function run() { if (!timer && visible && !document.hidden) timer = setInterval(tick, 380); }
     function halt() { clearInterval(timer); timer = null; }
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (e) { visible = e[0].isIntersecting; visible ? run() : halt(); }).observe(wrap);
+      new IntersectionObserver(function (e) { visible = e[e.length - 1].isIntersecting; visible ? run() : halt(); }).observe(wrap);
     }
     document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
+    // 화면 전환(데스크 <-> 아카데미) 때는 보이는지 직접 확인해서 다시 움직이게 합니다
+    window.addEventListener('dn:view', function (e) { if (e.detail === 'academy') { visible = true; run(); } else { visible = false; halt(); } });
+    if (document.body.getAttribute('data-view') === 'desk') visible = false;
     run();
     return true;
   }
@@ -348,6 +353,7 @@
     requestAnimationFrame(function () {
       window.dispatchEvent(new Event('resize'));
       if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      try { window.dispatchEvent(new CustomEvent('dn:view', { detail: v })); } catch (e) {}
     });
   }
   function go(v, h) {
@@ -507,7 +513,11 @@
   }
   function run() { if (!timer && visible) timer = setInterval(tick, 850); }
   function halt() { clearInterval(timer); timer = null; }
-  if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; visible ? run() : halt(); }).observe(box);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[e.length - 1].isIntersecting; visible ? run() : halt(); }).observe(box);
   else { visible = true; run(); }
+  window.addEventListener('dn:view', function (e) {
+    if (e.detail === 'desk') { requestAnimationFrame(function () { chart.timeScale().scrollToRealTime(); var r = box.getBoundingClientRect(); visible = r.bottom > 0 && r.top < window.innerHeight; run(); }); }
+    else { visible = false; halt(); }
+  });
   document.addEventListener('visibilitychange', function () { document.hidden ? halt() : run(); });
 })();

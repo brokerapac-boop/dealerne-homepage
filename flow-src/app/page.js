@@ -5,6 +5,7 @@ import { MotionConfig, motion, useTransform, useMotionTemplate, useMotionValueEv
 import Chart from './Chart';
 import { TG, SPRING, SOFT, usePin, Up, Roll } from './kit';
 import { Demo, Platforms, Instructor, Videos, Forms } from './More';
+import { VizRule, VizSteps, VizJournal, Spark, FlowChart } from './Viz';
 
 /* 예시 기준가 (실제 시그널이 아님) */
 const LV = { entry: 21621.3, stop: 21505.2, target: 21853.6 };
@@ -20,12 +21,12 @@ const f1 = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 1, maximumF
 const FLOW = [{ who: '외국인', v: 4820 }, { who: '기관', v: -3150 }, { who: '개인', v: -1670 }];
 
 const INSTS = [
-  ['nas', '나스닥100', '기술주 중심의 미국 대표 지수', 'USA100'],
-  ['gold', '골드', '금리와 달러에 민감한 대표 안전자산', 'XAUUSD'],
-  ['wti', 'WTI 오일', '변동성이 큰 대표 원자재', 'USOIL'],
-  ['spx', 'S&P500', '', 'USA500'],
-  ['eur', 'FX 통화쌍', '', 'EUR/USD'],
-  ['btc', '비트코인', '', 'BTCUSD'],
+  ['nas', '나스닥100', '기술주 중심의 미국 대표 지수', 'USA100', '1계약 (HFM 기준)'],
+  ['gold', '골드', '금리와 달러에 민감한 대표 안전자산', 'XAUUSD', '100온스'],
+  ['wti', 'WTI 오일', '변동성이 큰 대표 원자재', 'USOIL', '100배럴 (HFM 기준)'],
+  ['spx', 'S&P500', '', 'USA500', '상담 시 안내'],
+  ['eur', 'FX 통화쌍', '', 'EUR/USD', '100,000 통화 단위'],
+  ['btc', '비트코인', '', 'BTCUSD', '상담 시 안내'],
 ];
 const LIST = [
   ['nas', '나스닥100', 'buy', '매수'], ['gold', '골드', 'sell', '매도'], ['wti', 'WTI 오일', '', '대기'],
@@ -204,8 +205,13 @@ function Insts({ mobile }) {
           <Up as="h2" className="big">여섯 종목,<br />데스크가 함께 봅니다</Up>
         </div>
         <motion.ul ref={track} className="insts" style={mobile ? undefined : { x }}>
-          {INSTS.map(([id, name, desc, sym], k) => (
-            <li key={id}><span className="sym">{sym}</span><motion.img src={`/icons/${id}.webp`} alt="" width="120" height="120" loading="lazy" animate={{ y: [0, -8, 0] }} transition={{ duration: 4 + k * 0.4, repeat: Infinity, ease: 'easeInOut' }} /><h3>{name}</h3>{desc && <p>{desc}</p>}</li>
+          {INSTS.map(([id, name, desc, sym, lot], k) => (
+            <motion.li key={id} style={{ transformPerspective: 900 }} whileHover={{ y: -8, rotateX: 4, rotateY: -4 }} transition={SPRING}>
+              <span className="sym">{sym}</span>
+              <div className="ivis"><motion.img src={`/icons/${id}.webp`} alt="" width="120" height="120" loading="lazy" animate={{ y: [0, -8, 0] }} transition={{ duration: 4 + k * 0.4, repeat: Infinity, ease: 'easeInOut' }} /><Spark seed={k + 1} /></div>
+              <h3>{name}</h3><p>{desc || '\u00a0'}</p>
+              <p className="lot"><span>1랏</span><b>{lot}</b></p>
+            </motion.li>
           ))}
         </motion.ul>
       </div>
@@ -322,9 +328,9 @@ export default function Page() {
 
         <section className="sec principles" data-tone="light" data-ch="1">
           <div className="wrap three">
-            <Up as="article" className="card" i={0}><span className="num">01</span><h3>먼저 기준을 세웁니다</h3><p>방향을 맞히려 하기보다 어디서 들어가고, 어디서 틀렸다고 인정할지 먼저 적어 둡니다.</p></Up>
-            <Up as="article" className="card" i={1}><span className="num">02</span><h3>순서를 지켜 배웁니다</h3><p>한 번에 하나의 레벨만 봅니다. 앞 단계가 몸에 붙어야 다음 단계로 올라갑니다.</p></Up>
-            <Up as="article" className="card" i={2}><span className="num">03</span><h3>기록으로 확인합니다</h3><p>결과가 아니라 정한 대로 했는지를 일지에 남기고, 복기해서 기준을 고칩니다.</p></Up>
+            <Up as="article" className="card vcard" i={0}><div className="vbox"><VizRule /></div><span className="num">01</span><h3>먼저 기준을 세웁니다</h3><p>방향을 맞히려 하기보다 어디서 들어가고, 어디서 틀렸다고 인정할지 먼저 적어 둡니다.</p></Up>
+            <Up as="article" className="card vcard" i={1}><div className="vbox"><VizSteps /></div><span className="num">02</span><h3>순서를 지켜 배웁니다</h3><p>한 번에 하나의 레벨만 봅니다. 앞 단계가 몸에 붙어야 다음 단계로 올라갑니다.</p></Up>
+            <Up as="article" className="card vcard" i={2}><div className="vbox"><VizJournal /></div><span className="num">03</span><h3>기록으로 확인합니다</h3><p>결과가 아니라 정한 대로 했는지를 일지에 남기고, 복기해서 기준을 고칩니다.</p></Up>
           </div>
         </section>
 
@@ -359,6 +365,7 @@ export default function Page() {
             <Up as="h2" className="big">수급은<br /><b>숫자로</b> 확인합니다.</Up>
             <Up className="flow">
               <p className="flow-hd"><strong>선물 순매수</strong><span>단위: 계약</span><em>더미 데이터</em></p>
+              <div className="fchart-box"><FlowChart /></div>
               <ul>
                 {FLOW.map(({ who, v }, k) => (
                   <li key={who}>

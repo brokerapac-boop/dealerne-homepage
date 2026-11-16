@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
 import { KAKAO, SPRING, SOFT, usePin, Up } from './kit';
+import { VizJargon, VizLot, VizNoStop } from './Viz';
 
 /* ---------- 모의거래: 막히는 세 곳 + 미션 네 개 ---------- */
 const MISSIONS = [
@@ -23,16 +24,13 @@ export function Demo() {
           <Up as="p" className="eyebrow">처음이라면</Up>
           <Up as="h2" className="big">처음엔 누구나<br />같은 곳에서 막힙니다</Up>
           <div className="three stuck">
-            <Up as="article" className="card" i={0}><span className="num">01</span><h3>용어부터 낯설다</h3><p>랏, 핍, 증거금, 스왑. 뜻을 모른 채 주문 창을 엽니다.</p></Up>
-            <Up as="article" className="card" i={1}>
+            <Up as="article" className="card vcard" i={0}><div className="vbox"><VizJargon /></div><span className="num">01</span><h3>용어부터 낯설다</h3><p>랏, 핍, 증거금, 스왑. 뜻을 모른 채 주문 창을 엽니다.</p></Up>
+            <Up as="article" className="card vcard" i={1}>
+              <div className="vbox"><VizLot /></div>
               <span className="num">02</span><h3>랏 한 자리가 100배</h3>
-              <div className="lots" aria-hidden="true">
-                <p><span>입력한 수량 1.00 = 100온스</span><motion.i className="bad" initial={{ scaleX: 0.01 }} whileInView={{ scaleX: 1 }} viewport={{ once: true, amount: 1 }} transition={{ ...SOFT, delay: 0.5 }} /></p>
-                <p><span>의도한 수량 0.01 = 1온스</span><i className="good" /></p>
-              </div>
               <p>골드 1랏은 100온스입니다. 0.01 대신 1.00을 넣으면 100배 크기로 주문됩니다.</p>
             </Up>
-            <Up as="article" className="card" i={2}><span className="num">03</span><h3>손절 없이 들어간다</h3><p>손절가를 비워 두면 손실이 어디서 멈출지 정해지지 않습니다.</p></Up>
+            <Up as="article" className="card vcard" i={2}><div className="vbox"><VizNoStop /></div><span className="num">03</span><h3>손절 없이 들어간다</h3><p>손절가를 비워 두면 손실이 어디서 멈출지 정해지지 않습니다.</p></Up>
           </div>
         </div>
       </section>

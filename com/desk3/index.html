@@ -1,240 +1,1257 @@
-<!doctype html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" class="dark scroll-smooth">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex">
-<title>딜러네 데스크 | 모의투자금으로 먼저 연습하고 실전으로</title>
-<meta name="description" content="모의투자금 $10,000 모의계좌에서 주문과 손절 설정을 먼저 연습합니다. 딜러네 데스크가 1:1로 안내합니다.">
-<meta property="og:title" content="딜러네 데스크 | 모의투자금으로 먼저 연습하고 실전으로">
-<meta property="og:description" content="모의투자금 $10,000 모의계좌에서 주문과 손절 설정을 먼저 연습합니다.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://dealerne.com/og.png">
-<meta name="theme-color" content="#07090F">
-<link rel="icon" href="../favicon.ico" sizes="48x48">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="d3.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex">
+  <title>딜러네 데스크 | 모의투자금으로 먼저 연습하고 실전으로</title>
+  <meta name="description" content="모의투자금 $10,000 모의계좌에서 주문과 손절 설정을 먼저 연습합니다. 딜러네 데스크가 1:1로 안내합니다.">
+  <meta name="theme-color" content="#07090F">
+  <link rel="icon" href="../favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    :root {
+      --bg-base: #07090f;
+      --card-base: #111520;
+      --card-elevated: #161b2a;
+      --gold-main: #f5c451;
+      --kakao-yellow: #fee500;
+    }
+    body {
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(245, 196, 81, 0.08) 0%, rgba(7, 9, 15, 0) 52%),
+        radial-gradient(circle at 85% 35%, rgba(56, 189, 248, 0.04) 0%, rgba(7, 9, 15, 0) 45%);
+      color: #f3f4f6;
+      font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      word-break: keep-all;       /* 한글이 단어 중간에서 끊기지 않게 */
+      overflow-wrap: anywhere;
+    }
+    h1, h2 { text-wrap: balance; }
+    p, li, span, label, td, div { text-wrap: pretty; }
+    .num-tab {
+      font-family: 'Inter', 'Pretendard', sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+    .gold-highlight-form {
+      background: linear-gradient(155deg, rgba(245, 196, 81, 0.13) 0%, rgba(18, 23, 36, 0.98) 36%, rgba(245, 196, 81, 0.06) 100%);
+      border: 1.5px solid rgba(245, 196, 81, 0.48);
+      box-shadow: 0 20px 50px -15px rgba(245, 196, 81, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .demo-account-widget {
+      background: linear-gradient(135deg, rgba(25, 33, 52, 0.95) 0%, rgba(15, 20, 32, 0.98) 100%);
+      border: 1px solid rgba(245, 196, 81, 0.28);
+    }
+    .danger-loss-card {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(127, 29, 29, 0.24) 100%);
+      border: 1.5px solid rgba(248, 113, 113, 0.65);
+      box-shadow: 0 0 28px -6px rgba(239, 68, 68, 0.32);
+    }
+    .upgrade-badge {
+      display: none;
+    }
+    body.show-annotations .upgrade-badge {
+      display: inline-flex;
+    }
+    body.show-annotations .upgrade-ring {
+      outline: 1.5px dashed rgba(245, 196, 81, 0.55);
+      outline-offset: 4px;
+    }
+    @keyframes pulseSoft {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.92); }
+    }
+    .pulse-dot {
+      animation: pulseSoft 2s infinite ease-in-out;
+    }
+  </style>
 </head>
-<body>
+<body class="min-h-screen pb-32">
 
-<header class="top">
-  <a class="brand" href="#start" aria-label="딜러네 데스크 처음으로"><img src="../logo.webp" alt="" width="32" height="32"><span>딜러네 데스크</span></a>
-  <a class="top-link" href="../academy3/">아카데미</a>
-</header>
-<p class="sample-flag">SAMPLE DRAFT · 요약 시안</p>
+  <!-- 상단 고정 프로토타입 리뷰 컨트롤 바 & 네비게이션 -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#07090f]/85 border-b border-white/10">
+    <div class="max-w-[560px] mx-auto px-4 h-14 flex items-center justify-between gap-2">
+      <a href="#top-hero" class="flex items-center gap-2.5 group">
+        <span class="w-8 h-8 rounded-lg bg-amber-400 text-gray-950 font-extrabold text-sm flex items-center justify-center shadow-sm">딜</span>
+        <div class="flex flex-col">
+          <span class="font-bold text-[15px] tracking-tight text-white leading-none">딜러네 데스크</span>
+          <span class="hidden sm:block text-[11px] text-amber-300/90 mt-0.5 font-medium">모의계좌 · 실전 세팅 1:1 안내</span>
+        </div>
+      </a>
 
-<main id="start">
-
-  <!-- 1. 약속 -->
-  <section class="sec hero" aria-labelledby="h-hero">
-    <p class="tag">주식은 해봤지만 해외선물은 처음이신가요?</p>
-    <h1 id="h-hero"><span class="s">모의투자금 <em class="hl">$10,000</em>로</span> <span class="s">충분히 연습한 뒤,</span> <span class="s">준비됐을 때</span> <span class="s">실전을 시작하세요</span></h1>
-    <div class="demo-card" role="group" aria-label="모의계좌 예시">
-      <p class="demo-top"><span>MT5 모의계좌 <i>예시</i></span><b>내 돈 입금 0원</b></p>
-      <p class="demo-amt"><small>가상 증거금</small>$10,000.00</p>
+      <div class="flex items-center gap-2">
+        <button id="btn-toggle-annotations" type="button" class="hidden sm:inline-flex whitespace-nowrap text-xs px-2.5 py-1.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35 hover:bg-amber-400/25 transition font-medium">
+          개선 배지 OFF
+        </button>
+        <button id="btn-open-academy" type="button" class="whitespace-nowrap text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10 transition font-medium">
+          딜러네 아카데미
+        </button>
+      </div>
     </div>
-    <ul class="checks">
-      <li><span class="s">첫 주문 방법부터 손절 설정까지</span> <span class="s">1:1로 차근차근 안내합니다</span></li>
-      <li><span class="s">모의계좌로 시작해</span> <span class="s">실제 내 돈은 전혀 들지 않습니다</span></li>
-      <li><span class="s">모든 상담은 카카오톡으로</span> <span class="s">부담 없이 무료 진행됩니다</span></li>
-    </ul>
-    <a class="jump" href="#calc" id="heroJump">수량 계산기 체험하기 <i aria-hidden="true">↓</i></a>
-  </section>
+  </header>
 
-  <!-- 2. 내 경우 -->
-  <section class="sec" id="calc" aria-labelledby="h-calc">
-    <h2 id="h-calc"><span class="s">0.01랏과 1.00랏,</span> <span class="s">손익은 <em class="hl">100배</em> 차이 납니다</span></h2>
-    <p class="body"><span class="s">입문자가 가장 많이 실수하는 것이 '주문 수량(랏)'입니다.</span> <span class="s">직접 눌러 손익 변화를 확인해 보세요.</span></p>
+  <p class="max-w-[560px] mx-auto px-4 pt-3 text-[11px] font-bold tracking-wider text-amber-400">SAMPLE DRAFT · 전환형 시안</p>
 
-    <p class="label" id="l-inst">거래 종목</p>
-    <div class="seg" role="radiogroup" aria-labelledby="l-inst" id="calcInst">
-      <button type="button" role="radio" aria-checked="true" data-k="gold">골드</button>
-      <button type="button" role="radio" aria-checked="false" data-k="nas">나스닥100</button>
-      <button type="button" role="radio" aria-checked="false" data-k="wti">WTI 원유</button>
-      <button type="button" role="radio" aria-checked="false" data-k="eur">EUR/USD</button>
+  <!-- 데스크톱 우측 플로팅 요약 카드 (넓은 화면 여백 해소) -->
+  <aside class="hidden xl:flex fixed right-8 top-24 w-64 flex-col gap-3 bg-[#111520]/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 z-30">
+    <div class="flex items-center justify-between">
+      <span class="text-xs font-semibold text-amber-300">현재 선택 조건</span>
+      <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">실시간 연동</span>
     </div>
-
-    <p class="label" id="l-lot">주문 수량 (Lot)</p>
-    <div class="seg" role="radiogroup" aria-labelledby="l-lot" id="calcLot">
-      <button type="button" role="radio" aria-checked="true" data-v="0.01">0.01</button>
-      <button type="button" role="radio" aria-checked="false" data-v="0.1">0.10</button>
-      <button type="button" role="radio" aria-checked="false" data-v="1">1.00</button>
+    <div class="bg-[#0b0e17] rounded-xl p-3 border border-white/5">
+      <div class="text-xs text-gray-400">계산기 기준 종목 · 수량</div>
+      <div id="aside-selected-lot" class="text-sm font-bold text-white mt-0.5 num-tab">골드 · 0.01랏 (1온스)</div>
+      <div id="aside-selected-risk" class="text-xs text-emerald-400 mt-1 num-tab">손절 시 -$5.00 (입문 권장)</div>
     </div>
+    <nav class="flex flex-col gap-1 text-xs text-gray-300">
+      <a href="#sec-calc" class="px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition flex justify-between"><span>1. 주문 수량 계산기</span><span>→</span></a>
+      <a href="#sec-chart" class="px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition flex justify-between"><span>2. 진입 전 손절 기준</span><span>→</span></a>
+      <a href="#sec-kakao" class="px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition flex justify-between"><span>3. 카톡 상담 미리보기</span><span>→</span></a>
+      <a href="#sec-apply" class="px-2.5 py-1.5 rounded-lg bg-amber-400/15 text-amber-300 font-semibold transition flex justify-between"><span>4. 1:1 무료 상담 신청</span><span>→</span></a>
+    </nav>
+  </aside>
 
-    <div class="result" aria-live="polite">
-      <p class="result-size"><span id="rLot">0.01랏 · 계약 크기</span><b id="rSize">1온스</b></p>
-      <dl class="rows">
-        <div><dt id="rMoveL">시세가 $1 움직일 때</dt><dd class="mv" id="rMove">$1.00</dd></div>
-        <div id="rStopRow"><dt id="rStopL">손절가(−$5) 도달 시</dt><dd class="neg" id="rStop">−$5.00</dd></div>
-        <div><dt id="rTgtL">목표가(+$10) 도달 시</dt><dd class="pos" id="rTgt">+$10.00</dd></div>
-      </dl>
-      <p class="hot-msg" id="rHot" hidden></p>
-      <p class="note" id="rNote"><span class="s">계산 기준: 골드 1랏 = 100온스 ·</span> <span class="s">손절 −$5 · 목표 +$10 (수수료 제외) ·</span> <span class="s">세부 계약 단위는 브로커마다 다를 수 있습니다.</span></p>
-      <p class="note warn"><span class="s">레버리지 상품은 투자 원금을 초과하는</span> <span class="s">손실이 발생할 수 있습니다.</span> <span class="s">위 수치는 이해를 돕기 위한 단순 계산 예시이며,</span> <span class="s">실제 수익을 보장하지 않습니다.</span></p>
-    </div>
-  </section>
+  <!-- 메인 단일 컬럼 컨테이너 -->
+  <main id="top-hero" class="max-w-[560px] mx-auto px-4 pt-5 space-y-5">
 
-  <!-- 3. 화면 예시 -->
-  <section class="sec" id="board" aria-labelledby="h-board">
-    <h2 id="h-board"><span class="s">진입하기 전에</span> <span class="s"><em class="hl">'어디서 나올지'</em>부터</span> <span class="s">먼저 정합니다</span></h2>
-    <div class="tabs" role="tablist" aria-label="예시 종목" id="bdTabs">
-      <button type="button" role="tab" aria-selected="true" data-k="nas">나스닥100 <i class="st buy">매수</i></button>
-      <button type="button" role="tab" aria-selected="false" data-k="gold">골드 <i class="st sell">매도</i></button>
-      <button type="button" role="tab" aria-selected="false" data-k="wti">WTI 원유 <i class="st wait">관망</i></button>
-    </div>
-    <div class="chart" id="bdChart" role="img" aria-label="선택한 종목의 예시 차트. 실제 시세가 아닙니다."></div>
-    <dl class="rows three">
-      <div><dt>진입가</dt><dd id="bdEntry">—</dd></div>
-      <div><dt>손절가</dt><dd id="bdStop">—</dd></div>
-      <div><dt>목표가</dt><dd id="bdTarget">—</dd></div>
-    </dl>
-    <p class="note"><span class="s">이해를 돕기 위한 300틱 시뮬레이션 화면이며,</span> <span class="s">실시간 시세나 매매 시그널이 아닙니다.</span> <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a></p>
-  </section>
-
-  <!-- 4. 방법 -->
-  <section class="sec" id="how" aria-labelledby="h-how">
-    <h2 id="h-how"><span class="s">입문부터 실전까지,</span> <span class="s"><em class="hl">3단계</em>로 시작하세요</span></h2>
-    <ol class="steps">
-      <li><b>1:1 카톡 상담 신청</b><span><span class="s">간단히 이름과 연락처를 남기시면</span> <span class="s">카카오톡 상담방이 열립니다</span></span></li>
-      <li><b>모의계좌 미션 연습</b><span><span class="s">4가지 기초 미션을 직접 실습하며</span> <span class="s">적정 주문 수량과 손절가 계산법을 익힙니다</span></span></li>
-      <li><b>맞춤 플랫폼 비교·세팅</b><span><span class="s">거래 조건을 비교해 나에게 맞는 곳을 고르고,</span> <span class="s">초기 계좌·차트 세팅까지 함께 마칩니다</span></span></li>
-    </ol>
-    <div class="chat" role="group" aria-label="신청 후 카카오톡 상담 예시">
-      <p class="chat-head"><b>신청 후 카톡 상담 예시</b><span>예시 화면</span></p>
-      <p class="bub me" id="chatMe">안녕하세요, 홈페이지에서 상담 신청했습니다. 모의계좌부터 연습해 보고 싶어요.</p>
-      <p class="bub you"><b>딜러네 데스크</b>반갑습니다. 상담은 카카오톡 채팅으로 차근차근 안내해 드립니다.</p>
-      <p class="bub you card"><b>첫 번째 실습 가이드</b>$10,000 모의계좌 개설과 0.01랏 손절 설정 방법</p>
-      <p class="note"><span class="s">이해를 돕기 위한 예시 화면이며,</span> <span class="s">실제 안내 내용은 다를 수 있습니다.</span></p>
-    </div>
-  </section>
-
-  <!-- 5. 비교 -->
-  <section class="sec" id="platforms" aria-labelledby="h-plat">
-    <h2 id="h-plat"><span class="s">실전 거래 플랫폼,</span> <span class="s">조건을 투명하게</span> <span class="s"><em class="hl">비교하고</em> 고르세요</span></h2>
-    <table class="cmp">
-      <caption>실전 플랫폼 조건 비교</caption>
-      <thead><tr><th scope="col"></th><th scope="col">HFM</th><th scope="col">XM</th></tr></thead>
-      <tbody>
-        <tr><th scope="row"><span class="s">최소</span> <span class="s">입금액</span></th><td>$0 <small><span class="s">프로(Pro) 외</span> <span class="s">일반 계좌</span></small></td><td>$5</td></tr>
-        <tr><th scope="row"><span class="s">지원</span> <span class="s">계좌 유형</span></th><td><span class="s">센트 · 프리미엄</span> <span class="s">제로 · 프로</span></td><td>마이크로 계좌 <small>1랏 = 1,000단위</small></td></tr>
-        <tr><th scope="row">참고 사항</th><td><span class="s">센트 계좌는</span> <span class="s">환율(FX)·골드</span> <span class="s">종목만 거래 가능</span></td><td><span class="s">가입 관할</span> <span class="s">법인에 따라</span> <span class="s">개설 가능</span> <span class="s">계좌가 다름</span></td></tr>
-      </tbody>
-    </table>
-    <p class="note"><span class="s">이지스퀘어 및 국내 증권사 해외선물(HTS)</span> <span class="s">거래 조건도 함께 정리 중이며,</span> <span class="s">상담 시 자세히 안내해 드립니다.</span></p>
-    <p class="note warn"><span class="s">해외 브로커는 가입 법인에 따라</span> <span class="s">금융 규제 기관과 세부 조건이 달라지므로,</span> <span class="s">계좌 개설 전에 1:1로 함께 체크해 드립니다.</span></p>
-  </section>
-
-  <!-- 6. 걸리는 점: 필요한 사람만 열어 봅니다 -->
-  <section class="sec" id="faq" aria-labelledby="h-faq">
-    <h2 id="h-faq"><em class="hl">자주 묻는</em> 질문</h2>
-    <div class="faq">
-      <details data-q="signal">
-        <summary>시그널만 그대로 따라 하면 되나요?</summary>
-        <p><span class="s">아닙니다. 시그널은 시장 흐름을 읽는 참고 자료일 뿐,</span> <span class="s">빗나가는 날도 분명히 있습니다.</span> <span class="s">진입 여부와 주문 수량, 손절·익절 위치는</span> <span class="s">투자자 본인이 직접 판단하고 결정하실 수 있도록 돕습니다.</span></p>
-      </details>
-      <details data-q="beginner">
-        <summary>전문 용어를 하나도 모르는데 시작할 수 있을까요?</summary>
-        <p><span class="s">물론입니다. 랏(Lot), 핍(Pip), 증거금 같은</span> <span class="s">가장 기초적인 개념부터 차근차근 함께 짚어드립니다.</span> <span class="s">체계적인 기초 학습이 필요하신 분들을 위해</span> <span class="s"><a href="https://dealerne.com/#academy">딜러네 아카데미</a> 과정도 마련되어 있습니다.</span></p>
-      </details>
-      <details data-q="money">
-        <summary>처음부터 돈을 입금해야 시작할 수 있나요?</summary>
-        <p><span class="s">아닙니다. 1:1 상담은 무료이며,</span> <span class="s">첫 연습은 전액 모의투자금으로 진행됩니다.</span> <span class="s">실제 입금은 기초 미션을 모두 마친 뒤에</span> <span class="s">고려하셔도 늦지 않으며,</span> <span class="s">실전 전환 여부 역시 본인이 직접 결정하시면 됩니다.</span></p>
-      </details>
-      <details data-q="timing">
-        <summary>상담받으면 당장 실전 거래를 시작해야 하나요?</summary>
-        <p><span class="s">전혀 서두르실 필요 없습니다.</span> <span class="s">모의계좌 연습은 편하실 때 언제든 시작하실 수 있고,</span> <span class="s">충분히 익숙해진 뒤 실전으로 넘어가는 시점도</span> <span class="s">전적으로 본인의 속도에 맞추시면 됩니다.</span></p>
-      </details>
-      <details data-q="profit">
-        <summary>원금이나 수익이 보장되나요?</summary>
-        <p><span class="s">아닙니다. 어떤 경우에도 수익은 보장되지 않습니다.</span> <span class="s">해외선물·CFD·FX 등 레버리지 파생상품은</span> <span class="s">시장 변동에 따라 투자 원금을 초과하는</span> <span class="s">손실이 발생할 수 있으므로</span> <span class="s">철저한 리스크 관리가 필수입니다.</span></p>
-      </details>
-      <details data-q="why-demo">
-        <summary>왜 번거롭게 모의계좌부터 연습하나요?</summary>
-        <p><span class="s">선물 거래 입문자가 처음 겪는 실수는 대부분 비슷합니다.</span> <span class="s">소중한 내 돈으로 시행착오를 겪지 않도록</span> <span class="s">모의계좌에서 먼저 경험해 보는 과정입니다.</span></p>
-        <ul>
-          <li><b>낯선 기본 용어</b> 랏(Lot), 핍(Pip), 증거금 개념이 주식과 달라 처음엔 헷갈리기 쉽습니다.</li>
-          <li><b>주문 수량 실수</b> 소수점 한 자리만 잘못 입력해도 실제 주문 규모가 100배로 커집니다.</li>
-          <li><b>손절 미설정의 위험</b> 손절가를 비워 두면 급변동 장세에서 손실이 감당하기 어려운 수준까지 커질 수 있습니다.</li>
-        </ul>
-      </details>
-      <details data-q="foreign-futures">
-        <summary>유튜브 영상에서 자주 듣던 '외국인 선물 수급'이 뭔가요?</summary>
-        <p><span class="s">선물(Futures)은 주가지수나 원자재를</span> <span class="s">정해진 조건으로 사고파는 파생상품 계약입니다.</span> <span class="s">외국인의 선물 매매 흐름이 주식(현물) 시장의</span> <span class="s">프로그램 매수·매도로 이어질 수 있어</span> <span class="s">시황 브리핑에서 함께 다룹니다.</span> <span class="s">다만 선물 수급만으로</span> <span class="s">다음 날 지수 방향이 결정되는 것은 아닙니다.</span></p>
-      </details>
-      <details data-q="not-for">
-        <summary>어떤 분들께는 선물 거래를 권하지 않나요?</summary>
-        <p>아래에 해당하시는 분께는 시작을 권하지 않습니다.</p>
-        <ul>
-          <li>단기간에 일확천금이나 무리한 고수익을 기대하시는 분</li>
-          <li>여유 자금이 아닌 생활비나 대출금으로 투자하려는 분</li>
-          <li>손절 원칙 없이 무조건 버티기(물타기) 방식으로 매매하려는 분</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-
-  <!-- 7. 시작 -->
-  <section class="sec cta" id="apply" aria-labelledby="h-apply">
-    <p class="tag">카카오톡 채팅 상담 · 무료</p>
-    <h2 id="h-apply"><span class="s">1:1 <em class="hl">무료</em></span> <span class="s">카카오톡 상담 신청</span></h2>
-    <p class="body"><span class="s">연락처를 남겨주시면 카톡 상담방이 열리며,</span> <span class="s">모의계좌 개설과 첫 미션부터</span> <span class="s">차근차근 안내해 드립니다.</span></p>
-
-    <form name="desk3-consult" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="form" novalidate>
-      <input type="hidden" name="form-name" value="desk3-consult">
-      <p hidden><label>Skip <input name="bot-field"></label></p>
-
-      <p class="label" id="l-kind">어떤 단계부터 시작하고 싶으신가요?</p>
-      <div class="opts" role="radiogroup" aria-labelledby="l-kind">
-        <label class="opt"><input type="radio" name="kind" value="모의투자부터" checked><span><b>모의투자부터 차근차근</b><small><span class="s">선물 거래가 처음이거나</span> <span class="s">MT5 사용법이 낯선 분</span></small></span></label>
-        <label class="opt"><input type="radio" name="kind" value="실전 플랫폼 연결"><span><b>실전 플랫폼 바로 연결</b><small><span class="s">거래 경험이 있어</span> <span class="s">브로커 비교·세팅만 필요한 분</span></small></span></label>
+    <!-- SECTION 1: 히어로 카드 + $10,000 모의계좌 실체 배지 (개선 포인트 1) -->
+    <section class="relative bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7 upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+        <span>UI 개선 01</span>
+        <span>·</span>
+        <span>첫 화면 $10,000 모의계좌 시각 훅 추가</span>
       </div>
 
-      <label class="field"><span class="label">이름 (또는 닉네임)</span><input name="fullname" required autocomplete="name" maxlength="20" placeholder="홍길동"></label>
-      <label class="field"><span class="label">휴대폰 번호 <small>상담 연락에만 씁니다</small></span><input name="phone" type="tel" inputmode="numeric" required autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></label>
-      <label class="agree"><input type="checkbox" name="consent" required><span><span class="s">[필수] 1:1 상담 안내를 위한</span> <span class="s">개인정보(이름 또는 닉네임, 휴대폰 번호)</span> <span class="s">수집·이용에 동의합니다.</span></span></label>
+      <!-- 채널 신뢰 마이크로 배지 -->
+      <div class="flex flex-wrap items-center gap-2 mb-3.5">
+        <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-white/5 text-gray-200 border border-white/10">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          @딜러네 유튜브 시황 공식 데스크
+        </span>
+        <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+          주식은 해봤지만 해외선물은 처음인 분
+        </span>
+      </div>
 
-      <input type="hidden" name="calc" id="calcField" value="">
-      <input type="hidden" name="src" id="srcField" value="">
-      <p class="note" id="calcCarry" hidden></p>
-      <p class="err" id="formErr" role="alert" hidden></p>
-      <button class="btn-main" type="submit" id="submitBtn">무료 상담 신청하고 카톡방 열기</button>
-      <p class="note"><span class="s">상담 후 꼭 계좌를 개설하지 않으셔도 괜찮습니다.</span> <span class="s">딜러네 데스크는 투자자문·리딩이나</span> <span class="s">수익 보장을 일절 제공하지 않습니다.</span></p>
-    </form>
+      <h1 class="text-[26px] sm:text-[30px] font-extrabold leading-[1.32] tracking-tight text-white">
+        모의투자금 <span class="text-amber-400 num-tab">$10,000</span>로<br class="sm:hidden" /> 충분히 연습한 뒤,<br />
+        준비됐을 때 실전을 시작하세요
+      </h1>
 
-    <div class="done" id="done" role="status" hidden>
-      <h3>신청이 접수됐습니다</h3>
-      <p class="body"><span class="s">지금 하실 일은 하나입니다.</span> <span class="s">상담방에 들어와 <b id="doneName"></b> 이름을 남겨 주세요.</span></p>
-      <a class="btn-main" href="https://open.kakao.com/o/gZ4c0RWi" target="_blank" rel="noopener" id="doneKakao">카카오톡 상담방 열기</a>
-      <h3 class="sub-h">상담방에서 이어서 하는 일</h3>
-      <ol class="mini">
-        <li>MT5 설치와 모의 계좌 만들기</li>
-        <li>첫 주문 넣기 (0.01랏)</li>
-        <li>손절과 익절 함께 설정하기</li>
-        <li>시그널대로 주문해 보고 매매 일지 남기기</li>
-      </ol>
-      <a class="btn-sub" href="https://t.me/dealerne" target="_blank" rel="noopener">텔레그램 채널 보기</a>
+      <!-- 신규 추가된 MT5 $10,000 모의계좌 실체 프리뷰 위젯 -->
+      <div class="demo-account-widget rounded-2xl p-4 mt-5">
+        <div class="flex items-center justify-between gap-2 pb-3 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 pulse-dot"></span>
+            <span class="text-xs font-semibold tracking-wide text-gray-200 num-tab">MT5 DEMO ACCOUNT · 무료 실습 계좌</span>
+          </div>
+          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">
+            내 돈 입금 ₩0
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-3 items-end">
+          <div>
+            <div class="text-xs text-gray-400">기본 지급 가상 증거금</div>
+            <div class="text-xl min-[380px]:text-2xl sm:text-[28px] whitespace-nowrap font-extrabold text-white num-tab tracking-tight mt-0.5">$10,000.00</div>
+          </div>
+          <div class="bg-[#0a0d16] rounded-xl p-2.5 border border-white/5">
+            <div class="flex items-center justify-between text-[11px] text-gray-400">
+              <span>실습 미션 진행도</span>
+              <span class="text-amber-300 font-semibold num-tab">4단계 코칭</span>
+            </div>
+            <div class="grid grid-cols-4 gap-1 mt-2">
+              <div class="h-1.5 rounded-full bg-amber-400"></div>
+              <div class="h-1.5 rounded-full bg-amber-400/50"></div>
+              <div class="h-1.5 rounded-full bg-white/15"></div>
+              <div class="h-1.5 rounded-full bg-white/15"></div>
+            </div>
+            <button id="btn-preview-missions" type="button" class="text-[11px] text-amber-300 hover:underline mt-1.5 inline-flex items-center gap-1">
+              <span>4가지 기초 미션 미리보기</span>
+              <span id="mission-chevron">▾</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 토글형 4가지 미션 요약 서랍 -->
+        <div id="mission-drawer" class="hidden mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+            <span class="text-amber-400 font-bold num-tab">M1.</span> <span class="text-gray-200">MT5 모의계좌 개설·로그인</span>
+          </div>
+          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+            <span class="text-amber-400 font-bold num-tab">M2.</span> <span class="text-gray-200">0.01 최소 랏 주문 테스트</span>
+          </div>
+          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+            <span class="text-amber-400 font-bold num-tab">M3.</span> <span class="text-gray-200">진입 전 손절·익절가 동시 입력</span>
+          </div>
+          <div class="bg-[#090c14] rounded-lg p-2.5 border border-white/5">
+            <span class="text-amber-400 font-bold num-tab">M4.</span> <span class="text-gray-200">계좌 대비 1회 손실폭 계산</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 체크리스트 3줄 -->
+      <ul class="space-y-2.5 mt-5 text-[14px] sm:text-[15px] text-gray-200">
+        <li class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+          <span>첫 주문부터 손절라인 설정까지 <strong>1:1로 함께 잡아드립니다</strong></span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+          <span>모의계좌로 시작해 <strong>실제 내 돈은 전혀 들지 않습니다</strong></span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+          <span>전화 영업 없이 <strong>모든 상담은 카카오톡으로 무료 진행됩니다</strong></span>
+        </li>
+      </ul>
+
+      <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between gap-2">
+        <span class="text-xs text-gray-400">수량 실수가 왜 위험한지 아래에서 직접 눌러보세요</span>
+        <a href="#sec-calc" class="text-xs font-semibold text-amber-300 hover:text-amber-200 inline-flex items-center gap-1 shrink-0">
+          <span>수량 계산기 체험</span>
+          <span>↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- SECTION 2: 주문 수량(랏) 계산기 + 1.00랏 손실 경고 대비 극대화 (개선 포인트 2) -->
+    <section id="sec-calc" class="bg-[#141927] border border-white/10 rounded-3xl p-6 sm:p-7 upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+        <span>UI 개선 02</span>
+        <span>·</span>
+        <span>1.00랏 클릭 시 100배 손실 레드 경고 대비 강화</span>
+      </div>
+
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+        0.01랏과 1.00랏, 손익은 <span class="text-amber-400 num-tab">100배</span> 차이 납니다
+      </h2>
+      <p class="text-sm text-gray-300 mt-1.5 leading-relaxed">
+        입문자가 가장 많이 실수하는 것이 '주문 수량(랏)'입니다. <strong class="text-amber-300 font-semibold">1.00랏</strong>을 직접 눌러 손실 폭 변화를 확인해 보세요.
+      </p>
+
+      <!-- 거래 종목 선택 탭 -->
+      <div class="mt-5">
+        <div class="text-xs font-semibold text-gray-400 mb-2">거래 종목</div>
+        <div id="asset-tabs" class="grid grid-cols-4 gap-2">
+          <button type="button" data-asset="gold" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-amber-400/15 border-amber-400 text-amber-300">골드</button>
+          <button type="button" data-asset="nasdaq" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">나스닥100</button>
+          <button type="button" data-asset="oil" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">WTI 원유</button>
+          <button type="button" data-asset="eurusd" class="calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">EUR/USD</button>
+        </div>
+      </div>
+
+      <!-- 주문 수량 선택 탭 -->
+      <div class="mt-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold text-gray-400">주문 수량 (Lot)</span>
+          <span id="lot-risk-pill" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+            입문 연습 권장 단위 (1배)
+          </span>
+        </div>
+        <div id="lot-tabs" class="grid grid-cols-3 gap-2 num-tab">
+          <button type="button" data-lot="0.01" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-amber-400/15 border-amber-400 text-amber-300">
+            0.01 <span class="text-[11px] font-normal block sm:inline opacity-85">최소 연습</span>
+          </button>
+          <button type="button" data-lot="0.10" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">
+            0.10 <span class="text-[11px] font-normal block sm:inline opacity-75">10배 변동</span>
+          </button>
+          <button type="button" data-lot="1.00" class="calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-red-500/35 text-red-300 hover:bg-red-500/10">
+            1.00 <span class="text-[11px] font-semibold block sm:inline text-red-400">100배 주의!</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 결과 요약 카드 -->
+      <div class="mt-5 bg-[#0b0e17] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span id="res-lot-badge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 num-tab">0.01랏</span>
+            <span id="res-unit-badge" class="text-xs text-gray-300 font-medium">계약 크기 1온스</span>
+          </div>
+          <span id="res-mult-label" class="text-xs text-gray-400 num-tab">기준 변동폭 × 1배</span>
+        </div>
+
+        <div class="flex items-center justify-between py-1 text-sm">
+          <span id="res-tick-label" class="text-gray-300">시세가 $1 움직일 때</span>
+          <span id="res-tick-val" class="font-bold text-white num-tab">$1.00 변동</span>
+        </div>
+
+        <!-- 손절 도달 시 (1.00랏 선택 시 강렬한 레드 경고 박스로 변신) -->
+        <div id="loss-highlight-box" class="rounded-xl p-3.5 bg-white/[0.03] border border-white/10 transition-all duration-200 flex items-center justify-between gap-2">
+          <div>
+            <div id="res-sl-label" class="text-sm font-medium text-gray-200">손절가(-$5) 도달 시</div>
+            <div id="res-sl-sub" class="text-[11px] text-gray-400 mt-0.5">$10,000 모의계좌의 0.05% 수준</div>
+          </div>
+          <div id="res-sl-val" class="text-base sm:text-lg font-extrabold text-sky-400 num-tab shrink-0">-$5.00 손실</div>
+        </div>
+
+        <!-- 1.00랏 전용 경고 콜아웃 배너 -->
+        <div id="lot-danger-banner" class="hidden rounded-xl px-3.5 py-3 bg-red-500/15 border border-red-400/40 text-xs text-red-200 leading-relaxed">
+          <strong class="text-red-300 font-bold block mb-0.5">소수점 입력 실수 하나로 손실이 100배 커졌습니다!</strong>
+          처음부터 실전 계좌에서 이 실수를 겪지 않도록, 딜러네 데스크에서는 <strong>0.01랏 모의계좌 미션</strong>부터 1:1로 확인합니다.
+        </div>
+
+        <div class="flex items-center justify-between py-1 text-sm">
+          <span id="res-tp-label" class="text-gray-300">목표가(+$10) 도달 시</span>
+          <span id="res-tp-val" class="font-bold text-emerald-400 num-tab">+$10.00 수익</span>
+        </div>
+
+        <p id="res-assumption" class="text-[11px] text-gray-400 pt-2 border-t border-white/5 leading-relaxed">
+          계산 기준: 골드 1랏 = 100온스 · 손절 -$5 · 목표 +$10 (수수료 제외) · 세부 계약 단위는 브로커마다 다를 수 있습니다.
+        </p>
+      </div>
+
+      <p class="text-[11px] text-gray-400 mt-3 leading-relaxed">
+        ※ 레버리지 상품은 투자 원금을 초과하는 손실이 발생할 수 있습니다. 위 수치는 이해를 돕기 위한 단순 계산 예시이며, 실제 수익을 보장하지 않습니다.
+      </p>
+    </section>
+
+    <!-- SECTION 3: 차트 예시 섹션 -->
+    <section id="sec-chart" class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+        진입하기 전에 <span class="text-amber-400">'어디서 나올지'</span>부터 먼저 정합니다
+      </h2>
+      <p class="text-sm text-gray-300 mt-1.5">
+        방향 예측보다 손절가와 목표가를 차트에 먼저 그어두는 습관을 만듭니다.
+      </p>
+
+      <!-- 차트 종목 탭 -->
+      <div class="grid grid-cols-3 gap-2 mt-4">
+        <button type="button" data-chart="nasdaq" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-amber-400/15 border-amber-400 text-white">
+          <span>나스닥100</span>
+          <span class="text-[11px] px-1.5 py-0.5 rounded bg-rose-500/25 text-rose-300 font-bold">매수</span>
+        </button>
+        <button type="button" data-chart="gold" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">
+          <span>골드</span>
+          <span class="text-[11px] px-1.5 py-0.5 rounded bg-sky-500/25 text-sky-300 font-bold">매도</span>
+        </button>
+        <button type="button" data-chart="oil" class="chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25">
+          <span>WTI 원유</span>
+          <span class="text-[11px] px-1.5 py-0.5 rounded bg-gray-500/25 text-gray-300 font-bold">관망</span>
+        </button>
+      </div>
+
+      <!-- 고정 높이 캔버스 차트 영역 -->
+      <div class="relative h-60 w-full mt-4 bg-[#090c14] rounded-2xl border border-white/10 overflow-hidden p-2">
+        <canvas id="sim-chart-canvas" class="w-full h-full block"></canvas>
+      </div>
+
+      <!-- 진입 / 손절 / 목표 요약 카드 -->
+      <div class="grid grid-cols-3 gap-2 mt-3 num-tab">
+        <div class="bg-[#0b0e17] border border-white/5 rounded-xl p-3 text-center">
+          <div class="text-[11px] text-amber-300 font-semibold">진입가</div>
+          <div id="chart-entry-val" class="text-sm sm:text-base font-bold text-white mt-0.5">21,590.5</div>
+        </div>
+        <div class="bg-[#0b0e17] border border-white/5 rounded-xl p-3 text-center">
+          <div class="text-[11px] text-sky-400 font-semibold">손절가</div>
+          <div id="chart-sl-val" class="text-sm sm:text-base font-bold text-sky-300 mt-0.5">21,476.2</div>
+        </div>
+        <div class="bg-[#0b0e17] border border-white/5 rounded-xl p-3 text-center">
+          <div class="text-[11px] text-emerald-400 font-semibold">목표가</div>
+          <div id="chart-tp-val" class="text-sm sm:text-base font-bold text-emerald-300 mt-0.5">21,819.0</div>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-gray-400 mt-3">
+        이해를 돕기 위한 300틱 시뮬레이션 화면이며, 실시간 시세나 매매 시그널이 아닙니다.
+      </p>
+    </section>
+
+    <!-- SECTION 4: 3단계 진행 가이드 + 실제 카카오톡 말풍선 목업 (개선 포인트 3) -->
+    <section id="sec-kakao" class="bg-[#141927] border border-white/10 rounded-3xl p-6 sm:p-7 upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+        <span>UI 개선 03</span>
+        <span>·</span>
+        <span>전화 영업 경계심을 없애는 실제 카톡 대화 목업 추가</span>
+      </div>
+
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+        입문부터 실전까지, <span class="text-amber-400">3단계</span>로 안전하게 시작하세요
+      </h2>
+
+      <div class="space-y-2.5 mt-4">
+        <div class="bg-[#0b0e17] border border-white/10 rounded-2xl p-4 flex items-start gap-3.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">01</span>
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-white">1:1 카톡 상담 신청</h3>
+            <p class="text-xs sm:text-sm text-gray-300 mt-0.5">간단히 이름과 연락처를 남기시면 전용 카카오톡 상담방이 열립니다.</p>
+          </div>
+        </div>
+        <div class="bg-[#0b0e17] border border-white/10 rounded-2xl p-4 flex items-start gap-3.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">02</span>
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-white">모의계좌 미션 연습</h3>
+            <p class="text-xs sm:text-sm text-gray-300 mt-0.5">4가지 기초 미션을 직접 실습하며 적정 주문 수량과 손절가 계산법을 익힙니다.</p>
+          </div>
+        </div>
+        <div class="bg-[#0b0e17] border border-white/10 rounded-2xl p-4 flex items-start gap-3.5">
+          <span class="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-300 font-extrabold text-xs flex items-center justify-center shrink-0 num-tab mt-0.5">03</span>
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-white">맞춤 플랫폼 비교·세팅</h3>
+            <p class="text-xs sm:text-sm text-gray-300 mt-0.5">거래 조건을 비교해 나에게 맞는 곳을 고르고, 초기 계좌·차트 세팅까지 함께 마칩니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 신규 추가: 실제 카카오톡 채팅방 미리보기 목업 -->
+      <div class="mt-5 rounded-2xl overflow-hidden border border-[#fee500]/30 bg-[#1b202c]">
+        <div class="px-4 py-2.5 bg-[#121620] border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-[#fee500] text-gray-950 font-extrabold text-[11px] flex items-center justify-center">톡</span>
+            <span class="text-xs font-bold text-gray-100">신청 직후 열리는 1:1 카톡 상담 예시</span>
+          </div>
+          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">전화 통화 없음</span>
+        </div>
+
+        <div class="p-4 space-y-3 text-xs leading-relaxed">
+          <!-- 사용자 말풍선 (계산기 연동) -->
+          <div class="flex justify-end">
+            <div class="max-w-[82%] rounded-2xl rounded-tr-sm px-3.5 py-2.5 bg-[#fee500] text-gray-950 font-medium shadow-sm">
+              안녕하세요! 홈페이지에서 상담 신청했습니다. 계산해 본 <strong id="kakao-preview-lot" class="font-extrabold">[골드 · 0.01랏]</strong> 기준으로 모의계좌부터 연습해보고 싶어요.
+            </div>
+          </div>
+
+          <!-- 상담 매니저 말풍선 -->
+          <div class="flex items-start gap-2.5">
+            <div class="w-7 h-7 rounded-xl bg-amber-400 text-gray-950 font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">딜</div>
+            <div class="space-y-2 max-w-[84%]">
+              <div class="text-[11px] text-gray-400">딜러네 데스크 전담 매니저</div>
+              <div class="rounded-2xl rounded-tl-sm px-3.5 py-2.5 bg-[#283042] text-gray-100">
+                반갑습니다! 딜러네 데스크는 <strong>불편한 전화 권유 없이 100% 카톡 채팅으로만</strong> 차근차근 안내해 드립니다.
+              </div>
+              <div class="rounded-2xl px-3.5 py-3 bg-[#0e121c] border border-amber-400/35 text-gray-200">
+                <div class="text-[11px] text-amber-300 font-bold mb-1">첫 번째 무료 실습 가이드 도착</div>
+                <div class="font-semibold text-white">내 돈 0원 · $10,000 모의계좌 개설 &amp; 0.01랏 손절 세팅법</div>
+                <div class="text-[11px] text-gray-400 mt-1">준비되실 때 편하게 확인 후 답장 주세요.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: 실전 플랫폼 비교 섹션 -->
+    <section class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+        실전 거래 플랫폼, 조건을 투명하게 <span class="text-amber-400">비교하고</span> 고르세요
+      </h2>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-[#0b0e17]">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-white/[0.04] border-b border-white/10">
+              <th class="py-3 px-3.5 text-gray-400 font-semibold w-[28%]">비교 항목</th>
+              <th class="py-3 px-3.5 text-amber-300 font-extrabold w-[36%]">HFM</th>
+              <th class="py-3 px-3.5 text-sky-300 font-extrabold w-[36%]">XM</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            <tr>
+              <td class="py-3.5 px-3.5 text-gray-400 font-medium">최소 입금액</td>
+              <td class="py-3.5 px-3.5">
+                <span class="font-bold text-white num-tab block">$0</span>
+                <span class="text-[11px] text-gray-400">프로(Pro) 외 일반 계좌</span>
+              </td>
+              <td class="py-3.5 px-3.5">
+                <span class="font-bold text-white num-tab block">$5</span>
+                <span class="text-[11px] text-gray-400">소액 시작 가능</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-3.5 text-gray-400 font-medium">지원 계좌 유형</td>
+              <td class="py-3.5 px-3.5 text-gray-200 leading-snug">센트 · 프리미엄 제로 · 프로</td>
+              <td class="py-3.5 px-3.5 text-gray-200 leading-snug">
+                <span class="block font-semibold text-white">마이크로 계좌</span>
+                <span class="text-[11px] text-gray-400 num-tab">1랏 = 1,000단위 (소액 연습용)</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-3.5 text-gray-400 font-medium">체크 포인트</td>
+              <td class="py-3.5 px-3.5 text-gray-300 leading-snug">센트 계좌는 환율(FX)·골드 종목만 거래 가능</td>
+              <td class="py-3.5 px-3.5 text-gray-300 leading-snug">가입 관할 법인에 따라 개설 가능 계좌가 다름</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-3.5 space-y-1.5 text-xs text-gray-400 leading-relaxed">
+        <p>• 이지스퀘어(EZSquare) 및 국내 증권사 해외선물(HTS) 거래 조건도 함께 정리 중이며, 상담 시 자세히 안내해 드립니다.</p>
+        <p>• 해외 브로커는 가입 법인에 따라 금융 규제 기관과 세부 조건이 달라지므로, 계좌 개설 전에 1:1로 함께 체크해 드립니다.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 6: 자주 묻는 질문 (FAQ 8문 8답) -->
+    <section class="bg-[#111520] border border-white/10 rounded-3xl p-6 sm:p-7">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+          <span class="text-amber-400">자주 묻는</span> 질문
+        </h2>
+        <span class="text-xs text-gray-400">궁금한 항목을 눌러보세요</span>
+      </div>
+
+      <div id="faq-list" class="space-y-2"></div>
+    </section>
+
+    <!-- SECTION 7: 골드 하이라이트 상담 신청 폼 (개선 포인트 4) -->
+    <section id="sec-apply" class="gold-highlight-form rounded-3xl p-6 sm:p-7 relative upgrade-ring">
+      <div class="upgrade-badge items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-400 text-gray-950 mb-3">
+        <span>UI 개선 04</span>
+        <span>·</span>
+        <span>골드 하이라이트 서피스 분리 &amp; 계산기 조건 실시간 매칭</span>
+      </div>
+
+      <div class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35 mb-3">
+        <span>안심 상담 약속</span>
+        <span>·</span>
+        <span>전화 권유 0건 · 100% 카톡 채팅 진행</span>
+      </div>
+
+      <h2 class="text-2xl font-extrabold text-white tracking-tight">
+        1:1 무료 카카오톡 상담 신청
+      </h2>
+      <p class="text-sm text-gray-200 mt-1.5 leading-relaxed">
+        연락처를 남겨주시면 전용 카톡 상담방이 열리며, 모의계좌 개설과 첫 미션부터 차근차근 안내해 드립니다.
+      </p>
+
+      <form id="consult-form" name="desk3-consult" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="mt-5 space-y-4" novalidate>
+        <input type="hidden" name="form-name" value="desk3-consult">
+        <p hidden><label>Skip <input name="bot-field"></label></p>
+        <input type="hidden" name="kind" id="field-kind" value="모의투자부터">
+        <input type="hidden" name="calc" id="field-calc" value="">
+        <input type="hidden" name="src" id="field-src" value="">
+        <!-- 시작 단계 카드형 라디오 -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-2">어떤 단계부터 시작하고 싶으신가요?</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="track-radio-group">
+            <button type="button" data-track="demo" class="track-card text-left p-3.5 rounded-2xl border-2 transition bg-amber-400/15 border-amber-400">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-bold text-white">모의투자부터 차근차근</span>
+                <span class="track-dot w-4 h-4 rounded-full border-2 border-amber-400 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                </span>
+              </div>
+              <p class="text-xs text-gray-300 mt-1">선물 거래가 처음이거나 MT5 사용법이 낯선 분</p>
+            </button>
+
+            <button type="button" data-track="live" class="track-card text-left p-3.5 rounded-2xl border transition bg-[#0b0e17]/90 border-white/15 hover:border-white/30">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-bold text-gray-200">실전 플랫폼 바로 연결</span>
+                <span class="track-dot w-4 h-4 rounded-full border-2 border-gray-500 flex items-center justify-center">
+                  <span class="w-2 h-2 rounded-full bg-transparent"></span>
+                </span>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">거래 경험이 있어 브로커 비교·세팅만 필요한 분</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- 이름 입력 -->
+        <div>
+          <label for="input-name" class="block text-xs font-semibold text-gray-300 mb-1.5">이름 (또는 닉네임)</label>
+          <input id="input-name" name="fullname" type="text" placeholder="홍길동" autocomplete="name" maxlength="20"
+            class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-amber-400 transition" />
+        </div>
+
+        <!-- 휴대폰 번호 입력 -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="input-phone" class="text-xs font-semibold text-gray-300">휴대폰 번호</label>
+            <span class="text-[11px] text-emerald-300 font-medium">상담 안내 외 마케팅 스팸 연락은 절대 하지 않습니다</span>
+          </div>
+          <input id="input-phone" name="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" maxlength="13" autocomplete="tel"
+            class="w-full px-4 py-3 rounded-xl bg-[#090c14] border border-white/15 text-white placeholder-gray-500 text-sm num-tab focus:outline-none focus:border-amber-400 transition" />
+        </div>
+
+        <!-- 계산기 연동 배지 -->
+        <div class="rounded-xl px-3.5 py-2.5 bg-[#090c14]/90 border border-amber-400/30 flex items-center justify-between gap-2 text-xs">
+          <span class="text-gray-200">위에서 확인하신 <strong id="form-synced-lot" class="text-amber-300 num-tab">[골드 · 0.01랏]</strong> 계산 기준도 함께 전달됩니다.</span>
+          <a href="#sec-calc" class="text-[11px] text-amber-300 hover:underline shrink-0">변경</a>
+        </div>
+
+        <!-- 개인정보 동의 -->
+        <div class="flex items-start justify-between gap-2 pt-1">
+          <label class="flex items-start gap-2.5 cursor-pointer select-none text-xs text-gray-200">
+            <input id="input-agree" name="consent" type="checkbox"
+              class="mt-0.5 w-4 h-4 rounded accent-amber-400 cursor-pointer shrink-0" />
+            <span>[필수] 1:1 상담 안내를 위한 개인정보(이름 또는 닉네임, 휴대폰 번호) 수집·이용에 동의합니다.</span>
+          </label>
+          <button id="btn-open-privacy" type="button" class="text-[11px] text-gray-400 underline hover:text-gray-200 shrink-0">내용 보기</button>
+        </div>
+
+        <p id="form-error-msg" class="hidden text-xs font-medium text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></p>
+
+        <!-- 카카오 옐로우 제출 버튼 -->
+        <button type="submit"
+          class="w-full py-4 px-5 rounded-2xl bg-[#fee500] hover:bg-[#ffe812] active:scale-[0.99] transition text-gray-950 font-extrabold text-base flex items-center justify-center gap-2 shadow-lg">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+          </svg>
+          <span>무료 상담 신청하고 카톡방 열기</span>
+        </button>
+
+        <p class="text-[11px] text-gray-300/80 text-center leading-relaxed">
+          상담 후 꼭 계좌를 개설하지 않으셔도 괜찮습니다.<br />
+          딜러네 데스크는 불법 투자자문·리딩 및 수익 보장을 일절 제공하지 않습니다.
+        </p>
+      </form>
+    </section>
+
+    <!-- SECTION 8: 하단 푸터 -->
+    <footer class="pt-4 pb-8 px-2 text-xs text-gray-400 space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+        <div class="font-semibold text-gray-300">운영: (주)맨큐 · 딜러네 데스크</div>
+        <div class="flex items-center gap-4">
+          <a href="https://www.youtube.com/@딜러네" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-amber-300 transition font-medium">
+            유튜브 @딜러네 ›
+          </a>
+          <a href="https://t.me/dealerne" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-amber-300 transition font-medium">
+            텔레그램 @dealerne ›
+          </a>
+        </div>
+      </div>
+      <p class="text-[11px] text-gray-500 leading-relaxed">
+        투자위험 고지: 본 사이트에서 제공하는 모든 영상·시그널 및 학습 자료, 시뮬레이션과 계산 예시는 이해를 돕기 위한 교육용 정보이며, 특정 금융상품에 대한 매매 권유나 투자자문이 아닙니다. 어떠한 경우에도 수익을 보장하지 않으며, 해외선물·CFD·FX 등 레버리지 파생상품은 시장 변동에 따라 투자 원금을 초과하는 손실이 발생할 수 있습니다. 과거의 데이터나 사례가 미래의 수익을 보장하지 않으며, 모든 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.
+      </p>
+    </footer>
+  </main>
+
+  <!-- 하단 고정(Sticky) CTA 바 + 마이크로 트러스트 (신청 폼 도달 시 자동 숨김) -->
+  <div id="sticky-cta-bar" class="fixed bottom-0 inset-x-0 z-30 pointer-events-none transition-all duration-300">
+    <div class="max-w-[560px] mx-auto px-4 pb-4 pt-2 pointer-events-auto">
+      <div class="rounded-2xl bg-[#0d111b]/95 backdrop-blur-md border border-amber-400/35 p-2.5 shadow-2xl">
+        <div class="flex items-center justify-center gap-2 text-[11px] text-gray-200 mb-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>전화 권유 없음 · 내 돈 0원 <strong class="text-amber-300">$10,000 모의계좌</strong> 무료 안내</span>
+        </div>
+        <a href="#sec-apply" class="w-full py-3.5 px-4 rounded-xl bg-[#fee500] hover:bg-[#ffe812] text-gray-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+          </svg>
+          <span>무료 카톡 상담 신청하기</span>
+        </a>
+      </div>
     </div>
+  </div>
 
-    <ul class="list who-mini" aria-label="운영 주체와 채널">
-      <li><div class="row static"><span class="row-t">운영</span><span class="row-v">(주)맨큐</span></div></li>
-      <li><a class="row" href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener"><span class="row-t">유튜브</span><span class="row-v">@딜러네 <i aria-hidden="true">›</i></span></a></li>
-      <li><a class="row" href="https://t.me/dealerne" target="_blank" rel="noopener"><span class="row-t">텔레그램</span><span class="row-v">@dealerne <i aria-hidden="true">›</i></span></a></li>
-    </ul>
-  </section>
+  <!-- 인페이지 모달 (신청 완료 시뮬레이션 / 아카데미 안내 / 개인정보 동의 전문) -->
+  <div id="common-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#141927] border border-amber-400/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <span id="modal-badge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300">안내</span>
+        <button id="btn-close-modal" type="button" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-bold">✕</button>
+      </div>
+      <h3 id="modal-title" class="text-lg font-extrabold text-white">모달 제목</h3>
+      <div id="modal-body" class="text-sm text-gray-300 space-y-2 leading-relaxed"></div>
+      <button id="btn-confirm-modal" type="button" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-extrabold text-sm transition">
+        확인
+      </button>
+    </div>
+  </div>
 
-  <section class="sec risk" aria-labelledby="h-risk">
-    <h2 id="h-risk">투자위험 고지</h2>
-    <p>이 사이트의 영상, 시그널과 자료는 교육용 정보이며, 특정 상품의 매매 권유나 투자자문이 아닙니다. 수익을 보장하지 않습니다. 선물, CFD, FX 같은 레버리지 상품은 투자 원금을 넘는 손실이 날 수 있고, 과거 사례가 앞으로의 결과를 뜻하지 않습니다. 투자 판단과 그 결과는 본인의 책임입니다.</p>
-    <p class="foot">(주)맨큐 · © 2026 딜러네 데스크 · <a href="https://open.kakao.com/o/gZ4c0RWi" target="_blank" rel="noopener">문의</a></p>
-  </section>
-</main>
+  <script>
+    // 1. 검증된 /desk3/ 종목별 계산 데이터
+    const ASSETS = {
+      gold: {
+        name: '골드',
+        baseUnitText: (mult) => `계약 크기 ${1 * mult}온스`,
+        moveLabel: '시세가 $1 움직일 때',
+        baseMoveUsd: 1,
+        slLabel: '손절가(-$5) 도달 시',
+        baseSlUsd: 5,
+        tpLabel: '목표가(+$10) 도달 시',
+        baseTpUsd: 10,
+        assumption: '계산 기준: 골드 1랏 = 100온스 · 손절 -$5 · 목표 +$10 (수수료 제외) · 세부 계약 단위는 브로커마다 다를 수 있습니다.'
+      },
+      nasdaq: {
+        name: '나스닥100',
+        baseUnitText: (mult) => `${(0.01 * mult).toFixed(2)}계약`,
+        moveLabel: '지수가 1포인트 움직일 때',
+        baseMoveUsd: 0.01,
+        slLabel: '손절가(-50pt) 도달 시',
+        baseSlUsd: 0.5,
+        tpLabel: '목표가(+100pt) 도달 시',
+        baseTpUsd: 1.0,
+        assumption: '계산 기준: 나스닥100 1랏 = 1계약 · 손절 -50포인트 · 목표 +100포인트 (수수료 제외) · 세부 계약 단위는 브로커마다 다를 수 있습니다.'
+      },
+      oil: {
+        name: 'WTI 원유',
+        baseUnitText: (mult) => `계약 크기 ${1 * mult}배럴`,
+        moveLabel: '유가가 $1 움직일 때',
+        baseMoveUsd: 1,
+        slLabel: '손절가(-$0.5) 도달 시',
+        baseSlUsd: 0.5,
+        tpLabel: '목표가(+$1.0) 도달 시',
+        baseTpUsd: 1.0,
+        assumption: '계산 기준: WTI 원유 1랏 = 100배럴 · 손절 -$0.5 · 목표 +$1.0 (수수료 제외) · 세부 계약 단위는 브로커마다 다를 수 있습니다.'
+      },
+      eurusd: {
+        name: 'EUR/USD',
+        baseUnitText: (mult) => `계약 규모 ${(1000 * mult).toLocaleString()}단위`,
+        moveLabel: '환율이 1핍(0.0001) 움직일 때',
+        baseMoveUsd: 0.1,
+        slLabel: '손절가(-20핍) 도달 시',
+        baseSlUsd: 2.0,
+        tpLabel: '목표가(+40핍) 도달 시',
+        baseTpUsd: 4.0,
+        assumption: '계산 기준: EUR/USD 1랏 = 100,000단위 · 손절 -20핍 · 목표 +40핍 (수수료 제외) · 세부 계약 단위는 브로커마다 다를 수 있습니다.'
+      }
+    };
 
-<div class="bar" id="bar"><a class="btn-main" href="#apply" id="barBtn"><svg class="ic-chat" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.6 1.6 4.9 4 6.4L5.2 21l4-2.3c.9.2 1.8.3 2.8.3 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/></svg>무료 카톡 상담 신청하기</a><p class="bar-cap">카카오톡 채팅으로 안내 · 상담 무료</p></div>
+    // 2. 차트 시뮬레이션 데이터
+    const CHARTS = {
+      nasdaq: {
+        mode: 'buy',
+        entryText: '21,590.5',
+        slText: '21,476.2',
+        tpText: '21,819.0',
+        entry: 21590.5,
+        sl: 21476.2,
+        tp: 21819.0,
+        candles: [
+          [21520, 21548, 21505, 21540], [21540, 21562, 21528, 21535], [21535, 21575, 21530, 21568],
+          [21568, 21605, 21555, 21590], [21590, 21622, 21572, 21610], [21610, 21618, 21565, 21578],
+          [21578, 21640, 21575, 21632], [21632, 21685, 21620, 21670], [21670, 21710, 21652, 21695],
+          [21695, 21705, 21660, 21675], [21675, 21748, 21670, 21735], [21735, 21785, 21720, 21765]
+        ]
+      },
+      gold: {
+        mode: 'sell',
+        entryText: '2,641.3',
+        slText: '2,650.8',
+        tpText: '2,622.2',
+        entry: 2641.3,
+        sl: 2650.8,
+        tp: 2622.2,
+        candles: [
+          [2648.5, 2653.5, 2646.0, 2649.2], [2649.2, 2650.4, 2644.5, 2645.8], [2645.8, 2647.2, 2640.8, 2641.5],
+          [2641.5, 2644.0, 2638.2, 2639.0], [2639.0, 2642.1, 2636.5, 2640.6], [2640.6, 2641.2, 2634.0, 2635.2],
+          [2635.2, 2637.0, 2631.4, 2632.5], [2632.5, 2635.0, 2629.8, 2633.8], [2633.8, 2634.2, 2627.5, 2628.4],
+          [2628.4, 2630.1, 2625.2, 2626.0], [2626.0, 2628.0, 2623.8, 2624.9], [2624.9, 2626.2, 2622.6, 2623.5]
+        ]
+      },
+      oil: {
+        mode: 'wait',
+        entryText: '—',
+        slText: '—',
+        tpText: '—',
+        current: 71.49,
+        candles: [
+          [71.42, 71.65, 71.30, 71.55], [71.55, 71.68, 71.38, 71.44], [71.44, 71.58, 71.28, 71.51],
+          [71.51, 71.62, 71.35, 71.40], [71.40, 71.56, 71.32, 71.52], [71.52, 71.60, 71.36, 71.46],
+          [71.46, 71.59, 71.34, 71.50], [71.50, 71.57, 71.31, 71.42], [71.42, 71.58, 71.35, 71.53],
+          [71.53, 71.61, 71.39, 71.47], [71.47, 71.56, 71.37, 71.51], [71.51, 71.58, 71.40, 71.49]
+        ]
+      }
+    };
 
-<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-<script src="d3.js"></script>
+    // 3. FAQ 데이터 (개선된 한국어 카피 반영)
+    const FAQS = [
+      {
+        q: '시그널만 그대로 따라 하면 되나요?',
+        a: '아닙니다. 시그널은 시장 흐름을 읽는 참고 자료일 뿐, 빗나가는 날도 분명히 있습니다. 진입 여부와 주문 수량, 손절·익절 위치는 투자자 본인이 직접 판단하고 결정하실 수 있도록 돕습니다.'
+      },
+      {
+        q: '전문 용어를 하나도 모르는데 시작할 수 있을까요?',
+        a: '물론입니다. 랏(Lot), 핍(Pip), 증거금 같은 가장 기초적인 개념부터 차근차근 함께 짚어드립니다. 체계적인 기초 학습이 필요하신 분들을 위해 딜러네 아카데미 과정도 마련되어 있습니다.'
+      },
+      {
+        q: '처음부터 돈을 입금해야 시작할 수 있나요?',
+        a: '아닙니다. 1:1 상담은 무료이며, 첫 연습은 전액 모의투자금($10,000)으로 진행됩니다. 실제 입금은 기초 미션을 모두 마친 뒤에 고려하셔도 늦지 않으며, 실전 전환 여부 역시 본인이 직접 결정하시면 됩니다.'
+      },
+      {
+        q: '상담받으면 당장 실전 거래를 시작해야 하나요?',
+        a: '전혀 서두르실 필요 없습니다. 모의계좌 연습은 편하실 때 언제든 시작하실 수 있고, 충분히 익숙해진 뒤 실전으로 넘어가는 시점도 전적으로 본인의 속도에 맞추시면 됩니다.'
+      },
+      {
+        q: '원금이나 수익이 보장되나요?',
+        a: '아닙니다. 어떤 경우에도 수익은 보장되지 않습니다. 해외선물·CFD·FX 등 레버리지 파생상품은 시장 변동에 따라 투자 원금을 초과하는 손실이 발생할 수 있으므로 철저한 리스크 관리가 필수입니다.'
+      },
+      {
+        q: '왜 번거롭게 모의계좌부터 연습하나요?',
+        a: '입문자가 처음 겪는 실수는 대부분 비슷합니다. 낯선 기본 용어(랏·핍·증거금), 소수점 한 자리 착오로 주문이 100배 커지는 수량 실수, 손절 미설정 위험을 내 돈 잃기 전에 안전하게 먼저 겪어보는 과정입니다.'
+      },
+      {
+        q: '유튜브 영상에서 자주 듣던 "외국인 선물 수급"이 뭔가요?',
+        a: '선물(Futures)은 주가지수나 원자재를 정해진 조건으로 사고파는 파생상품입니다. 외국인의 선물 매매가 주식 현물 시장의 프로그램 매수·매도로 이어지는 경우가 많아 시황 브리핑에서 핵심 지표로 함께 체크합니다.'
+      },
+      {
+        q: '어떤 분들께는 시작을 권하지 않나요?',
+        a: '단기간에 무리한 고수익을 기대하시는 분, 여유 자금이 아닌 생활비나 대출금으로 투자하려는 분, 손절 원칙 없이 버티기(물타기) 방식으로 매매하려는 분께는 권하지 않습니다.'
+      }
+    ];
+
+    const KAKAO_URL = 'https://open.kakao.com/o/gZ4c0RWi';
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    window.dataLayer = window.dataLayer || [];
+    function track(name, data) { window.dataLayer.push(Object.assign({ event: name, page: 'desk3' }, data || {})); }
+    let SRC = '';
+    try {
+      const q = new URLSearchParams(location.search);
+      SRC = (q.get('utm_source') || q.get('src') || '').slice(0, 40).replace(/[^\w\-.가-힣]/g, '');
+      if (!SRC && document.referrer) { const h = new URL(document.referrer).hostname; SRC = /youtube|youtu\.be/.test(h) ? 'youtube' : /t\.me|telegram/.test(h) ? 'telegram' : /kakao/.test(h) ? 'kakao' : /dealerne|netlify\.app|localhost/.test(h) ? '' : h.slice(0, 40); }
+      if (SRC) sessionStorage.setItem('dn_desk3_src', SRC); else SRC = sessionStorage.getItem('dn_desk3_src') || '';
+    } catch (e) {}
+    track('page_view', { source: SRC || 'direct' });
+
+    // 상태 모델
+    const state = {
+      asset: 'gold',
+      lot: '0.01',
+      chartKey: 'nasdaq',
+      track: 'demo',
+      openFaqIndex: 0,
+      showAnnotations: false
+    };
+
+    function formatUsd(val) {
+      return '$' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // 수량 계산기 렌더링 + 1.00랏 경고 대비 연출
+    function renderCalculator() {
+      const info = ASSETS[state.asset];
+      const lotNum = parseFloat(state.lot);
+      const mult = Math.round(lotNum / 0.01);
+      const moveVal = info.baseMoveUsd * mult;
+      const slVal = info.baseSlUsd * mult;
+      const tpVal = info.baseTpUsd * mult;
+      const pctOfDemo = ((slVal / 10000) * 100).toFixed(2);
+
+      // 탭 활성 스타일 업데이트
+      document.querySelectorAll('.calc-asset-btn').forEach((btn) => {
+        const active = btn.dataset.asset === state.asset;
+        btn.className = active
+          ? 'calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-amber-400/15 border-amber-400 text-amber-300'
+          : 'calc-asset-btn py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25';
+      });
+
+      document.querySelectorAll('.calc-lot-btn').forEach((btn) => {
+        const active = btn.dataset.lot === state.lot;
+        const isDangerTab = btn.dataset.lot === '1.00';
+        if (active && isDangerTab) {
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-extrabold border-2 transition bg-red-500/20 border-red-400 text-red-200';
+        } else if (active) {
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-amber-400/15 border-amber-400 text-amber-300';
+        } else if (isDangerTab) {
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-red-500/35 text-red-300 hover:bg-red-500/10';
+        } else {
+          btn.className = 'calc-lot-btn py-2.5 px-3 rounded-xl text-sm font-bold border transition bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25';
+        }
+      });
+
+      // 결과 값 반영
+      document.getElementById('res-lot-badge').textContent = `${state.lot}랏`;
+      document.getElementById('res-unit-badge').textContent = info.baseUnitText(mult);
+      document.getElementById('res-mult-label').textContent = `기준 변동폭 × ${mult}배`;
+      document.getElementById('res-tick-label').textContent = info.moveLabel;
+      document.getElementById('res-tick-val').textContent = `${formatUsd(moveVal)} 변동`;
+      document.getElementById('res-sl-label').textContent = info.slLabel;
+      document.getElementById('res-sl-sub').textContent = `$10,000 모의계좌 대비 1회 -${pctOfDemo}% 변동`;
+      document.getElementById('res-sl-val').textContent = `-${formatUsd(slVal)} 손실`;
+      document.getElementById('res-tp-label').textContent = info.tpLabel;
+      document.getElementById('res-tp-val').textContent = `+${formatUsd(tpVal)} 수익`;
+      document.getElementById('res-assumption').textContent = info.assumption;
+
+      // 0.01 vs 0.10 vs 1.00 경고 레벨 스타일 분기
+      const riskPill = document.getElementById('lot-risk-pill');
+      const lossBox = document.getElementById('loss-highlight-box');
+      const slValEl = document.getElementById('res-sl-val');
+      const dangerBanner = document.getElementById('lot-danger-banner');
+
+      if (state.lot === '1.00') {
+        riskPill.textContent = '고위험 수량 · 100배 변동 경고!';
+        riskPill.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-400/50';
+        lossBox.className = 'danger-loss-card rounded-xl p-4 transition-all duration-200 flex items-center justify-between gap-2';
+        slValEl.className = 'text-xl sm:text-2xl font-extrabold text-red-400 num-tab shrink-0';
+        dangerBanner.classList.remove('hidden');
+      } else if (state.lot === '0.10') {
+        riskPill.textContent = '중급 주의 단위 (10배 변동)';
+        riskPill.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35';
+        lossBox.className = 'rounded-xl p-3.5 bg-amber-400/10 border border-amber-400/30 transition-all duration-200 flex items-center justify-between gap-2';
+        slValEl.className = 'text-lg font-extrabold text-amber-300 num-tab shrink-0';
+        dangerBanner.classList.add('hidden');
+      } else {
+        riskPill.textContent = '입문 연습 권장 단위 (1배)';
+        riskPill.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+        lossBox.className = 'rounded-xl p-3.5 bg-white/[0.03] border border-white/10 transition-all duration-200 flex items-center justify-between gap-2';
+        slValEl.className = 'text-base sm:text-lg font-extrabold text-sky-400 num-tab shrink-0';
+        dangerBanner.classList.add('hidden');
+      }
+
+      // 카톡 목업 & 상담 신청 폼 & 우측 플로팅 요약 실시간 동기화
+      const summaryTag = `[${info.name} · ${state.lot}랏]`;
+      document.getElementById('kakao-preview-lot').textContent = summaryTag;
+      document.getElementById('form-synced-lot').textContent = summaryTag;
+      document.getElementById('aside-selected-lot').textContent = `${info.name} · ${state.lot}랏 (${info.baseUnitText(mult)})`;
+      document.getElementById('aside-selected-risk').textContent =
+        state.lot === '1.00'
+          ? `손절 시 -${formatUsd(slVal)} (100배 주의!)`
+          : `손절 시 -${formatUsd(slVal)} (${state.lot === '0.01' ? '입문 권장' : '10배 변동'})`;
+      document.getElementById('aside-selected-risk').className =
+        state.lot === '1.00' ? 'text-xs text-red-400 font-semibold mt-1 num-tab' : 'text-xs text-emerald-400 mt-1 num-tab';
+    }
+
+    // 캔버스 시뮬레이션 캔들 차트 렌더링
+    function renderSimChart() {
+      const data = CHARTS[state.chartKey];
+      document.getElementById('chart-entry-val').textContent = data.entryText;
+      document.getElementById('chart-sl-val').textContent = data.slText;
+      document.getElementById('chart-tp-val').textContent = data.tpText;
+
+      document.querySelectorAll('.chart-tab-btn').forEach((btn) => {
+        const active = btn.dataset.chart === state.chartKey;
+        btn.className = active
+          ? 'chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-amber-400/15 border-amber-400 text-white'
+          : 'chart-tab-btn py-2.5 px-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-1.5 bg-[#0b0e17] border-white/10 text-gray-300 hover:border-white/25';
+      });
+
+      const canvas = document.getElementById('sim-chart-canvas');
+      if (!canvas) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const w = Math.max(260, rect.width - 16);
+      const h = Math.max(180, rect.height - 16);
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, w, h);
+
+      // 가격 범위 계산
+      const allPrices = [];
+      data.candles.forEach((c) => allPrices.push(c[1], c[2]));
+      if (data.mode !== 'wait') {
+        allPrices.push(data.entry, data.sl, data.tp);
+      } else {
+        allPrices.push(data.current + 0.25, data.current - 0.25);
+      }
+      const minP = Math.min(...allPrices);
+      const maxP = Math.max(...allPrices);
+      const padP = (maxP - minP) * 0.14 || 1;
+      const low = minP - padP;
+      const high = maxP + padP;
+
+      const yOf = (p) => h - 18 - ((p - low) / (high - low)) * (h - 36);
+
+      // 배경 그리드
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= 4; i++) {
+        const gy = (h / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(8, gy);
+        ctx.lineTo(w - 8, gy);
+        ctx.stroke();
+      }
+
+      // 캔들 그리기
+      const chartLeft = 18;
+      const chartRight = w - 108;
+      const step = (chartRight - chartLeft) / data.candles.length;
+      const bodyW = Math.max(6, Math.min(14, step * 0.56));
+
+      data.candles.forEach((c, idx) => {
+        const [open, hi, lo, close] = c;
+        const cx = chartLeft + step * idx + step * 0.5;
+        const up = close >= open;
+        const color = up ? '#f43f5e' : '#38bdf8';
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(cx, yOf(hi));
+        ctx.lineTo(cx, yOf(lo));
+        ctx.stroke();
+
+        const topY = yOf(Math.max(open, close));
+        const botY = yOf(Math.min(open, close));
+        ctx.fillStyle = color;
+        ctx.fillRect(cx - bodyW / 2, topY, bodyW, Math.max(2.5, botY - topY));
+      });
+
+      // 수평 기준선 함수
+      function drawLevelLine(price, label, color) {
+        const y = yOf(price);
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.3;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(10, y);
+        ctx.lineTo(w - 10, y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.font = '600 11px Inter, Pretendard, sans-serif';
+        const tw = ctx.measureText(label).width + 12;
+        ctx.fillStyle = '#0d121f';
+        ctx.fillRect(w - tw - 8, y - 10, tw, 20);
+        ctx.strokeStyle = color;
+        ctx.strokeRect(w - tw - 8, y - 10, tw, 20);
+        ctx.fillStyle = color;
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, w - tw - 2, y + 0.5);
+        ctx.restore();
+      }
+
+      if (data.mode !== 'wait') {
+        drawLevelLine(data.tp, `목표 ${data.tpText}`, '#34d399');
+        drawLevelLine(data.entry, `진입 ${data.entryText}`, '#f5c451');
+        drawLevelLine(data.sl, `손절 ${data.slText}`, '#38bdf8');
+      } else {
+        drawLevelLine(data.current, `대기 ${data.current}`, '#9ca3af');
+        ctx.fillStyle = 'rgba(17, 21, 32, 0.88)';
+        ctx.fillRect(24, 18, 224, 30);
+        ctx.fillStyle = '#e5e7eb';
+        ctx.font = '600 12px Pretendard, sans-serif';
+        ctx.fillText('기준 조건 미충족 · 진입하지 않고 관망', 34, 37);
+      }
+    }
+
+    // FAQ 아코디언 렌더링
+    function renderFaqs() {
+      const container = document.getElementById('faq-list');
+      container.innerHTML = FAQS.map((item, idx) => {
+        const isOpen = state.openFaqIndex === idx;
+        return `
+          <div class="rounded-2xl border transition ${
+            isOpen ? 'bg-[#161d2f] border-amber-400/40' : 'bg-[#0b0e17] border-white/10 hover:border-white/20'
+          }">
+            <button type="button" data-faq="${idx}" class="faq-btn w-full px-4 py-3.5 text-left flex items-center justify-between gap-3">
+              <span class="text-sm font-semibold ${isOpen ? 'text-amber-300' : 'text-gray-100'}">Q. ${item.q}</span>
+              <span class="text-xs font-bold text-gray-400 shrink-0">${isOpen ? '▲' : '▼'}</span>
+            </button>
+            <div class="${isOpen ? 'block' : 'hidden'} px-4 pb-4 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
+              ${item.a}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 라디오 트랙 업데이트
+    function renderTrackSelection() {
+      document.querySelectorAll('.track-card').forEach((card) => {
+        const active = card.dataset.track === state.track;
+        const dotOuter = card.querySelector('.track-dot');
+        const dotInner = dotOuter.querySelector('span');
+        if (active) {
+          card.className = 'track-card text-left p-3.5 rounded-2xl border-2 transition bg-amber-400/15 border-amber-400';
+          dotOuter.className = 'track-dot w-4 h-4 rounded-full border-2 border-amber-400 flex items-center justify-center';
+          dotInner.className = 'w-2 h-2 rounded-full bg-amber-400';
+        } else {
+          card.className = 'track-card text-left p-3.5 rounded-2xl border transition bg-[#0b0e17]/90 border-white/15 hover:border-white/30';
+          dotOuter.className = 'track-dot w-4 h-4 rounded-full border-2 border-gray-500 flex items-center justify-center';
+          dotInner.className = 'w-2 h-2 rounded-full bg-transparent';
+        }
+      });
+    }
+
+    // 모달 표시 함수
+    function openModal(badge, title, htmlBody) {
+      document.getElementById('modal-badge').textContent = badge;
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = htmlBody;
+      document.getElementById('common-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('common-modal').classList.add('hidden');
+    }
+
+    // 이벤트 바인딩 초기화
+    function initEvents() {
+      // 개선 배지 ON/OFF 토글
+      document.getElementById('btn-toggle-annotations').addEventListener('click', (e) => {
+        state.showAnnotations = !state.showAnnotations;
+        document.body.classList.toggle('show-annotations', state.showAnnotations);
+        e.currentTarget.textContent = state.showAnnotations ? '개선 배지 ON' : '개선 배지 OFF';
+      });
+
+      // 아카데미 시안으로 이동
+      document.getElementById('btn-open-academy').addEventListener('click', () => { location.href = '../academy3/'; });
+
+      // 히어로 미션 미리보기 서랍
+      document.getElementById('btn-preview-missions').addEventListener('click', () => {
+        const drawer = document.getElementById('mission-drawer');
+        const chev = document.getElementById('mission-chevron');
+        const hidden = drawer.classList.toggle('hidden');
+        chev.textContent = hidden ? '▾' : '▴';
+      });
+
+      // 계산기 탭 이벤트
+      document.getElementById('asset-tabs').addEventListener('click', (e) => {
+        const btn = e.target.closest('.calc-asset-btn');
+        if (!btn) return;
+        state.asset = btn.dataset.asset;
+        renderCalculator();
+      });
+
+      document.getElementById('lot-tabs').addEventListener('click', (e) => {
+        const btn = e.target.closest('.calc-lot-btn');
+        if (!btn) return;
+        state.lot = btn.dataset.lot;
+        renderCalculator();
+      });
+
+      // 차트 탭 이벤트
+      document.querySelectorAll('.chart-tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.chartKey = btn.dataset.chart;
+          renderSimChart();
+        });
+      });
+
+      // FAQ 이벤트 위임
+      document.getElementById('faq-list').addEventListener('click', (e) => {
+        const btn = e.target.closest('.faq-btn');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.faq, 10);
+        state.openFaqIndex = state.openFaqIndex === idx ? -1 : idx;
+        renderFaqs();
+      });
+
+      // 라디오 카드 클릭
+      document.getElementById('track-radio-group').addEventListener('click', (e) => {
+        const card = e.target.closest('.track-card');
+        if (!card) return;
+        state.track = card.dataset.track;
+        renderTrackSelection();
+      });
+
+      // 휴대폰 번호 자동 하이픈 포맷
+      document.getElementById('input-phone').addEventListener('input', (e) => {
+        const digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+        let formatted = digits;
+        if (digits.length > 3 && digits.length <= 7) {
+          formatted = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+        } else if (digits.length > 7) {
+          formatted = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+        }
+        e.target.value = formatted;
+      });
+
+      // 개인정보 동의 전문 모달
+      document.getElementById('btn-open-privacy').addEventListener('click', () => {
+        openModal(
+          '개인정보 처리 안내',
+          '개인정보 수집·이용 동의 상세',
+          `<ul class="space-y-1.5 text-xs">
+             <li>• <strong>수집 항목:</strong> 이름(또는 닉네임), 휴대폰 번호, 선택 희망 단계 및 계산기 조회 조건</li>
+             <li>• <strong>이용 목적:</strong> 카카오톡 1:1 상담방 개설 안내 및 모의계좌 실습 가이드 발송</li>
+             <li>• <strong>보유 기간:</strong> 상담 목적을 달성하면 지체 없이 파기 (요청 시 즉시 파기)</li>
+             <li>• 전화 권유나 외부 제3자 마케팅 제공 용도로 절대 활용하지 않습니다.</li>
+           </ul>`
+        );
+      });
+
+      // 모달 닫기
+      document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+      document.getElementById('btn-confirm-modal').addEventListener('click', closeModal);
+      document.getElementById('common-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'common-modal') closeModal();
+      });
+
+      // 상담 신청 제출 시뮬레이션
+      document.getElementById('consult-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nameVal = document.getElementById('input-name').value.trim();
+        const phoneVal = document.getElementById('input-phone').value.trim();
+        const agreed = document.getElementById('input-agree').checked;
+        const errEl = document.getElementById('form-error-msg');
+
+        if (!nameVal) {
+          errEl.textContent = '이름(또는 닉네임)을 입력해 주세요.';
+          errEl.classList.remove('hidden');
+          document.getElementById('input-name').focus();
+          return;
+        }
+        if (phoneVal.replace(/\D/g, '').length < 10) {
+          errEl.textContent = '연락받으실 휴대폰 번호를 정확히 입력해 주세요.';
+          errEl.classList.remove('hidden');
+          document.getElementById('input-phone').focus();
+          return;
+        }
+        if (!agreed) {
+          errEl.textContent = '상담 안내를 위해 개인정보 수집·이용에 동의해 주세요.';
+          errEl.classList.remove('hidden');
+          return;
+        }
+
+        errEl.classList.add('hidden');
+        const form = e.currentTarget;
+        const submitBtn = form.querySelector('button[type=submit]');
+        const trackLabel = state.track === 'demo' ? '모의투자부터 차근차근' : '실전 플랫폼 바로 연결';
+        const assetLabel = `${ASSETS[state.asset].name} · ${state.lot}랏`;
+        document.getElementById('field-kind').value = state.track === 'demo' ? '모의투자부터' : '실전 플랫폼 연결';
+        document.getElementById('field-calc').value = assetLabel;
+        window.open(KAKAO_URL, '_blank', 'noopener');             // 누른 순간에 열어야 팝업 차단에 걸리지 않습니다
+        const body = new URLSearchParams(new FormData(form)).toString();
+        submitBtn.disabled = true; submitBtn.style.opacity = '.6';
+        const finish = (ok) => {
+          submitBtn.disabled = false; submitBtn.style.opacity = '';
+          track(ok ? 'form_done' : 'form_send_failed', { kind: state.track });
+          if (!ok) {
+            errEl.textContent = '접수가 저장되지 않았습니다. 열린 카카오톡 상담방에 이름과 연락처를 남겨 주시면 바로 이어서 도와드립니다.';
+            errEl.classList.remove('hidden');
+            return;
+          }
+          openModal(
+            '신청 접수',
+            `${esc(nameVal)}님, 신청이 접수됐습니다`,
+            `<p>열린 카카오톡 상담방에 들어와 이름을 남겨 주세요.</p>
+             <div class="bg-[#0b0e17] rounded-xl p-3.5 border border-amber-400/30 text-xs space-y-1.5 mt-2">
+               <div><span class="text-gray-400">희망 시작 단계:</span> <strong class="text-white">${trackLabel}</strong></div>
+               <div><span class="text-gray-400">연락처:</span> <strong class="text-white num-tab">${esc(phoneVal)}</strong></div>
+               <div><span class="text-gray-400">함께 전달된 조건:</span> <strong class="text-amber-300 num-tab">${assetLabel}</strong></div>
+             </div>
+             <a href="${KAKAO_URL}" target="_blank" rel="noopener" class="block text-center mt-3 py-3 rounded-xl bg-[#fee500] text-gray-950 font-extrabold text-sm">카카오톡 상담방 열기</a>`
+          );
+          form.reset(); state.track = 'demo'; renderTrackSelection();
+        };
+        fetch(location.pathname, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
+          .then((r) => finish(r.ok)).catch(() => finish(false));
+      });
+
+      // 신청 폼 진입 시 하단 고정 바 자동 숨김
+      const stickyBar = document.getElementById('sticky-cta-bar');
+      const applySec = document.getElementById('sec-apply');
+      if ('IntersectionObserver' in window && stickyBar && applySec) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                stickyBar.classList.add('opacity-0', 'translate-y-6');
+              } else {
+                stickyBar.classList.remove('opacity-0', 'translate-y-6');
+              }
+            });
+          },
+          { threshold: 0.18 }
+        );
+        io.observe(applySec);
+      }
+
+      window.addEventListener('resize', renderSimChart);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('field-src').value = SRC;
+      renderCalculator();
+      renderFaqs();
+      renderTrackSelection();
+      initEvents();
+      requestAnimationFrame(renderSimChart);
+    });
+  </script>
 </body>
 </html>

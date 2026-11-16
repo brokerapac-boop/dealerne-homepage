@@ -539,3 +539,6 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
 .view article p,.view .sub,.bridge .sub,.view-desk section>div>div>p{text-wrap:balance}
 .ph{display:inline-block;max-width:100%}
 .view-desk #desk-instruments>div>p:last-child,.view-desk #desk-platforms>div>p{max-width:62ch}
+
+/* 왼쪽 아래 SAMPLE DRAFT 배지가 맨 아래에서 푸터 글자에 붙지 않게 여백 확보 */
+.site-footer{padding-bottom:72px}

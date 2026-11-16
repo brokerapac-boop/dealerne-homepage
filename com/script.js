@@ -550,7 +550,10 @@
     var on = mq.matches && window.scrollY > window.innerHeight * 0.6 && !formInView();
     dock.classList.toggle('show', on);
     document.body.classList.toggle('dock-on', mq.matches);
+    /* 데스크톱 우측 하단 버튼: 첫 화면을 지나면 보이고, 상담 폼이 화면에 있으면 숨깁니다 */
+    if (fab) fab.classList.toggle('show', !mq.matches && window.scrollY > window.innerHeight * 0.8 && !formInView());
   }
+  var fab = document.getElementById('fab');
   function req() { if (!tick) { tick = true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', req, { passive: true });
   window.addEventListener('resize', req);

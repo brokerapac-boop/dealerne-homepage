@@ -51,6 +51,8 @@ const CLOUD = [
   ['스프레드', -40, 4, 1.7], ['롤오버', 34, 22, 1.4], ['마진콜', -26, 28, 1.8], ['슬리피지', 8, 34, 1.3],
   ['헤지', -6, 16, 1.1], ['포지션', 16, -14, 1.4], ['익절', -18, -8, 1.2], ['스왑', 44, -24, 1.1],
 ];
+const ACADEMY_HASH = ['#academy', '#hero', '#principles', '#roadmap', '#after', '#daily', '#faq'];
+const DESK_HASH = { '#desk-instruments': '#instruments', '#desk-demo': '#demo', '#desk-platforms': '#platforms', '#desk-apply': '#apply', '#desk-apply-demo': '#apply-demo', '#desk-apply-live': '#apply-live' };
 const CHAPTERS = ['데스크', '기준', '순서', '차트', '수급', '종목', '모의거래', '플랫폼', '아카데미', '강사', '영상', '시그널', '상담'];
 
 const rise = (d) => ({ initial: { opacity: 0, y: 44 }, animate: { opacity: 1, y: 0 }, transition: { ...SPRING, delay: 0.15 + d * 0.2 } });
@@ -195,7 +197,7 @@ function Insts({ mobile }) {
   }, [mobile]);
   const x = useTransform(p, (v) => -Math.min(1, Math.max(0, (v - 0.08) / 0.84)) * max.current);
   return (
-    <section ref={ref} className={mobile ? 'sec insts-sec' : 'pin insts-sec'} data-tone="dark" data-ch="5" style={mobile ? undefined : { height: '320svh' }}>
+    <section ref={ref} id="instruments" className={mobile ? 'sec insts-sec' : 'pin insts-sec'} data-tone="dark" data-ch="5" style={mobile ? undefined : { height: '320svh' }}>
       <div className={mobile ? '' : 'pin-stage col'}>
         <div className="wrap">
           <Up as="p" className="eyebrow">거래 종목</Up>
@@ -231,7 +233,7 @@ function Road() {
               ))}
             </ol>
           </div>
-          <p><a className="link" href="/#academy">아카데미에서 3분 레벨 진단하기 →</a></p>
+          <p><a className="link" href="/academy">아카데미에서 3분 레벨 진단하기 →</a></p>
         </div>
       </div>
     </section>
@@ -259,6 +261,18 @@ export default function Page() {
   const [ch, setCh] = useState(0);
 
   useEffect(() => {
+    // 예전 주소로 들어온 경우: 아카데미 구역은 /academy 로, 데스크 구역은 새 위치로 보냄
+    const route = (wait) => {
+      const h = location.hash;
+      if (ACADEMY_HASH.includes(h)) { location.replace('/academy' + h); return true; }
+      const target = DESK_HASH[h] || (wait && /^#[a-z-]+$/.test(h) ? h : null);
+      // 화면 폭에 따라 구간 높이가 정해진 뒤에 이동해야 위치가 맞음
+      if (target) setTimeout(() => document.querySelector(target)?.scrollIntoView(), wait);
+      return false;
+    };
+    if (route(700)) return;
+    const onHash = () => route(0);
+    window.addEventListener('hashchange', onHash);
     setSmooth(!window.matchMedia('(prefers-reduced-motion:reduce)').matches);
     const mq = window.matchMedia('(max-width:820px)');
     const onMq = () => setMobile(mq.matches); onMq(); mq.addEventListener('change', onMq);
@@ -280,7 +294,7 @@ export default function Page() {
     window.addEventListener('scroll', req, { passive: true });
     window.addEventListener('resize', req);
     update();
-    return () => { mq.removeEventListener('change', onMq); window.removeEventListener('scroll', req); window.removeEventListener('resize', req); };
+    return () => { window.removeEventListener('hashchange', onHash); mq.removeEventListener('change', onMq); window.removeEventListener('scroll', req); window.removeEventListener('resize', req); };
   }, []);
 
   return (
@@ -291,7 +305,7 @@ export default function Page() {
           <a className="brand" href="#top" aria-label="딜러네 홈"><img src="/logo.webp" alt="" width="34" height="34" /><span>딜러네</span></a>
           <nav className="vswitch" aria-label="서비스 선택">
             <a href="#top" aria-current="page"><span className="vs-dot" aria-hidden="true" />데스크</a>
-            <a href="/#academy"><span className="vs-dot" aria-hidden="true" />아카데미</a>
+            <a href="/academy"><span className="vs-dot" aria-hidden="true" />아카데미</a>
           </nav>
           <a className="btn btn-sm" href={TG} target="_blank" rel="noopener">시그널 받기</a>
         </div>

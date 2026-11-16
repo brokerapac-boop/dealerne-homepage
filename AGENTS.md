@@ -4,11 +4,17 @@
 
 ## 이 저장소가 하는 일
 딜러네(선물 트레이딩 교육, 강사 박호두, 유튜브 @딜러네)의 홈페이지 두 개를 담고 있습니다.
-빌드 과정이 없는 정적 사이트입니다. 폴더 안의 파일이 그대로 사이트에 올라갑니다.
+폴더 안의 파일이 그대로 사이트에 올라갑니다. Netlify에서는 빌드를 하지 않습니다.
+
+**예외: dealerne.com 첫 화면(`com/index.html`)은 직접 고치지 않습니다.** 이 파일과 `com/_next/`는 `flow-src/`(Next.js)를 빌드한 결과물입니다. 첫 화면을 고칠 때는 아래 순서를 따릅니다.
+1. `flow-src/app/` 안의 파일을 고칩니다. (`page.js`, `More.js`: 화면과 문구 / `globals.css`: 디자인 / `Chart.js`: 시뮬레이션 차트)
+2. `cd flow-src && npm install && npm run build`
+3. `cp -R flow-src/out/. com/` 로 결과물을 덮어씁니다. 예전 `com/_next/` 안의 파일은 지우고 복사합니다.
+4. `flow-src/`와 `com/`의 변경을 함께 올립니다.
 
 | 폴더 | 실제 주소 | 내용 |
 |---|---|---|
-| `com/` | https://dealerne.com | 딜러네 아카데미 (어두운 테마, 로드맵, 레벨 진단, 상담 폼) |
+| `com/` | https://dealerne.com | 첫 화면: 딜러네 데스크 (스크롤 장면, `flow-src/` 빌드 결과) / https://dealerne.com/academy : 딜러네 아카데미 (`academy.html`, 로드맵, 레벨 진단, 상담 폼) |
 | `kr/` | https://dealerne.co.kr | 딜러네 커뮤니티형 랜딩 (밝은 테마, 카톡 무료 상담 유도) |
 
 ## 배포 방식
@@ -19,11 +25,12 @@
 
 ## 파일 안내
 ### `com/` (dealerne.com)
-- `index.html`: 화면의 글과 구조. 문구 수정은 대부분 여기서 합니다.
+- `index.html`, `_next/`, `404.html`, `index.txt`, `__next.*.txt`: 첫 화면(데스크)의 빌드 결과물. 직접 고치지 않습니다. 상담 폼 `desk-demo`, `desk-live`는 `flow-src/app/More.js`에 있습니다.
+- `academy.html`: 아카데미 화면의 글과 구조. 아카데미 문구 수정은 여기서 합니다. (예전 데스크 화면도 이 파일 안에 남아 있고 `/academy?view=desk`로만 보입니다.)
 - `style.css`: 색, 글자 크기, 간격. 파일 끝에 덧붙인 보정 규칙들이 있으니 지우지 않습니다.
 - `script.js`: 시뮬레이션 차트, 레벨 진단(문항은 `Q`, 결과는 `RES`), 영상 재생, 상담 폼.
 - 상담 폼(`form[name="apply"]`)은 Netlify Forms로 접수됩니다. `name="apply"`, `data-netlify="true"`, 숨은 `form-name` 입력, `bot-field`는 지우거나 이름을 바꾸지 않습니다. 입력 칸 이름(`nickname`, `phone`, `level`, `consent`)을 바꾸면 접수 항목이 달라집니다.
-- 영상 목록은 `index.html`의 `#lib` 안에 있습니다. 영상을 바꿀 때는 `data-video="영상ID"`와 썸네일 주소 `i.ytimg.com/vi/영상ID/`를 함께 바꿉니다. 분류는 `data-cat`(brief / us / edu).
+- 아카데미 영상 목록은 `academy.html`의 `#lib` 안에 있습니다. (첫 화면의 영상 목록은 `flow-src/app/More.js`의 `VIDS`) 영상을 바꿀 때는 `data-video="영상ID"`와 썸네일 주소 `i.ytimg.com/vi/영상ID/`를 함께 바꿉니다. 분류는 `data-cat`(brief / us / edu).
 
 ### `kr/` (dealerne.co.kr)
 - `index.html`, `e.css`, `e.js`: 화면, 디자인, 동작.
@@ -31,7 +38,7 @@
 - `config.js`: 증권사 이름, LIVE·브리핑 시간 등 운영 정보(현재 샘플 값).
 
 ### 공통
-- 카카오톡 오픈채팅 주소는 `https://open.kakao.com/o/gZ4c0RWi` 입니다. `com/index.html`, `com/script.js`, `kr/data.js`에 있습니다.
+- 카카오톡 오픈채팅 주소는 `https://open.kakao.com/o/gZ4c0RWi` 입니다. `com/academy.html`, `com/script.js`, `flow-src/app/kit.js`, `kr/data.js`에 있습니다.
 - 로고는 `logo.webp`, 공유 미리보기 이미지는 `og.png`(1200x630)입니다.
 
 ## 반드시 지킬 것

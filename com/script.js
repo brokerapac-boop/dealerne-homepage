@@ -294,28 +294,92 @@
   document.getElementById('quizReset').addEventListener('click', function () { qi = 0; score = 0; render(); });
 })();
 
-/* ---------- 상담 신청: 접수한 뒤 카카오톡 상담방을 열어요 ---------- */
+/* ---------- 상담 신청 (아카데미·데스크 공통): 접수한 뒤 카카오톡 상담방을 열어요 ---------- */
 (function () {
   var KAKAO = 'https://open.kakao.com/o/gZ4c0RWi';
-  var form = document.querySelector('form[name="apply"]'); if (!form) return;
-  var phone = form.elements.phone, msg = document.getElementById('applyMsg');
-  phone.addEventListener('input', function () {           // 숫자만 받고 010-1234-5678 모양으로 맞춰요
-    var d = phone.value.replace(/\D/g, '').slice(0, 11);
-    phone.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(d.length - 4);
-    phone.setCustomValidity('');
-  });
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(phone.value)) { phone.setCustomValidity('휴대폰 번호를 확인해 주세요. 예: 010-1234-5678'); phone.reportValidity(); return; }
-    var win = window.open(KAKAO, '_blank', 'noopener');   // 누른 순간에 열어야 팝업 차단에 안 걸려요
-    var body = new URLSearchParams(new FormData(form)).toString(), btn = form.querySelector('button[type=submit]');
-    btn.disabled = true;
-    function done(ok) {
-      btn.disabled = false; msg.hidden = false;
-      msg.innerHTML = (ok ? '신청이 접수됐어요. ' : '') + '카카오톡 상담방이 열리지 않았다면 <a href="' + KAKAO + '" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">여기를 눌러 주세요</a>.';
-      if (ok) form.reset();
-    }
-    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
-      .then(function (r) { done(r.ok); }).catch(function () { done(false); });
+  document.querySelectorAll('form[data-kakao-form]').forEach(function (form) {
+    var phone = form.elements.phone, msg = form.querySelector('[data-form-msg]');
+    if (!phone) return;
+    phone.addEventListener('input', function () {           // 숫자만 받고 010-1234-5678 모양으로 맞춰요
+      var d = phone.value.replace(/\D/g, '').slice(0, 11);
+      phone.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(d.length - 4);
+      phone.setCustomValidity('');
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(phone.value)) { phone.setCustomValidity('휴대폰 번호를 확인해 주세요. 예: 010-1234-5678'); phone.reportValidity(); return; }
+      var win = window.open(KAKAO, '_blank', 'noopener');   // 누른 순간에 열어야 팝업 차단에 안 걸려요
+      var body = new URLSearchParams(new FormData(form)).toString(), btn = form.querySelector('button[type=submit]');
+      btn.disabled = true;
+      function done(ok) {
+        btn.disabled = false;
+        if (msg) {
+          msg.hidden = false;
+          msg.innerHTML = (ok ? '신청이 접수됐어요. ' : '') + '카카오톡 상담방이 열리지 않았다면 <a href="' + KAKAO + '" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">여기를 눌러 주세요</a>.';
+        }
+        if (ok) form.reset();
+      }
+      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+        .then(function (r) { done(r.ok); }).catch(function () { done(false); });
+    });
   });
 })();
+
+/* ---------- 아카데미 / 데스크 화면 전환 ---------- */
+(function () {
+  var TITLES = { academy: '딜러네 아카데미 | 기준부터 세우는 선물 트레이딩', desk: '딜러네 데스크 | 나스닥·골드·오일 매매 데스크' };
+  var nav = document.getElementById('nav'), burger = document.querySelector('.burger');
+  function closeMenu() { if (nav && nav.classList.contains('open')) { nav.classList.remove('open'); if (burger) burger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; } }
+  function viewOf(el) { var v = el && el.closest ? el.closest('.view') : null; return v ? v.getAttribute('data-view') : null; }
+  function fromURL() {
+    var q = new URLSearchParams(location.search).get('view');
+    if (q === 'desk' || q === 'academy') return q;
+    var h = location.hash.slice(1);
+    if (h === 'desk' || h === 'academy') return h;
+    if (h) { var v = viewOf(document.getElementById(h)); if (v) return v; }
+    return 'academy';
+  }
+  function apply(v) {
+    document.body.setAttribute('data-view', v);
+    document.title = TITLES[v];
+    document.querySelectorAll('.vswitch [data-view-link]').forEach(function (a) {
+      if (a.getAttribute('data-view-link') === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    requestAnimationFrame(function () {
+      window.dispatchEvent(new Event('resize'));
+      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+    });
+  }
+  function go(v, h) {
+    apply(v);
+    try { history.pushState({ view: v }, '', '#' + (h || v)); } catch (e) {}
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a') : null; if (!a) return;
+    var vl = a.getAttribute('data-view-link');
+    if (vl) {
+      e.preventDefault(); closeMenu();
+      var same = document.body.getAttribute('data-view') === vl;
+      if (!same) go(vl);
+      window.scrollTo({ top: 0, behavior: same ? 'smooth' : 'auto' });
+      return;
+    }
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) !== '#' || href.length < 2) return;
+    var el = document.getElementById(href.slice(1)), v = viewOf(el);
+    if (v && v !== document.body.getAttribute('data-view')) {
+      e.preventDefault(); closeMenu(); go(v, href.slice(1));
+      requestAnimationFrame(function () { requestAnimationFrame(function () { el.scrollIntoView({ behavior: 'auto', block: 'start' }); }); });
+    }
+  });
+  function toHash() {
+    var h = location.hash.slice(1), el = h && h !== 'desk' && h !== 'academy' ? document.getElementById(h) : null;
+    if (el) requestAnimationFrame(function () { requestAnimationFrame(function () { el.scrollIntoView({ behavior: 'auto', block: 'start' }); }); });
+  }
+  function sync() { var v = fromURL(); if (v !== document.body.getAttribute('data-view')) { apply(v); toHash(); } }
+  window.addEventListener('popstate', sync);
+  window.addEventListener('hashchange', sync);
+  apply(fromURL());
+  window.addEventListener('load', toHash);   // #desk-platforms 같은 주소로 들어오면 그 섹션까지 내려가요
+})();
+

@@ -217,3 +217,38 @@ p,li,summary,td,th,small,label,.s{text-wrap:pretty}
 .rows dd.mv::after{content:" 변동";font-size:13px;font-weight:600;color:var(--dim)}
 .faq li b{display:block;color:var(--ink);font-weight:600}
 .field .label{display:block}
+
+/* ===== 전환 구간 보강 (데스크·아카데미 시안 공통) ===== */
+body{padding-bottom:calc(116px + env(safe-area-inset-bottom))}
+/* 첫 화면: 눈에 먼저 들어오는 것 하나 */
+.demo-card{margin-top:20px;padding:16px 18px;border-radius:var(--r-btn);border:1px solid rgba(255,194,71,.35);background:linear-gradient(135deg,rgba(255,194,71,.14),rgba(255,194,71,.03) 60%),var(--fill)}
+.demo-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:600;color:var(--sub)}
+.demo-top i{font-style:normal;margin-left:4px;padding:1px 6px;border-radius:var(--r-tag);border:1px solid var(--line);font-size:12px;color:var(--dim)}
+.demo-top b{padding:3px 10px;border-radius:999px;background:var(--brand);color:var(--brand-ink);font-size:13px;font-weight:700;white-space:nowrap}
+.demo-amt{margin-top:10px;font-size:28px;line-height:1.25;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.demo-amt small{display:block;font-size:13px;font-weight:600;letter-spacing:0;color:var(--dim)}
+.jump{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;margin-top:22px;border:1px solid var(--line);border-radius:var(--r-btn);font-size:15px;font-weight:600;color:var(--ink);text-decoration:none;transition:border-color var(--t)}
+.jump:hover{border-color:var(--brand)}
+.jump i{font-style:normal;color:var(--brand)}
+/* 계산기: 수량이 커지면 손실 줄이 경고로 바뀝니다 */
+.rows>div.hot{margin:6px -10px;padding:14px 10px;border:1px solid rgba(240,85,107,.45);border-radius:var(--r-btn);background:rgba(240,85,107,.1)}
+.rows>div.hot dd{color:#FF8496}
+.rows>div.hot.x100{background:rgba(240,85,107,.18)}
+.rows>div.hot.x100 dd{font-size:20px}
+.hot-msg{margin-top:12px;font-size:15px;line-height:1.6;color:#FFB3BE}
+/* 카톡 상담 예시 */
+.chat{margin-top:20px;padding:16px;border-radius:var(--r-btn);background:#0A0D14;border:1px solid var(--line)}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;font-size:15px}
+.chat-head span{padding:1px 8px;border-radius:var(--r-tag);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--dim);white-space:nowrap}
+.bub{max-width:86%;margin-top:8px;padding:10px 14px;border-radius:16px;font-size:15px;line-height:1.55}
+.bub.me{margin-left:auto;border-bottom-right-radius:4px;background:var(--brand);color:var(--brand-ink);font-weight:500}
+.bub.you{border-bottom-left-radius:4px;background:var(--fill);color:var(--ink)}
+.bub.you b{display:block;margin-bottom:2px;font-size:13px;color:var(--brand)}
+.bub.card{border:1px solid rgba(255,194,71,.35)}
+.chat .note{font-size:13px;color:var(--dim)}
+/* 신청 구역만 다른 면 */
+.sec.cta{border:1.5px solid transparent;background:linear-gradient(180deg,#171A26,#10131C) padding-box,linear-gradient(140deg,rgba(255,194,71,.75),rgba(255,194,71,.1) 55%,rgba(255,194,71,.4)) border-box}
+.sec.cta .field input,.sec.cta .field select,.sec.cta .opt{background-color:#1C2130}
+/* 하단 바 */
+.ic-chat{flex:none;margin-right:8px}
+.bar-cap{margin-top:6px;text-align:center;font-size:12px;font-weight:600;color:var(--sub)}

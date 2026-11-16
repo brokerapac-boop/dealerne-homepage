@@ -53,6 +53,9 @@
   }
   function mark(lv) {
     [].forEach.call(document.querySelectorAll('#lvList li'), function (li) { li.classList.toggle('on', !!lv && li.getAttribute('data-lv') === lv); });
+    [].forEach.call(document.querySelectorAll('#lvBar li'), function (li) { li.classList.toggle('on', !!lv && li.getAttribute('data-lv') === lv); });
+    $('quizBadge').hidden = !lv; $('quizBadge').textContent = lv ? '진단 결과 · ' + lv + ' 과정 추천' : '';
+    $('chatMe').textContent = lv ? '안녕하세요, 레벨 진단 결과 [' + lv + ']로 상담 신청했습니다.' : '안녕하세요, 홈페이지에서 레벨 상담 신청했습니다.';
     $('quizField').value = lv || '';
     $('quizCarry').hidden = !lv;
     $('quizCarry').textContent = lv ? '진단 결과 [' + lv + ']도 상담방에 함께 전달됩니다.' : '';
@@ -68,6 +71,7 @@
   }
   $('quizReset').addEventListener('click', function () { qi = 0; score = 0; mark(''); try { sessionStorage.removeItem('dn_academy3_quiz'); } catch (e) {} track('quiz_reset'); renderQ(true); });
   $('resApply').addEventListener('click', function () { track('cta_click', { from: 'quiz_result' }); });
+  $('heroJump').addEventListener('click', function () { track('cta_click', { from: 'hero_jump' }); });
   renderQ(false);
 
   /* ---------- 7. 상담 신청 ---------- */

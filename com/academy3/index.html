@@ -38,6 +38,10 @@
       <li><span class="s">나에게 맞는 단계부터</span> <span class="s">차근차근 시작합니다</span></li>
       <li><span class="s">레벨 상담은 카카오톡으로</span> <span class="s">무료 진행됩니다</span></li>
     </ul>
+    <ol class="lvbar" id="lvBar" aria-label="5단계 로드맵 한눈에 보기">
+      <li data-lv="Lv1 입문"><b>Lv1</b>입문</li><li data-lv="Lv2 차트"><b>Lv2</b>차트</li><li data-lv="Lv3 진입 기준"><b>Lv3</b>진입</li><li data-lv="Lv4 리스크"><b>Lv4</b>리스크</li><li data-lv="Lv5 실전"><b>Lv5</b>실전</li>
+    </ol>
+    <a class="jump" href="#quiz" id="heroJump">3분 레벨 진단 시작하기 <i aria-hidden="true">↓</i></a>
   </section>
 
   <!-- 2. 내 경우: 레벨 진단 -->
@@ -73,6 +77,16 @@
       <li data-lv="Lv4 리스크"><b><i>리스크</i> 내 계좌에 맞는 허용 손실 한도</b><span>통과 기준 · 일일 손실 한도를 지키며 한 달간 매매 기록을 완주함</span></li>
       <li data-lv="Lv5 실전"><b><i>실전</i> 원칙대로 실행하고 데이터로 복기</b><span>수료 기준 · 매매일지를 바탕으로 월간 복기 리포트를 완성함</span></li>
     </ol>
+    <div class="chat journal" role="group" aria-label="매매일지 양식 예시">
+      <p class="chat-head"><b>매매일지 · 복기 양식</b><span>양식 예시</span></p>
+      <dl class="rows">
+        <div><dt>진입 근거</dt><dd>주문 전에 기록</dd></div>
+        <div><dt>손절가 · 목표가</dt><dd>주문 전에 기록</dd></div>
+        <div><dt>주문 수량</dt><dd>손실 한도 안에서 계산</dd></div>
+        <div><dt>원칙 준수 여부</dt><dd>매매 후 체크</dd></div>
+      </dl>
+      <p class="note"><span class="s">Lv3부터 매매마다 이 항목을 기록하고,</span> <span class="s">Lv5에서 월간 복기 리포트로 정리합니다.</span></p>
+    </div>
   </section>
 
   <!-- 4. 맛보기: 영상 -->
@@ -80,10 +94,10 @@
     <h2 id="h-vid"><span class="s">손절은 저점을 맞히는</span> <span class="s"><em class="hl">기술이 아닙니다</em></span></h2>
     <p class="body"><span class="s">핵심 원칙을 1분 영상에 담았습니다.</span></p>
     <ul class="list vids">
-      <li><a class="row" href="https://www.youtube.com/watch?v=ZkFaC6Of3VY" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/ZkFaC6Of3VY/hqdefault.jpg" alt="" width="96" height="54"><span class="row-t">손절은 바닥 맞히는 기술이 아닙니다</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
-      <li><a class="row" href="https://www.youtube.com/watch?v=ntGobt2x9U4" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/ntGobt2x9U4/hqdefault.jpg" alt="" width="96" height="54"><span class="row-t">분할매수했는데 손실이 더 커진 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
-      <li><a class="row" href="https://www.youtube.com/watch?v=A7yYcCHm4-k" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/A7yYcCHm4-k/hqdefault.jpg" alt="" width="96" height="54"><span class="row-t">본전 생각나는 순간 손실이 커지는 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
-      <li><a class="row" href="https://www.youtube.com/watch?v=TiUQks72WDo" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/TiUQks72WDo/hqdefault.jpg" alt="" width="96" height="54"><span class="row-t">외국인이 주식을 사면서 선물을 파는 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=ZkFaC6Of3VY" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/ZkFaC6Of3VY/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">손절은 바닥 맞히는 기술이 아닙니다</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=ntGobt2x9U4" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/ntGobt2x9U4/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">분할매수했는데 손실이 더 커진 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=A7yYcCHm4-k" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/A7yYcCHm4-k/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">본전 생각나는 순간 손실이 커지는 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
+      <li><a class="row" href="https://www.youtube.com/watch?v=TiUQks72WDo" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/TiUQks72WDo/hqdefault.jpg" alt="" width="96" height="54"><i class="play" aria-hidden="true"></i><em>쇼츠</em></span><span class="row-t">외국인이 주식을 사면서 선물을 파는 이유</span><span class="row-v"><i aria-hidden="true">›</i></span></a></li>
       <li><a class="row" href="https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4" target="_blank" rel="noopener"><span class="row-t">전체 영상 보기</span><span class="row-v">딜러네 유튜브 <i aria-hidden="true">›</i></span></a></li>
     </ul>
     <p class="note">영상은 유튜브에서 열립니다.</p>
@@ -93,9 +107,10 @@
   <section class="sec" id="instructor" aria-labelledby="h-ins">
     <h2 id="h-ins"><span class="s"><em class="hl">기준</em>이 있어야</span> <span class="s">흔들려도 돌아옵니다</span></h2>
     <div class="ins">
-      <img src="../instructor2.webp" alt="딜러네 아카데미 강사 송프로" width="72" height="72" loading="lazy">
+      <img src="../instructor2.webp" alt="딜러네 아카데미 강사 송프로" width="112" height="140" loading="lazy">
       <div>
         <p class="ins-name">송프로 <small>딜러네 아카데미 강사</small></p>
+        <p class="ins-tags"><span>거시경제(매크로)</span><span>시장심리</span></p>
         <p class="note"><span class="s">금리와 원자재(골드·원유)의</span> <span class="s">흐름을 연결해 시장의 큰 그림을</span> <span class="s">쉽게 풀어냅니다.</span></p>
       </div>
     </div>
@@ -137,14 +152,23 @@
   </section>
 
   <!-- 7. 시작 -->
-  <section class="sec" id="apply" aria-labelledby="h-apply">
+  <section class="sec cta" id="apply" aria-labelledby="h-apply">
+    <p class="tag">카카오톡 채팅 상담 · 무료</p>
     <h2 id="h-apply"><span class="s">1:1 <em class="hl">무료</em></span> <span class="s">레벨 상담 신청</span></h2>
     <p class="body"><span class="s">신청해 주시면 카카오톡 상담방으로 연결되며,</span> <span class="s">현재 레벨과 시작 단계를 함께 확인합니다.</span></p>
+    <div class="chat" role="group" aria-label="신청 후 카카오톡 상담 예시">
+      <p class="chat-head"><b>신청 후 카톡 상담 예시</b><span>예시 화면</span></p>
+      <p class="bub me" id="chatMe">안녕하세요, 홈페이지에서 레벨 상담 신청했습니다.</p>
+      <p class="bub you"><b>딜러네 아카데미</b>반갑습니다. 현재 레벨과 막히는 지점부터 카카오톡 채팅으로 함께 확인해 드립니다.</p>
+      <p class="bub you card"><b>상담에서 함께 정하는 것</b>시작 단계와 모의계좌 연습 방법</p>
+      <p class="note"><span class="s">이해를 돕기 위한 예시 화면이며,</span> <span class="s">실제 안내 내용은 다를 수 있습니다.</span></p>
+    </div>
 
     <form name="academy3-consult" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="form" novalidate>
       <input type="hidden" name="form-name" value="academy3-consult">
       <p hidden><label>Skip <input name="bot-field"></label></p>
 
+      <p class="quiz-badge" id="quizBadge" hidden></p>
       <label class="field"><span class="label">관심 시작 레벨</span>
         <select name="level" id="levelSel"><option>잘 모르겠어요</option><option>Lv1 입문</option><option>Lv2 차트</option><option>Lv3 진입 기준</option><option>Lv4 리스크</option><option>Lv5 실전</option></select>
       </label>
@@ -187,7 +211,7 @@
   </section>
 </main>
 
-<div class="bar" id="bar"><a class="btn-main" href="#apply" id="barBtn">무료 레벨 상담 신청하기</a></div>
+<div class="bar" id="bar"><a class="btn-main" href="#apply" id="barBtn"><svg class="ic-chat" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.6 1.6 4.9 4 6.4L5.2 21l4-2.3c.9.2 1.8.3 2.8.3 5.5 0 10-3.6 10-8s-4.5-8-10-8z"/></svg>무료 레벨 상담 신청하기</a><p class="bar-cap">카카오톡 채팅으로 안내 · 상담 무료</p></div>
 
 <script src="a3.js"></script>
 </body>

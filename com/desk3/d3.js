@@ -46,6 +46,11 @@
     setUnits($('rNote'), ['계산 기준: ' + c.name + ' 1랏 = ' + c.sizeText(c.size) + ' ·', '손절 −' + c.stopLabel + ' · 목표 +' + c.tgtLabel + ' (수수료 제외) ·', '세부 계약 단위는 브로커마다 다를 수 있습니다.']);
     var carry = c.name + ' ' + calc.lot.toFixed(2) + '랏';                 // 계산해 본 내용을 상담으로 이어 줍니다
     $('calcField').value = calc.touched ? carry : '';
+    var mult = Math.round(calc.lot / 0.01), pct = +(stop / 10000 * 100).toFixed(3);              // 수량이 커지면 손실 줄을 경고로 바꿉니다
+    $('rStopRow').classList.toggle('hot', mult > 1); $('rStopRow').classList.toggle('x100', mult >= 100);
+    $('rHot').hidden = mult <= 1;
+    $('rHot').textContent = mult > 1 ? '수량만 바꿨는데 손실 폭이 0.01랏의 ' + mult + '배가 됐습니다. $10,000 모의계좌의 ' + pct + '%입니다. 이 실수는 실전 계좌가 아니라 모의계좌에서 먼저 확인해 보세요.' : '';
+    $('chatMe').textContent = calc.touched ? '안녕하세요, 홈페이지에서 상담 신청했습니다. [' + c.name + ' · ' + calc.lot.toFixed(2) + '랏] 기준으로 모의계좌부터 연습해 보고 싶어요.' : '안녕하세요, 홈페이지에서 상담 신청했습니다. 모의계좌부터 연습해 보고 싶어요.';
     $('calcCarry').hidden = !calc.touched;
     $('calcCarry').textContent = '위에서 확인하신 [' + c.name + ' · ' + calc.lot.toFixed(2) + '랏] 계산 기준도 상담방에 함께 전달됩니다.';
   }

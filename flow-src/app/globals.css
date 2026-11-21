@@ -634,3 +634,27 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 @keyframes sig-ripple{0%{transform:scale(.6);opacity:0}5%{opacity:.55}58%{transform:scale(10);opacity:0}100%{transform:scale(10);opacity:0}}
 @keyframes sig-drop{0%{transform:scale(2.2);opacity:0}45%{transform:scale(.8);opacity:1}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.sig-orb .ring{display:none}.sig-orb i{animation:none!important}}
+
+/* ================= 옆에 따라다니는 동그란 버튼 (유튜브 · 카카오톡) ================= */
+.side-links{position:fixed;right:18px;top:50%;z-index:44;display:flex;flex-direction:column;gap:12px;transform:translateY(-50%)}
+.sl{position:relative;display:grid;place-items:center;width:54px;height:54px;border-radius:50%;box-shadow:0 10px 26px -10px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08);transition:transform .25s var(--ease)}
+.sl:hover{transform:scale(1.08)}
+.sl svg{width:28px;height:28px}
+.sl.yt{background:#FF0033;color:#fff}
+.sl.kk{background:#FEE500;color:#191919}
+.sl span{position:absolute;right:64px;top:50%;padding:5px 10px;border-radius:8px;background:rgba(9,12,19,.9);color:#F3F4F7;font-size:12px;font-weight:700;white-space:nowrap;opacity:0;transform:translate(6px,-50%);transition:opacity .2s,transform .2s;pointer-events:none}
+.sl:hover span,.sl:focus-visible span{opacity:1;transform:translate(0,-50%)}
+/* 신청 완료: 텔레그램 입장 버튼 */
+.f-done{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:14px;border-radius:16px;background:rgba(38,165,228,.12);border:1px solid rgba(38,165,228,.4);font-size:13px;text-align:center}
+.tg-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;border-radius:999px;background:#26A5E4;color:#fff;font-size:15px;font-weight:700}
+.tg-btn svg{width:22px;height:22px}
+.tg-btn:hover{background:#1E96D4}
+@media (max-width:820px){
+  .side-links{right:12px;top:auto;bottom:calc(88px + env(safe-area-inset-bottom));transform:none;gap:10px}
+  .sl{width:46px;height:46px}
+  .sl svg{width:24px;height:24px}
+  .sl span{display:none}
+  /* 폰에서는 상담 폼의 버튼을 가리지 않게 폼 구간에서 숨김 */
+  .side-links{transition:opacity .3s}
+  .side-links.at-form{opacity:0;pointer-events:none}
+}

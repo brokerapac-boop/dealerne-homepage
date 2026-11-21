@@ -305,7 +305,7 @@
 
 /* ---------- 상담 신청 (아카데미·데스크 공통): 접수한 뒤 카카오톡 상담방을 열어요 ---------- */
 (function () {
-  var KAKAO = 'https://open.kakao.com/o/gZ4c0RWi';
+  var KAKAO = 'https://open.kakao.com/o/gsSH41Xi';
   document.querySelectorAll('form[data-kakao-form]').forEach(function (form) {
     var phone = form.elements.phone, msg = form.querySelector('[data-form-msg]');
     if (!phone) return;

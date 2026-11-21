@@ -9,7 +9,7 @@ window.DEALERNE_C = {
   broker: {
     name: '샘플증권',               // 샘플 — 제휴 증권사 공식 명칭으로 교체 (비우면 마무리 화면의 증권사 줄이 숨겨져요)
     logo: '',                      // [확인 필요] 로고 이미지 경로 (사용 가능 확인 후)
-    url: 'https://open.kakao.com/o/gZ4c0RWi',   // 지금은 카카오톡 오픈채팅으로 연결(상담에서 계좌 개설 안내). 제휴 전용 계좌 개설 URL이 생기면 교체
+    url: 'https://open.kakao.com/o/gsSH41Xi',   // 지금은 카카오톡 오픈채팅으로 연결(상담에서 계좌 개설 안내). 제휴 전용 계좌 개설 URL이 생기면 교체
     accountType: '국내선물'          // 샘플 — '국내선물' 또는 '해외선물'
   },
 
@@ -38,7 +38,7 @@ window.DEALERNE_C = {
   riskExtra: '',                   // 투자위험 고지에 덧붙일 승인 문구 (비우면 기본 문구만)
 
   kakao: {
-    url: 'https://open.kakao.com/o/gZ4c0RWi'   // 카카오톡 오픈채팅 (E타입 e/data.js의 kakaoUrl과 같은 방)
+    url: 'https://open.kakao.com/o/gsSH41Xi'   // 카카오톡 오픈채팅 (E타입 e/data.js의 kakaoUrl과 같은 방)
   },
 
   // 가이드 스크롤: [계좌 개설하기]를 누르면 화면이 아래로 흘러가고, 맨 아래에서만 계좌 개설 링크가 열려요.

@@ -162,8 +162,8 @@ export default function Page() {
           </nav>
           {/* PC: 헤더 오른쪽에 유튜브 · 카카오톡 (폰에서는 화면 옆 버튼으로 보임) */}
           <div className="hd-links">
-            <a className="sl yt" href={YOUTUBE} target="_blank" rel="noopener" aria-label="딜러네 유튜브 채널"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.6 5.9v12.2L19.2 12z" /></svg></a>
-            <a className="sl kk" href={KAKAO} target="_blank" rel="noopener" aria-label="딜러네 카카오톡 오픈채팅방"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5c-4.7 0-8.5 2.95-8.5 6.6 0 2.35 1.6 4.4 4 5.56l-.82 3c-.1.36.3.65.6.44l3.6-2.4c.37.03.74.05 1.12.05 4.7 0 8.5-2.95 8.5-6.6S16.7 4.5 12 4.500z" /></svg></a>
+            <a className="sl yt" href={YOUTUBE} target="_blank" rel="noopener" aria-label="딜러네 유튜브 채널"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.930.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.930 24 12 24 12s0-3.930-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg></a>
+            <a className="sl kk" href={KAKAO} target="_blank" rel="noopener" aria-label="딜러네 카카오톡 오픈채팅방"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3c5.799 0 10.500 3.664 10.500 8.185 0 4.520-4.701 8.184-10.500 8.184a13.500 13.500 0 0 1-1.727-.110l-4.408 2.883c-.501.265-.678.236-.472-.413l.892-3.678c-2.880-1.460-4.785-3.990-4.785-6.866C1.500 6.665 6.201 3 12 3z" /></svg></a>
           </div>
           <a className="btn btn-sm" href="#apply">시그널 받기</a>
         </div>
@@ -274,8 +274,8 @@ export default function Page() {
 
       {/* 옆에 따라다니는 동그란 버튼: 유튜브 · 카카오톡 (누구나 바로 들어옴) */}
       <nav className={atForm ? 'side-links at-form' : 'side-links'} aria-label="채널 바로가기">
-        <a className="sl yt" href={YOUTUBE} target="_blank" rel="noopener" aria-label="딜러네 유튜브 채널"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.6 5.9v12.2L19.2 12z" /></svg><span>유튜브</span></a>
-        <a className="sl kk" href={KAKAO} target="_blank" rel="noopener" aria-label="딜러네 카카오톡 오픈채팅방"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5c-4.7 0-8.5 2.95-8.5 6.6 0 2.35 1.6 4.4 4 5.56l-.82 3c-.1.36.3.65.6.44l3.6-2.4c.37.03.74.05 1.12.05 4.7 0 8.5-2.95 8.5-6.6S16.7 4.5 12 4.500z" /></svg><span>카카오톡</span></a>
+        <a className="sl yt" href={YOUTUBE} target="_blank" rel="noopener" aria-label="딜러네 유튜브 채널"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.930.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.930 24 12 24 12s0-3.930-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg><span>유튜브</span></a>
+        <a className="sl kk" href={KAKAO} target="_blank" rel="noopener" aria-label="딜러네 카카오톡 오픈채팅방"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3c5.799 0 10.500 3.664 10.500 8.185 0 4.520-4.701 8.184-10.500 8.184a13.500 13.500 0 0 1-1.727-.110l-4.408 2.883c-.501.265-.678.236-.472-.413l.892-3.678c-2.880-1.460-4.785-3.990-4.785-6.866C1.500 6.665 6.201 3 12 3z" /></svg><span>카카오톡</span></a>
       </nav>
 
       {/* 하단에 따라다니는 안내 바 */}

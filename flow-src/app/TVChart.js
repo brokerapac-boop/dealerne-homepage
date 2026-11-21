@@ -27,7 +27,7 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
       let price = base, heat = 1, t = 1700000000, bar = null, ticks = 0;
       let ema = null, above = null, since = 99;
       const markers = [];
-      let lastSig = null, sigSeq = 0;   // 가장 최근 표시의 위치(파동 효과용)
+      const sigs = [];   // 표시마다의 위치(점과 물결 효과용). markers 와 같은 순서
       const tick = () => {
         // 변동성은 캔들 단위로 천천히 커졌다 작아짐, 가끔 한 번씩 크게 움직임
         const jump = rnd() < 0.0015 ? gauss() * vol * 1.6 : 0;
@@ -45,8 +45,8 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
             markers.push(up
               ? { time: bar.time, position: 'belowBar', color: '#FF5C74', shape: 'arrowUp', text: '매수' }
               : { time: bar.time, position: 'aboveBar', color: '#5B97FF', shape: 'arrowDown', text: '매도' });
-            if (markers.length > 14) markers.shift();
-            lastSig = { time: bar.time, price: up ? bar.low : bar.high, buy: up }; sigSeq++;
+            sigs.push({ time: bar.time, price: up ? bar.low : bar.high, buy: up, el: null, fresh: true });
+            if (markers.length > 14) { markers.shift(); const old = sigs.shift(); if (old.el) old.el.remove(); }
             since = 0;
           }
           above = up;
@@ -79,21 +79,28 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
       (lines || []).forEach((l) => series.createPriceLine({ price: l.v, color: l.c, lineWidth: 1, lineStyle: 2, axisLabelVisible: scale && lineLabels, title: lineLabels ? l.t : '' }));
       chart.timeScale().scrollToRealTime();
 
-      // 가장 최근 표시 위에 노란 구슬과 퍼지는 파동을 올림. 새 표시가 생기면 한 번 크게 터짐
-      let orb = null, shown = 0;
-      if (signals) {
-        orb = document.createElement('div'); orb.className = 'sig-orb';
-        orb.innerHTML = '<i class="flash"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="core"></i>';
-        host.appendChild(orb); host._orb = orb;
-      }
+      // 표시마다 반투명한 작은 점을 남기고, 표시가 나가는 순간 잔잔한 물결이 퍼짐.
+      // 가장 최근 표시는 몇 초마다 물결이 다시 번짐
+      let layer = null, ready = false;
+      if (signals) { layer = document.createElement('div'); layer.className = 'sig-layer'; host.appendChild(layer); host._orb = layer; }
       const place = () => {
-        if (!orb) return;
-        const x = lastSig ? chart.timeScale().timeToCoordinate(lastSig.time) : null;
-        const y = lastSig ? series.priceToCoordinate(lastSig.price) : null;
-        if (x === null || y === null || x < 0) { orb.style.opacity = '0'; return; }
-        orb.style.opacity = '1';
-        orb.style.transform = `translate(${Math.round(x)}px,${Math.round(y + (lastSig.buy ? 13 : -13))}px)`;
-        if (shown !== sigSeq) { shown = sigSeq; orb.classList.remove('burst'); void orb.offsetWidth; orb.classList.add('burst'); }
+        if (!layer) return;
+        const ts = chart.timeScale();
+        sigs.forEach((g, k) => {
+          if (!g.el) {
+            g.el = document.createElement('div'); g.el.className = 'sig-orb';
+            g.el.innerHTML = '<i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="core"></i>';
+            layer.appendChild(g.el);
+            if (ready && g.fresh) g.el.classList.add('drop');   // 방금 나간 표시: 물결 한 번
+            g.fresh = false;
+          }
+          const x = ts.timeToCoordinate(g.time), y = series.priceToCoordinate(g.price);
+          if (x === null || y === null || x < -20) { g.el.style.opacity = '0'; return; }
+          g.el.style.opacity = '1';
+          g.el.style.transform = `translate(${Math.round(x)}px,${Math.round(y + (g.buy ? 13 : -13))}px)`;
+          g.el.classList.toggle('live', k === sigs.length - 1);
+        });
+        ready = true;
       };
       requestAnimationFrame(place);
 

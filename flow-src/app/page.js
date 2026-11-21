@@ -67,7 +67,7 @@ function Story() {
   const screens = [
     <><p className="s-title">종목</p><ul className="s-list">{LIST.map(([id, name, cls, tag]) => <li key={id}><img src={`/icons/${id}.webp`} alt="" width="36" height="36" /><span>{name}</span><i className={`tag ${cls}`}>{tag}</i></li>)}</ul></>,
     <><p className="s-title">나스닥100 <i className="tag buy">매수</i></p><TVChart className="s-chart" base={21680} vol={0.0009} seed={23} spacing={6} offset={2} scale={false} lines={LINES} lineLabels={false} /><dl className="s-lv"><div><dt className="c-t">목표</dt><dd>21,853.6</dd></div><div><dt className="c-e">진입</dt><dd>21,621.3</dd></div><div><dt className="c-s">손절</dt><dd>21,505.2</dd></div></dl></>,
-    <><p className="s-title">플랫폼 연결</p><ul className="s-plat"><li><b>HFM</b><span>MT5</span></li><li><b>XM</b><span>MT5</span></li><li><b>이지스퀘어</b><span>조건 확인 중</span></li><li className="dash"><b>증권사 HTS</b><span>상담 시 안내</span></li></ul></>,
+    <><p className="s-title">플랫폼 연결</p><ul className="s-plat"><li><b>HFM</b><span>MT5</span></li><li><b>XM</b><span>MT5</span></li><li><b>이지스퀘어</b><span>원화 환전</span></li><li className="dash"><b>증권사 HTS</b><span>상담 시 안내</span></li></ul></>,
     <><p className="s-title">시그널 채널</p><div className="s-chat"><p className="bubble"><b>나스닥100 · 매수</b>진입 21,621.3<br />손절 21,505.2<br />목표 21,853.6</p><p className="bubble sm">기준에 닿지 않으면 주문하지 않습니다.</p><p className="s-fine">예시 메시지 · 실제 시그널이 아닙니다</p></div></>,
   ];
   return (

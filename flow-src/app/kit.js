@@ -4,6 +4,7 @@ import { motion, useScroll, useInView } from 'motion/react';
 
 export const TG = 'https://t.me/dealerne';
 export const KAKAO = 'https://open.kakao.com/o/gsSH41Xi';
+export const YOUTUBE = 'https://www.youtube.com/@%EB%94%9C%EB%9F%AC%EB%84%A4';
 export const SPRING = { type: 'spring', stiffness: 110, damping: 20, mass: 0.9 };
 export const SOFT = { type: 'spring', stiffness: 70, damping: 18 };
 

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'motion/react';
-import { KAKAO, SPRING, SOFT, Up } from './kit';
+import { KAKAO, TG, SPRING, SOFT, Up } from './kit';
 import { VizJargon, VizLot, VizNoStop } from './Viz';
 
 /* ---------- 모의거래: 막히는 세 곳 + 미션 네 개 ---------- */
@@ -77,7 +77,7 @@ export function Demo() {
 const PLATS = [
   ['HFM', '계좌 유형 다양', [['+', '센트, 프리미엄, 제로, 프로 계좌 중 선택'], ['+', '프로 외 계좌는 최소 입금 $0'], ['−', '센트 계좌는 외환과 골드만 거래 가능']]],
   ['XM', '소액 시작', [['+', '최소 입금 $5부터 시작'], ['+', '마이크로 계좌: 1랏 = 1,000 통화 단위'], ['−', '가입 법인에 따라 계좌 유형이 다름']]],
-  ['이지스퀘어', '조건 확인 중', [['·', '세부 조건은 확인을 마친 뒤 안내합니다. 먼저 상담으로 문의해 주세요.']]],
+  ['이지스퀘어', '원화 환전', [['+', '신규 가입 시 100달러'], ['+', '최소 증거금 10달러'], ['+', '원화 환전 가능']]],
   ['국내 증권사 HTS', '상담 시 안내', [['·', '해외선물 정식 계약을 증권사 HTS로 거래하려면, 제휴 증권사 계좌 개설과 HTS 화면 세팅을 안내합니다.'], ['·', '제휴 증권사와 수수료는 상담 시 안내합니다']]],
 ];
 function PlatCard({ i, n, p, data }) {
@@ -124,7 +124,7 @@ function ApplyForm({ name, children, label, dark }) {
     e.preventDefault();
     const form = e.currentTarget, phone = form.elements.phone;
     if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(phone.value)) { phone.setCustomValidity('휴대폰 번호를 확인해 주세요. 예: 010-1234-5678'); phone.reportValidity(); return; }
-    window.open(KAKAO, '_blank', 'noopener'); // 누른 순간에 열어야 팝업 차단에 걸리지 않음
+    window.open(TG, '_blank', 'noopener'); // 신청하면 텔레그램 시그널방을 엶 (누른 순간에 열어야 팝업 차단에 걸리지 않음)
     const body = new URLSearchParams(new FormData(form)).toString();
     setBusy(true);
     fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
@@ -143,7 +143,12 @@ function ApplyForm({ name, children, label, dark }) {
       </div>
       <label className="f-check"><input type="checkbox" name="consent" required />상담 목적의 개인정보(이름, 휴대폰 번호) 수집·이용에 동의합니다.</label>
       <motion.button type="submit" disabled={busy} whileTap={{ scale: 0.97 }} whileHover={{ y: -2 }}>{label}</motion.button>
-      {msg && <p className="f-msg" role="status">{msg === 'ok' ? '신청이 접수됐어요. ' : ''}카카오톡 상담방이 열리지 않았다면 <a href={KAKAO} target="_blank" rel="noopener">여기를 눌러 주세요</a>.</p>}
+      {msg && (
+        <div className="f-done" role="status">
+          <p>{msg === 'ok' ? '신청이 접수됐습니다. ' : ''}텔레그램 시그널방이 열리지 않았다면 아래 버튼을 눌러 주세요.</p>
+          <a className="tg-btn" href={TG} target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.7 4.2 2.9 11.100c-1 .4-1 1 .2 1.300l4.400 1.400 1.700 5.200c.200.600.400.800.900.800.400 0 .600-.200.900-.400l2.200-2.100 4.500 3.300c.800.500 1.400.200 1.600-.800l2.900-13.800c.300-1.200-.500-1.700-1.500-1.300zM8.200 13.500l9-5.700c.400-.300.800-.100.500.200l-7.400 6.700-.300 3.100z" /></svg>텔레그램 시그널방 입장</a>
+        </div>
+      )}
     </form>
   );
 }

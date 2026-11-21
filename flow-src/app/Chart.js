@@ -2,13 +2,15 @@
 import { useEffect, useRef } from 'react';
 
 /* 300틱 시뮬레이션 캔들 차트. 실제 시세가 아닙니다. */
-export default function Chart({ className, start, seed = 7, cw = 10, pad = 0, lo, hi, lines, labels }) {
+/* signals: 이동평균을 가격이 넘나들 때 기계적으로 매수·매도 표시를 붙입니다 (예시 표시, 결과와 무관하게 붙음) */
+export default function Chart({ className, start, seed = 7, cw = 10, pad = 0, lo, hi, lines, labels, signals }) {
   const ref = useRef(null);
   useEffect(() => {
     const cv = ref.current, ctx = cv.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     const TPC = 300, vol = start * 0.00018;
     let W = 0, H = 0, s = seed, price = start, drift = 0, ticks = 0, cur = null, timer = null, raf = 0, visible = false;
+    let ema = null, above = null, since = 99;
     const candles = [];
     const rnd = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
     const step = (n) => {
@@ -18,7 +20,16 @@ export default function Chart({ className, start, seed = 7, cw = 10, pad = 0, lo
         price += (rnd() - 0.5) * vol * 2 + drift + pull;
         if (!cur) cur = { o: price, h: price, l: price, c: price };
         cur.c = price; if (price > cur.h) cur.h = price; if (price < cur.l) cur.l = price;
-        if (++ticks >= TPC) { candles.push(cur); cur = null; ticks = 0; if (candles.length > 140) candles.shift(); }
+        if (++ticks >= TPC) {
+          if (signals) {
+            // 종가가 이동평균(9)을 위로 넘으면 매수, 아래로 넘으면 매도. 표시 사이는 최소 7개 캔들
+            ema = ema === null ? cur.c : ema + (cur.c - ema) * 0.2;
+            const up = cur.c > ema; since++;
+            if (above !== null && up !== above && since >= 7) { cur.sig = up ? 'buy' : 'sell'; since = 0; }
+            above = up;
+          }
+          candles.push(cur); cur = null; ticks = 0; if (candles.length > 140) candles.shift();
+        }
       }
     };
     const size = () => {
@@ -46,12 +57,28 @@ export default function Chart({ className, start, seed = 7, cw = 10, pad = 0, lo
         }
       });
       const x0 = W - pad - n * cw;
+      ctx.globalAlpha = signals ? 0.6 : 1;   // 표시가 있을 때는 캔들을 조금 흐리게, 표시는 또렷하게
       view.forEach((c, i) => {
         const x = Math.round(x0 + i * cw + cw / 2) + 0.5;
         ctx.strokeStyle = ctx.fillStyle = c.c >= c.o ? '#F0556B' : '#4B8BFF';
         ctx.beginPath(); ctx.moveTo(x, y(c.h)); ctx.lineTo(x, y(c.l)); ctx.stroke();
         ctx.fillRect(Math.round(x - cw * 0.32), y(Math.max(c.o, c.c)), Math.max(2, Math.round(cw * 0.64)), Math.max(1, Math.abs(y(c.o) - y(c.c))));
       });
+      ctx.globalAlpha = 1;
+      if (signals) {
+        ctx.font = '800 12px Pretendard Variable, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        view.forEach((c, i) => {
+          if (!c.sig) return;
+          const buy = c.sig === 'buy', x = Math.round(x0 + i * cw + cw / 2), col = buy ? '#FF5C74' : '#5B97FF';
+          const tip = buy ? y(c.l) + 8 : y(c.h) - 8, dir = buy ? 1 : -1;   // 매수는 캔들 아래, 매도는 캔들 위
+          ctx.fillStyle = col;
+          ctx.beginPath(); ctx.moveTo(x, tip); ctx.lineTo(x - 7, tip + dir * 10); ctx.lineTo(x + 7, tip + dir * 10); ctx.closePath(); ctx.fill();
+          const by = tip + dir * 24;
+          ctx.beginPath(); ctx.roundRect(x - 21, by - 11, 42, 22, 11); ctx.fill();
+          ctx.fillStyle = '#07090F'; ctx.fillText(buy ? '매수' : '매도', x, by + 1);
+        });
+        ctx.textAlign = 'start';
+      }
     };
     const loop = () => { step(3 + Math.floor(rnd() * 10)); if (!raf) raf = requestAnimationFrame(draw); };
     const run = () => { if (!timer && visible && !reduce && !document.hidden) timer = setInterval(loop, 60); };
@@ -65,6 +92,6 @@ export default function Chart({ className, start, seed = 7, cw = 10, pad = 0, lo
     document.addEventListener('visibilitychange', onVis);
     window.addEventListener('resize', onResize);
     return () => { halt(); cancelAnimationFrame(raf); clearTimeout(rt); io.disconnect(); document.removeEventListener('visibilitychange', onVis); window.removeEventListener('resize', onResize); };
-  }, [start, seed, cw, pad, lo, hi, lines, labels]);
+  }, [start, seed, cw, pad, lo, hi, lines, labels, signals]);
   return <canvas ref={ref} className={className} aria-hidden="true" />;
 }

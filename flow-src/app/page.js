@@ -170,7 +170,7 @@ export default function Page() {
         {/* 1. 첫 화면 */}
         <section className="hero" id="top" data-tone="dark" data-ch="0">
           <div className="frame dark-scope">
-            <Chart className="hero-cv" start={100} seed={11} cw={14} />
+            <Chart className="hero-cv" start={100} seed={11} cw={14} signals />
             <div className="wrap hero-in">
               <motion.p className="eyebrow" {...rise(0)}>해외선물 매매 어드바이저 · 나스닥 골드 오일</motion.p>
               <h1>
@@ -181,7 +181,7 @@ export default function Page() {
               <motion.p className="lede" {...rise(4)}>종목별 시그널을 확인하고,<br />연결된 MT5 플랫폼으로 바로 넘어갑니다.</motion.p>
               <motion.div {...rise(5)}><a className="btn" href={TG} target="_blank" rel="noopener">텔레그램에서 시그널 받기</a></motion.div>
             </div>
-            <p className="note hero-note">시뮬레이션 차트(300틱) · 실제 시세가 아닙니다</p>
+            <p className="note hero-note">시뮬레이션 차트(300틱) · 매수·매도 표시는 예시이며 실제 시세와 시그널이 아닙니다</p>
           </div>
         </section>
 

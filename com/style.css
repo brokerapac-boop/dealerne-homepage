@@ -609,3 +609,16 @@ body[data-view="academy"] .only-desk,body[data-view="desk"] .only-academy{displa
   .hero-chart{-webkit-mask-image:linear-gradient(to right,transparent 0,transparent 30%,#000 56%);mask-image:linear-gradient(to right,transparent 0,transparent 30%,#000 56%)}
 }
 @media (max-width:760px){.dk-step,.dk-steplabel{display:none}}
+
+/* 강사 두 명을 나란히 (송프로 · 변프로) */
+.instructor .ins-quote{margin-bottom:0}
+.ins-duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.4vw,32px);margin-top:clamp(40px,6vw,88px)}
+.ins-card{display:flex;flex-direction:column;gap:22px;min-width:0}
+.ins-pic{position:relative;margin:0;overflow:hidden;border-radius:16px;aspect-ratio:4/5;background:#0C0F17}
+.ins-pic img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 10%;filter:grayscale(1) contrast(1.05)}
+.ins-pic::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,15,23,.55),transparent 42%)}
+.ins-card .ins-copy{grid-column:auto;grid-row:auto;margin-top:0}
+@media (max-width:560px){
+  .ins-duo{grid-template-columns:minmax(0,1fr);gap:40px}
+  .ins-pic{aspect-ratio:1/1}
+}

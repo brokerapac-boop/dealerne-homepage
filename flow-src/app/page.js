@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ReactLenis } from 'lenis/react';
 import { MotionConfig, motion, useInView } from 'motion/react';
-import Chart from './Chart';
+import TVChart from './TVChart';
 import { TG, SPRING, SOFT, Up, Roll } from './kit';
 import { Demo, Platforms, Forms } from './More';
 import { VizRule, VizSteps, VizJournal, Spark } from './Viz';
@@ -66,7 +66,7 @@ function Story() {
   ];
   const screens = [
     <><p className="s-title">종목</p><ul className="s-list">{LIST.map(([id, name, cls, tag]) => <li key={id}><img src={`/icons/${id}.webp`} alt="" width="36" height="36" /><span>{name}</span><i className={`tag ${cls}`}>{tag}</i></li>)}</ul></>,
-    <><p className="s-title">나스닥100 <i className="tag buy">매수</i></p><Chart className="s-chart" start={21640} lo={LV.stop} hi={LV.target} seed={23} cw={7} lines={LINES} /><dl className="s-lv"><div><dt className="c-t">목표</dt><dd>21,853.6</dd></div><div><dt className="c-e">진입</dt><dd>21,621.3</dd></div><div><dt className="c-s">손절</dt><dd>21,505.2</dd></div></dl></>,
+    <><p className="s-title">나스닥100 <i className="tag buy">매수</i></p><TVChart className="s-chart" base={21680} vol={0.0009} seed={23} spacing={6} offset={2} scale={false} lines={LINES} lineLabels={false} /><dl className="s-lv"><div><dt className="c-t">목표</dt><dd>21,853.6</dd></div><div><dt className="c-e">진입</dt><dd>21,621.3</dd></div><div><dt className="c-s">손절</dt><dd>21,505.2</dd></div></dl></>,
     <><p className="s-title">플랫폼 연결</p><ul className="s-plat"><li><b>HFM</b><span>MT5</span></li><li><b>XM</b><span>MT5</span></li><li><b>이지스퀘어</b><span>조건 확인 중</span></li><li className="dash"><b>증권사 HTS</b><span>상담 시 안내</span></li></ul></>,
     <><p className="s-title">시그널 채널</p><div className="s-chat"><p className="bubble"><b>나스닥100 · 매수</b>진입 21,621.3<br />손절 21,505.2<br />목표 21,853.6</p><p className="bubble sm">기준에 닿지 않으면 주문하지 않습니다.</p><p className="s-fine">예시 메시지 · 실제 시그널이 아닙니다</p></div></>,
   ];
@@ -170,7 +170,7 @@ export default function Page() {
         {/* 1. 첫 화면 */}
         <section className="hero" id="top" data-tone="dark" data-ch="0">
           <div className="frame dark-scope">
-            <Chart className="hero-cv" start={100} seed={11} cw={14} signals />
+            <TVChart className="hero-cv" seed={11} spacing={13} offset={4} scaleMin={821} signals />
             <div className="wrap hero-in">
               <motion.p className="eyebrow" {...rise(0)}>해외선물 매매 어드바이저 · 나스닥 골드 오일</motion.p>
               <h1>
@@ -181,7 +181,7 @@ export default function Page() {
               <motion.p className="lede" {...rise(4)}>종목별 시그널을 확인하고,<br />연결된 MT5 플랫폼으로 바로 넘어갑니다.</motion.p>
               <motion.div {...rise(5)}><a className="btn" href={TG} target="_blank" rel="noopener">텔레그램에서 시그널 받기</a></motion.div>
             </div>
-            <p className="note hero-note">시뮬레이션 차트(300틱) · 매수·매도 표시는 예시이며 실제 시세와 시그널이 아닙니다</p>
+            <p className="note hero-note">시뮬레이션 차트(300틱) · 매수·매도 표시는 예시이며 실제 시세와 시그널이 아닙니다 · <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a></p>
           </div>
         </section>
 
@@ -206,7 +206,7 @@ export default function Page() {
             <Up as="h2" className="big">낯선 용어가 많아도<br />볼 것은 <b>가격 세 개</b>입니다</Up>
             <Up className="board">
               <div className="board-hd"><strong>나스닥100</strong><span>USA100 · US100Cash</span><i className="tag buy">매수</i></div>
-              <Chart className="board-cv" start={21640} lo={LV.stop} hi={LV.target} seed={5} cw={11} pad={56} lines={LINES} labels />
+              <TVChart className="board-cv" base={21680} vol={0.0009} seed={5} spacing={10} lines={LINES} />
               <dl className="lv" id="lv">
                 <div><dt className="c-e">진입</dt><dd><Roll value={f1(LV.entry)} /></dd></div>
                 <div><dt className="c-s">손절</dt><dd><Roll value={f1(LV.stop)} /></dd></div>
@@ -218,7 +218,7 @@ export default function Page() {
                 <div><dt>손익비</dt><dd>1 : <Roll value={f1(REWARD / RISK)} /></dd></div>
               </dl>
             </Up>
-            <p className="note">예시 화면 · 300틱 시뮬레이션 차트 · 실제 시세와 시그널이 아닙니다</p>
+            <p className="note">예시 화면 · 300틱 시뮬레이션 차트 · 실제 시세와 시그널이 아닙니다 · <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a></p>
           </div>
         </section>
 

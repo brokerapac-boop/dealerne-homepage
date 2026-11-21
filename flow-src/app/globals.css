@@ -607,3 +607,10 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 /* 첫 화면 차트의 매수·매도 표시가 보이도록 조금 더 진하게 */
 .hero-cv{opacity:1}
 @media (max-width:820px){.hero-cv{opacity:.7}.hero-note{left:auto;right:16px;max-width:58%;text-align:right;line-height:1.5}}
+
+/* TradingView 차트 */
+.hero-cv,.board-cv,.s-chart{display:block}
+.s-chart{overflow:hidden}
+.note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.hero-note{pointer-events:auto}
+@media (min-width:821px){.hero-note{right:76px}}

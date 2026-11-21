@@ -82,7 +82,7 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
       // 표시마다 반투명한 작은 점을 남기고, 표시가 나가는 순간 잔잔한 물결이 퍼짐.
       // 가장 최근 표시는 몇 초마다 물결이 다시 번짐
       let layer = null, ready = false;
-      if (signals) { layer = document.createElement('div'); layer.className = 'sig-layer'; host.appendChild(layer); host._orb = layer; }
+      if (signals) { layer = document.createElement('div'); layer.className = 'sig-layer'; host.insertBefore(layer, host.firstChild); host._orb = layer; }   // 차트 캔들·글자보다 뒤에 깔림
       const place = () => {
         if (!layer) return;
         const ts = chart.timeScale();

@@ -616,7 +616,9 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 @media (min-width:821px){.hero-note{right:76px}}
 
 /* 시그널 위치의 반투명한 점과 물결 (잔잔한 수면에 돌이 떨어진 듯 가는 고리가 차례로 퍼짐) */
-.sig-layer{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.sig-layer{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+/* 차트(캔들, 화살표, 글자)가 점과 물결보다 앞에 오도록 */
+.hero-cv>.tv-lightweight-charts{position:relative;z-index:1}
 .sig-orb{position:absolute;left:0;top:0;width:0;height:0;opacity:0;transition:opacity .4s}
 .sig-orb i{position:absolute;left:0;top:0;border-radius:50%}
 .sig-orb .core{width:8px;height:8px;margin:-4px 0 0 -4px;background:rgba(255,208,104,.42);box-shadow:0 0 0 1px rgba(255,214,120,.28),0 0 12px 2px rgba(255,194,71,.16)}

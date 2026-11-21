@@ -160,6 +160,11 @@ export default function Page() {
             <a href="#top" aria-current="page"><span className="vs-dot" aria-hidden="true" />데스크</a>
             <a href="/academy"><span className="vs-dot" aria-hidden="true" />아카데미</a>
           </nav>
+          {/* PC: 헤더 오른쪽에 유튜브 · 카카오톡 (폰에서는 화면 옆 버튼으로 보임) */}
+          <div className="hd-links">
+            <a className="sl yt" href={YOUTUBE} target="_blank" rel="noopener" aria-label="딜러네 유튜브 채널"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.6 5.9v12.2L19.2 12z" /></svg></a>
+            <a className="sl kk" href={KAKAO} target="_blank" rel="noopener" aria-label="딜러네 카카오톡 오픈채팅방"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5c-4.7 0-8.5 2.95-8.5 6.6 0 2.35 1.6 4.4 4 5.56l-.82 3c-.1.36.3.65.6.44l3.6-2.4c.37.03.74.05 1.12.05 4.7 0 8.5-2.95 8.5-6.6S16.7 4.5 12 4.500z" /></svg></a>
+          </div>
           <a className="btn btn-sm" href="#apply">시그널 받기</a>
         </div>
       </header>

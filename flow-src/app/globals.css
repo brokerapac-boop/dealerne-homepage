@@ -658,3 +658,10 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
   .side-links{transition:opacity .3s}
   .side-links.at-form{opacity:0;pointer-events:none}
 }
+
+/* PC: 유튜브 · 카카오톡 버튼은 헤더 오른쪽에. 폰: 화면 옆에 따라다님 */
+.hd-links{display:flex;align-items:center;gap:8px}
+.hd-links .sl{width:40px;height:40px;box-shadow:none}
+.hd-links .sl svg{width:22px;height:22px}
+@media (min-width:821px){.side-links{display:none}}
+@media (max-width:820px){.hd-links{display:none}}

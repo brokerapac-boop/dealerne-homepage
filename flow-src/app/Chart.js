@@ -66,16 +66,27 @@ export default function Chart({ className, start, seed = 7, cw = 10, pad = 0, lo
       });
       ctx.globalAlpha = 1;
       if (signals) {
-        ctx.font = '800 12px Pretendard Variable, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        view.forEach((c, i) => {
-          if (!c.sig) return;
-          const buy = c.sig === 'buy', x = Math.round(x0 + i * cw + cw / 2), col = buy ? '#FF5C74' : '#5B97FF';
-          const tip = buy ? y(c.l) + 8 : y(c.h) - 8, dir = buy ? 1 : -1;   // 매수는 캔들 아래, 매도는 캔들 위
-          ctx.fillStyle = col;
-          ctx.beginPath(); ctx.moveTo(x, tip); ctx.lineTo(x - 7, tip + dir * 10); ctx.lineTo(x + 7, tip + dir * 10); ctx.closePath(); ctx.fill();
-          const by = tip + dir * 24;
-          ctx.beginPath(); ctx.roundRect(x - 21, by - 11, 42, 22, 11); ctx.fill();
-          ctx.fillStyle = '#07090F'; ctx.fillText(buy ? '매수' : '매도', x, by + 1);
+        // 표시: 캔들 끝의 작은 점 + 가는 연결선 + 테두리만 있는 라벨. 가장 최근 표시는 점 주위가 퍼져 나감
+        const now = performance.now(), sigs = [];
+        view.forEach((c, i) => { if (c.sig) sigs.push([c, i]); });
+        ctx.font = '700 11px Pretendard Variable, sans-serif'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+        sigs.forEach(([c, i], k) => {
+          const buy = c.sig === 'buy', col = buy ? '#FF5C74' : '#5B97FF', rgb = buy ? '255,92,116' : '91,151,255';
+          const x = Math.round(x0 + i * cw + cw / 2) + 0.5, dir = buy ? 1 : -1;      // 매수는 캔들 아래, 매도는 캔들 위
+          const ay = (buy ? y(c.l) : y(c.h)) + dir * 9, ly = ay + dir * 26;
+          if (k === sigs.length - 1) {
+            const t = (now % 1800) / 1800;
+            ctx.beginPath(); ctx.arc(x, ay, 4 + t * 14, 0, Math.PI * 2); ctx.strokeStyle = `rgba(${rgb},${0.55 * (1 - t)})`; ctx.lineWidth = 1.5; ctx.stroke();
+          }
+          ctx.beginPath(); ctx.arc(x, ay, 7, 0, Math.PI * 2); ctx.fillStyle = `rgba(${rgb},.18)`; ctx.fill();
+          ctx.beginPath(); ctx.arc(x, ay, 3.2, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill();
+          ctx.beginPath(); ctx.moveTo(x, ay + dir * 7); ctx.lineTo(x, ly - dir * 10); ctx.strokeStyle = `rgba(${rgb},.55)`; ctx.lineWidth = 1; ctx.stroke();
+          const tw = 46, th = 20, bx = Math.round(x - tw / 2), by = Math.round(ly - th / 2);
+          ctx.beginPath(); ctx.roundRect(bx, by, tw, th, 6); ctx.fillStyle = 'rgba(9,12,19,.88)'; ctx.fill();
+          ctx.strokeStyle = `rgba(${rgb},.7)`; ctx.lineWidth = 1; ctx.stroke();
+          const tx = bx + 9, ty = by + th / 2;                                           // 작은 방향 화살표
+          ctx.beginPath(); ctx.moveTo(tx, ty - dir * 3.5); ctx.lineTo(tx - 3.5, ty + dir * 2.5); ctx.lineTo(tx + 3.5, ty + dir * 2.5); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+          ctx.fillStyle = '#F3F4F7'; ctx.fillText(buy ? '매수' : '매도', bx + 17, ty + 1);
         });
         ctx.textAlign = 'start';
       }

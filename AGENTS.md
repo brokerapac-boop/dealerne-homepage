@@ -38,7 +38,7 @@
 - `config.js`: 증권사 이름, LIVE·브리핑 시간 등 운영 정보(현재 샘플 값).
 
 ### 공통
-- 카카오톡 오픈채팅 주소는 `https://open.kakao.com/o/gZ4c0RWi` 입니다. `com/academy.html`, `com/script.js`, `flow-src/app/kit.js`, `kr/data.js`에 있습니다.
+- 카카오톡 오픈채팅 주소는 `https://open.kakao.com/o/gsSH41Xi` 입니다. `com/academy.html`, `com/script.js`, `flow-src/app/kit.js`, `kr/data.js`에 있습니다.
 - 로고는 `logo.webp`, 공유 미리보기 이미지는 `og.png`(1200x630)입니다.
 
 ## 반드시 지킬 것

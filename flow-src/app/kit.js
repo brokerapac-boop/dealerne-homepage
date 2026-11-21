@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useInView } from 'motion/react';
 
 export const TG = 'https://t.me/dealerne';
-export const KAKAO = 'https://open.kakao.com/o/gZ4c0RWi';
+export const KAKAO = 'https://open.kakao.com/o/gsSH41Xi';
 export const SPRING = { type: 'spring', stiffness: 110, damping: 20, mass: 0.9 };
 export const SOFT = { type: 'spring', stiffness: 70, damping: 18 };
 

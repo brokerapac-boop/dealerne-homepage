@@ -614,3 +614,19 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 .note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .hero-note{pointer-events:auto}
 @media (min-width:821px){.hero-note{right:76px}}
+
+/* 시그널 위치의 노란 구슬과 파동 */
+.sig-orb{position:absolute;left:0;top:0;width:0;height:0;z-index:4;pointer-events:none;opacity:0;transition:opacity .3s}
+.sig-orb i{position:absolute;left:0;top:0;border-radius:50%}
+.sig-orb .core{width:16px;height:16px;margin:-8px 0 0 -8px;background:radial-gradient(circle at 32% 26%,#FFFBEA 0,#FFE08A 22%,#FFC247 52%,#D18D12 82%,#8F5B00 100%);box-shadow:0 0 16px 4px rgba(255,194,71,.6),0 0 40px 10px rgba(255,194,71,.22),inset -2px -3px 4px rgba(110,62,0,.5),inset 1px 2px 2px rgba(255,255,255,.6);animation:orb-breathe 2.2s ease-in-out infinite}
+.sig-orb .ring{width:16px;height:16px;margin:-8px 0 0 -8px;border:1.5px solid rgba(255,206,92,.9);background:radial-gradient(circle,rgba(255,194,71,0) 45%,rgba(255,194,71,.22) 100%);opacity:0;animation:orb-wave 2.7s cubic-bezier(.2,.6,.3,1) infinite}
+.sig-orb .ring:nth-child(3){animation-delay:.9s}
+.sig-orb .ring:nth-child(4){animation-delay:1.8s}
+.sig-orb .flash{width:20px;height:20px;margin:-10px 0 0 -10px;background:radial-gradient(circle,rgba(255,236,170,.95) 0,rgba(255,194,71,.55) 38%,rgba(255,194,71,0) 70%);opacity:0}
+.sig-orb.burst .flash{animation:orb-flash 1.1s cubic-bezier(.15,.7,.2,1)}
+.sig-orb.burst .core{animation:orb-pop .8s cubic-bezier(.3,1.7,.5,1),orb-breathe 2.2s ease-in-out .8s infinite}
+@keyframes orb-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+@keyframes orb-wave{0%{transform:scale(1);opacity:.85}100%{transform:scale(5.2);opacity:0}}
+@keyframes orb-flash{0%{transform:scale(.4);opacity:.95}100%{transform:scale(11);opacity:0}}
+@keyframes orb-pop{0%{transform:scale(0)}60%{transform:scale(1.5)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.sig-orb i{animation:none!important}.sig-orb .ring,.sig-orb .flash{display:none}}

@@ -27,6 +27,7 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
       let price = base, heat = 1, t = 1700000000, bar = null, ticks = 0;
       let ema = null, above = null, since = 99;
       const markers = [];
+      let lastSig = null, sigSeq = 0;   // 가장 최근 표시의 위치(파동 효과용)
       const tick = () => {
         // 변동성은 캔들 단위로 천천히 커졌다 작아짐, 가끔 한 번씩 크게 움직임
         const jump = rnd() < 0.0015 ? gauss() * vol * 1.6 : 0;
@@ -45,6 +46,7 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
               ? { time: bar.time, position: 'belowBar', color: '#FF5C74', shape: 'arrowUp', text: '매수' }
               : { time: bar.time, position: 'aboveBar', color: '#5B97FF', shape: 'arrowDown', text: '매도' });
             if (markers.length > 14) markers.shift();
+            lastSig = { time: bar.time, price: up ? bar.low : bar.high, buy: up }; sigSeq++;
             since = 0;
           }
           above = up;
@@ -77,6 +79,24 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
       (lines || []).forEach((l) => series.createPriceLine({ price: l.v, color: l.c, lineWidth: 1, lineStyle: 2, axisLabelVisible: scale && lineLabels, title: lineLabels ? l.t : '' }));
       chart.timeScale().scrollToRealTime();
 
+      // 가장 최근 표시 위에 노란 구슬과 퍼지는 파동을 올림. 새 표시가 생기면 한 번 크게 터짐
+      let orb = null, shown = 0;
+      if (signals) {
+        orb = document.createElement('div'); orb.className = 'sig-orb';
+        orb.innerHTML = '<i class="flash"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="core"></i>';
+        host.appendChild(orb); host._orb = orb;
+      }
+      const place = () => {
+        if (!orb) return;
+        const x = lastSig ? chart.timeScale().timeToCoordinate(lastSig.time) : null;
+        const y = lastSig ? series.priceToCoordinate(lastSig.price) : null;
+        if (x === null || y === null || x < 0) { orb.style.opacity = '0'; return; }
+        orb.style.opacity = '1';
+        orb.style.transform = `translate(${Math.round(x)}px,${Math.round(y + (lastSig.buy ? 13 : -13))}px)`;
+        if (shown !== sigSeq) { shown = sigSeq; orb.classList.remove('burst'); void orb.offsetWidth; orb.classList.add('burst'); }
+      };
+      requestAnimationFrame(place);
+
       const loop = () => {
         const n = 3 + Math.floor(rnd() * 10);
         for (let k = 0; k < n; k++) {
@@ -84,6 +104,7 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
           if (ticks >= TPC) { series.update({ ...bar }); const before = markers.length, last = markers[markers.length - 1]; closeBar(); if (signals && (markers.length !== before || markers[markers.length - 1] !== last)) series.setMarkers(markers.slice()); }
         }
         if (bar) series.update({ ...bar });
+        place();
       };
       let visible = false;
       const run = () => { if (!timer && visible && !reduce && !document.hidden) timer = setInterval(loop, 60); };
@@ -100,6 +121,7 @@ export default function TVChart({ className, base = 21640, vol = 0.0011, seed = 
       if (host._halt) host._halt();
       if (io) io.disconnect();
       if (onVis) document.removeEventListener('visibilitychange', onVis);
+      if (host._orb) { host._orb.remove(); host._orb = null; }
       if (chart) chart.remove();
     };
   }, [base, vol, seed, lines, signals, wantScale, scaleMin, spacing, offset, lineLabels]);

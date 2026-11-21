@@ -306,6 +306,7 @@
 /* ---------- 상담 신청 (아카데미·데스크 공통): 접수한 뒤 카카오톡 상담방을 열어요 ---------- */
 (function () {
   var KAKAO = 'https://open.kakao.com/o/gsSH41Xi';
+  var TG = 'https://t.me/dealerne';   // 신청하면 안내하는 텔레그램 시그널방
   document.querySelectorAll('form[data-kakao-form]').forEach(function (form) {
     var phone = form.elements.phone, msg = form.querySelector('[data-form-msg]');
     if (!phone) return;
@@ -317,14 +318,14 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(phone.value)) { phone.setCustomValidity('휴대폰 번호를 확인해 주세요. 예: 010-1234-5678'); phone.reportValidity(); return; }
-      var win = window.open(KAKAO, '_blank', 'noopener');   // 누른 순간에 열어야 팝업 차단에 안 걸려요
+      var win = window.open(TG, '_blank', 'noopener');   // 신청하면 텔레그램 시그널방을 엽니다 (누른 순간에 열어야 팝업 차단에 안 걸려요)
       var body = new URLSearchParams(new FormData(form)).toString(), btn = form.querySelector('button[type=submit]');
       btn.disabled = true;
       function done(ok) {
         btn.disabled = false;
         if (msg) {
           msg.hidden = false;
-          msg.innerHTML = (ok ? '신청이 접수됐어요. ' : '') + '카카오톡 상담방이 열리지 않았다면 <a href="' + KAKAO + '" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">여기를 눌러 주세요</a>.';
+          msg.innerHTML = (ok ? '신청이 접수됐습니다. ' : '') + '텔레그램 시그널방이 열리지 않았다면 <a href="' + TG + '" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">여기를 눌러 주세요</a>.';
         }
         if (ok) form.reset();
       }

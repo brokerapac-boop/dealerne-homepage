@@ -303,10 +303,9 @@
   document.getElementById('quizReset').addEventListener('click', function () { qi = 0; score = 0; render(); });
 })();
 
-/* ---------- 상담 신청 (아카데미·데스크 공통): 접수한 뒤 카카오톡 상담방을 열어요 ---------- */
+/* ---------- 상담 신청 (아카데미·데스크 공통): 접수되면 같은 자리에서 완료 화면(카카오톡 오픈채팅 입장)으로 바뀝니다 ---------- */
 (function () {
   var KAKAO = 'https://open.kakao.com/o/gsSH41Xi';
-  var TG = 'https://t.me/dealerne';   // 신청하면 안내하는 텔레그램 시그널방
   document.querySelectorAll('form[data-kakao-form]').forEach(function (form) {
     var phone = form.elements.phone, msg = form.querySelector('[data-form-msg]');
     if (!phone) return;
@@ -318,16 +317,25 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(phone.value)) { phone.setCustomValidity('휴대폰 번호를 확인해 주세요. 예: 010-1234-5678'); phone.reportValidity(); return; }
-      var win = window.open(TG, '_blank', 'noopener');   // 신청하면 텔레그램 시그널방을 엽니다 (누른 순간에 열어야 팝업 차단에 안 걸려요)
       var body = new URLSearchParams(new FormData(form)).toString(), btn = form.querySelector('button[type=submit]');
       btn.disabled = true;
       function done(ok) {
         btn.disabled = false;
-        if (msg) {
-          msg.hidden = false;
-          msg.innerHTML = (ok ? '신청이 접수됐습니다. ' : '') + '텔레그램 시그널방이 열리지 않았다면 <a href="' + TG + '" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">여기를 눌러 주세요</a>.';
+        if (!ok) {
+          if (msg) { msg.hidden = false; msg.innerHTML = '접수가 되지 않았습니다. 잠시 뒤 다시 시도하시거나 <a href="' + KAKAO + '" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">카카오톡 오픈채팅</a>으로 문의해 주세요.'; }
+          return;
         }
-        if (ok) form.reset();
+        // 폼 내용을 완료 화면으로 바꿉니다 (폼 요소와 Netlify 속성은 그대로 둠)
+        Array.prototype.forEach.call(form.children, function (el) { el.hidden = true; el.style.display = 'none'; });
+        var box = document.createElement('div');
+        box.setAttribute('role', 'status'); box.className = 'apply-done';
+        box.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:320px;text-align:center';
+        box.innerHTML = '<span aria-hidden="true" style="display:grid;place-items:center;width:68px;height:68px;border-radius:50%;background:#FFC247;color:#1A1300;font-size:34px;font-weight:800;box-shadow:0 0 0 10px rgba(255,194,71,.18)">✓</span>'
+          + '<strong style="font-size:26px;letter-spacing:-.03em">정상 접수되었습니다</strong>'
+          + '<span style="font-size:16px;line-height:1.6;opacity:.8">아래 버튼을 눌러<br>카카오톡 오픈채팅에 입장해 주세요.</span>'
+          + '<a href="' + KAKAO + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 30px;margin-top:6px;border-radius:999px;background:#FEE500;color:#191919;font-size:17px;font-weight:700">카카오톡 오픈채팅 입장하기</a>';
+        form.appendChild(box);
+        try { box.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {}
       }
       fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
         .then(function (r) { done(r.ok); }).catch(function () { done(false); });

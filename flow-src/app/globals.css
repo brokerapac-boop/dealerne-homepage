@@ -676,3 +676,16 @@ svg.viz text{font:600 11px var(--font);fill:#8E96A8}
 .hd-links .sl svg{width:54%;height:54%}
 .hd-links .sl.kk svg{width:58%;height:58%}
 .sl:hover{transform:translateY(-2px) scale(1.06)}
+
+/* 신청 완료 화면 (카드 안에서 바뀜) */
+.done{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:420px;text-align:center}
+.done-ic{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 10px rgba(255,194,71,.18)}
+.done-ic svg{width:38px;height:38px}
+.done h2{font-size:clamp(26px,3vw,36px)}
+.done .sub{max-width:none;margin-bottom:10px}
+.kakao.big{min-height:58px;padding:0 30px;border-radius:999px;font-size:17px;font-weight:700}
+.f-msg{color:#D43B55}
+.apply.live .f-msg{color:#FF8FA1}
+/* 하단 바의 카카오톡 표시 */
+.cta-logo.kk{display:grid;place-items:center;border-radius:50%;background:#FEE500;color:#3C1E1E}
+.cta-logo.kk svg{width:58%;height:58%}

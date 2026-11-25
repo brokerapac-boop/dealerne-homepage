@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'motion/react';
-import { KAKAO, TG, SPRING, SOFT, Up } from './kit';
+import { KAKAO, SPRING, SOFT, Up } from './kit';
 import { VizJargon, VizLot, VizNoStop } from './Viz';
 
 /* ---------- 모의거래: 막히는 세 곳 + 미션 네 개 ---------- */
@@ -112,8 +112,8 @@ export function Platforms() {
 }
 
 /* ---------- 상담 폼 두 개 (기존 사이트와 같은 접수처) ---------- */
-function ApplyForm({ name, children, label, dark }) {
-  const [msg, setMsg] = useState('');
+function ApplyForm({ name, children, label, dark, onDone }) {
+  const [fail, setFail] = useState(false);
   const [busy, setBusy] = useState(false);
   const onPhone = (e) => {
     const d = e.target.value.replace(/\D/g, '').slice(0, 11);
@@ -124,12 +124,12 @@ function ApplyForm({ name, children, label, dark }) {
     e.preventDefault();
     const form = e.currentTarget, phone = form.elements.phone;
     if (!/^01[016789]-?\d{3,4}-?\d{4}$/.test(phone.value)) { phone.setCustomValidity('휴대폰 번호를 확인해 주세요. 예: 010-1234-5678'); phone.reportValidity(); return; }
-    window.open(TG, '_blank', 'noopener'); // 신청하면 텔레그램 시그널방을 엶 (누른 순간에 열어야 팝업 차단에 걸리지 않음)
     const body = new URLSearchParams(new FormData(form)).toString();
-    setBusy(true);
+    setBusy(true); setFail(false);
+    // 접수되면 같은 자리에서 완료 화면(카카오톡 오픈채팅 입장)으로 바뀜
     fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
-      .then((r) => { setMsg(r.ok ? 'ok' : 'fail'); if (r.ok) form.reset(); })
-      .catch(() => setMsg('fail'))
+      .then((r) => { if (r.ok) onDone(); else setFail(true); })
+      .catch(() => setFail(true))
       .finally(() => setBusy(false));
   };
   return (
@@ -142,40 +142,55 @@ function ApplyForm({ name, children, label, dark }) {
         {children}
       </div>
       <label className="f-check"><input type="checkbox" name="consent" required />상담 목적의 개인정보(이름, 휴대폰 번호) 수집·이용에 동의합니다.</label>
-      <motion.button type="submit" disabled={busy} whileTap={{ scale: 0.97 }} whileHover={{ y: -2 }}>{label}</motion.button>
-      {msg && (
-        <div className="f-done" role="status">
-          <p>{msg === 'ok' ? '신청이 접수됐습니다. ' : ''}텔레그램 시그널방이 열리지 않았다면 아래 버튼을 눌러 주세요.</p>
-          <a className="tg-btn" href={TG} target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.7 4.2 2.9 11.100c-1 .4-1 1 .2 1.300l4.400 1.400 1.700 5.200c.200.600.400.800.900.800.400 0 .600-.200.900-.400l2.200-2.100 4.500 3.300c.800.500 1.400.200 1.600-.800l2.900-13.800c.300-1.200-.500-1.700-1.500-1.300zM8.200 13.500l9-5.700c.400-.300.800-.100.500.200l-7.400 6.700-.300 3.100z" /></svg>텔레그램 시그널방 입장</a>
-        </div>
-      )}
+      <motion.button type="submit" disabled={busy} whileTap={{ scale: 0.97 }} whileHover={{ y: -2 }}>{busy ? '접수 중…' : label}</motion.button>
+      {fail && <p className="f-msg" role="alert">접수가 되지 않았습니다. 잠시 뒤 다시 시도하시거나 <a href={KAKAO} target="_blank" rel="noopener">카카오톡 오픈채팅</a>으로 문의해 주세요.</p>}
     </form>
+  );
+}
+/* 신청 완료 화면: 카드 안의 내용이 이것으로 바뀜 */
+function Done({ title }) {
+  const ref = useRef(null);
+  // 카드 높이가 바뀌므로 완료 화면이 화면 가운데에 오도록 맞춤
+  useEffect(() => { ref.current?.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, []);
+  return (
+    <motion.div ref={ref} className="done" role="status" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={SPRING}>
+      <span className="done-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><motion.path d="M5 12.5l4.5 4.5L19 7.500" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.5, delay: 0.2 }} /></svg></span>
+      <h2>정상 접수되었습니다</h2>
+      <p className="sub">{title} 신청이 접수되었습니다.<br />아래 버튼을 눌러 카카오톡 오픈채팅에 입장해 주세요.</p>
+      <a className="kakao big" href={KAKAO} target="_blank" rel="noopener">카카오톡 오픈채팅 입장하기</a>
+    </motion.div>
   );
 }
 const Tick = () => <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 export function Forms() {
+  const [done, setDone] = useState({});
+  const finish = (k) => () => setDone((d) => ({ ...d, [k]: true }));
   return (
     <section className="sec forms-sec" id="apply" data-tone="dark" data-ch="8">
       <div className="wrap forms">
         <motion.div className="apply demo" id="apply-demo" initial={{ opacity: 0, x: -60, rotate: -2 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true, amount: 0.25 }} transition={SOFT}>
+          {done.demo ? <Done title="모의투자 상담" /> : (<>
           <p className="kicker">처음이라면</p>
           <h2>모의투자 상담부터<br />신청하세요</h2>
           <p className="sub">MT5 설치부터 첫 모의 주문까지 1:1로 안내합니다. 실제 돈은 들어가지 않습니다.</p>
           <ul className="ticks-l"><li><Tick />MT5 설치와 데모 계좌 개설</li><li><Tick />종목별 랏 계산 연습</li><li><Tick />네 가지 미션 1:1 점검</li></ul>
-          <ApplyForm name="desk-demo" label="모의투자 상담 신청">
+          <ApplyForm name="desk-demo" label="모의투자 상담 신청" onDone={finish('demo')}>
             <label>관심 종목<select name="instrument"><option>나스닥100</option><option>골드</option><option>WTI 오일</option><option>S&amp;P500</option><option>FX 통화쌍</option><option>비트코인</option><option>잘 모르겠어요</option></select></label>
             <label>MT5 사용 경험<select name="mt5"><option>처음이에요</option><option>설치만 해봤어요</option><option>모의거래 해봤어요</option></select></label>
           </ApplyForm>
+          </>)}
         </motion.div>
         <motion.div className="apply live dark-scope" id="apply-live" initial={{ opacity: 0, x: 60, rotate: 2 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ ...SOFT, delay: 0.1 }}>
+          {done.live ? <Done title="실전 매매 상담" /> : (<>
           <p className="kicker">바로 매매하려면</p>
           <h2>실전 매매 상담으로<br />바로 연결하세요</h2>
           <p className="sub">플랫폼 선택부터 계좌 연결, 시그널 수신 세팅까지 한 번에 맞춥니다.</p>
           <ul className="ticks-l"><li><Tick />HFM · XM · 이지스퀘어 · 증권사 HTS 조건 비교</li><li><Tick />MT5 세팅과 주문 화면 점검</li><li><Tick />텔레그램 시그널 수신 세팅</li></ul>
-          <ApplyForm name="desk-live" label="실전 매매 상담 신청" dark>
+          <ApplyForm name="desk-live" label="실전 매매 상담 신청" dark onDone={finish('live')}>
             <label>희망 플랫폼<select name="platform"><option>HFM</option><option>XM</option><option>이지스퀘어</option><option>증권사 HTS</option><option>상담 후 결정</option></select></label>
             <label>매매 경험<select name="experience"><option>1년 미만</option><option>1~3년</option><option>3년 이상</option></select></label>
           </ApplyForm>
+          </>)}
         </motion.div>
       </div>
       <Up as="p" className="wrap alt"><span>연락처를 남기기 전에 먼저 물어보실 수 있습니다.</span><a className="kakao" href={KAKAO} target="_blank" rel="noopener">카카오톡 오픈채팅으로 문의하기</a></Up>

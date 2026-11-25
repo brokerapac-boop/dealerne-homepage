@@ -16,12 +16,14 @@ const FIELD = [
 ];
 
 exports.handler = async (event) => {
-  const token = process.env.TELEGRAM_BOT_TOKEN, chat = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chat) return { statusCode: 200, body: 'telegram not configured' };
+  const token = (process.env.TELEGRAM_BOT_TOKEN || '').trim(), chat = (process.env.TELEGRAM_CHAT_ID || '').trim();
+  // 원인 추적용 기록: 값 자체는 남기지 않고, 있는지 없는지와 길이만 남깁니다.
+  console.log('submission-created: start', JSON.stringify({ hasToken: !!token, tokenLength: token.length, hasChat: !!chat, chatLooksRight: /^-?\d+$/.test(chat), node: process.version }));
+  if (!token || !chat) { console.log('submission-created: skipped, settings missing'); return { statusCode: 200, body: 'telegram not configured' }; }
 
   let p;
   try { p = (JSON.parse(event.body || '{}') || {}).payload; } catch (e) { p = null; }
-  if (!p || !p.data) return { statusCode: 200, body: 'no payload' };
+  if (!p || !p.data) { console.log('submission-created: skipped, no form data in the event'); return { statusCode: 200, body: 'no payload' }; }
 
   const d = p.data, name = p.form_name || d['form-name'] || '';
   const lines = [`[${FORM[name] || name || '상담'}] 새 신청`];
@@ -38,11 +40,13 @@ exports.handler = async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chat, text: lines.join('\n'), disable_web_page_preview: true }),
     });
-    // 토큰이 기록에 남지 않도록 응답 상태만 남깁니다.
-    if (!r.ok) console.log('telegram send failed', r.status);
+    // 토큰이 기록에 남지 않도록 텔레그램의 응답 상태와 설명만 남깁니다.
+    let why = '';
+    if (!r.ok) { try { why = ((await r.json()) || {}).description || ''; } catch (e) { why = ''; } }
+    console.log('submission-created: telegram', r.status, r.ok ? 'sent' : why, 'form', name);
     return { statusCode: 200, body: r.ok ? 'sent' : 'telegram error' };
   } catch (e) {
-    console.log('telegram send failed', e && e.name);
+    console.log('submission-created: telegram request failed', e && e.name, e && String(e.message).slice(0, 80));
     return { statusCode: 200, body: 'telegram error' };
   }
 };

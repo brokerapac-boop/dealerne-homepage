@@ -5,7 +5,7 @@ export const metadata = {
   metadataBase: new URL('https://dealerne.com'),
   title: '딜러네 데스크 | 나스닥·골드·오일 매매 데스크',
   description: '거래 종목과 모의거래, MT5 플랫폼 연결을 안내하는 딜러네 데스크. 입문부터 실전까지 다섯 단계로 배우는 딜러네 아카데미.',
-  robots: { index: false, follow: false },
+  alternates: { canonical: '/' },
   openGraph: {
     title: '딜러네 데스크 · 아카데미',
     description: '매매 전에 먼저 여는 트레이딩 데스크, 기준부터 세우는 아카데미',

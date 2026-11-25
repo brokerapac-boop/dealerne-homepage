@@ -3,4 +3,4 @@
 :HL["https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"A5TlfhlCf-MoBbLjJF0-v","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"6XH2mHVAYcUw1ckb7TUcb","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

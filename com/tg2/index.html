@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>딜러네 데스크 | 나스닥·골드·오일 매매 데스크</title>
+<meta name="description" content="거래 종목과 모의거래, MT5 플랫폼 연결을 안내하는 딜러네 데스크.">
+<meta name="theme-color" content="#07090F">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../tg/tg.css">
+<link rel="stylesheet" href="tg2.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top" aria-label="딜러네 처음으로"><img src="../logo.webp" alt="" width="36" height="36"><span>딜러네</span></a>
+    <nav class="vswitch" aria-label="서비스 선택">
+      <a href="#top" aria-current="page"><i aria-hidden="true"></i>데스크</a>
+      <a href="../#academy" data-track="academy_switch"><i aria-hidden="true"></i>아카데미</a>
+    </nav>
+    <nav class="top-nav" aria-label="주요 메뉴">
+      <a href="#instruments">거래 종목</a><a href="#demo">모의거래</a><a href="#platforms">플랫폼 연결</a><a href="#apply">상담</a>
+    </nav>
+    <a class="btn btn-sm" href="https://t.me/dealerne" target="_blank" rel="noopener" data-tg="header">텔레그램</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- 첫 화면 + 시그널 보드 -->
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow">해외선물 매매 어드바이저 · 나스닥 골드 오일</p>
+        <h1>매매 전에 먼저 여는<br>나의 트레이딩 데스크</h1>
+        <p class="lead">종목별 시그널을 확인하고,<br>연결된 MT5 플랫폼으로 바로 넘어갑니다.</p>
+        <div class="hero-cta">
+          <a class="btn btn-main" href="https://t.me/dealerne" target="_blank" rel="noopener" data-tg="hero"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" fill="currentColor"/></svg>텔레그램에서 시그널 받기</a>
+          <a class="btn-text" href="#apply">플랫폼 연결 상담</a>
+        </div>
+      </div>
+
+      <div class="chart-card board">
+        <div class="chart-tabs" role="tablist" aria-label="종목">
+          <button class="tab on" type="button" role="tab" aria-selected="true" data-inst="nas">나스닥100<i class="sg buy">매수</i></button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-inst="gold">골드<i class="sg sell">매도</i></button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-inst="wti">WTI 오일<i class="sg wait">대기</i></button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-inst="spx">S&amp;P500<i class="sg wait">대기</i></button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-inst="eur">EUR/USD<i class="sg wait">대기</i></button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-inst="btc">비트코인<i class="sg wait">대기</i></button>
+        </div>
+        <div class="board-head"><b id="bName">나스닥100</b><span id="bSym">USA100 · US100Cash</span><i class="sg buy" id="bSide">매수</i></div>
+        <div class="chart" id="tgChart" role="img" aria-label="선택한 종목의 예시 차트. 실제 시세가 아닙니다."></div>
+        <dl class="levels">
+          <div><dt class="c-entry">진입</dt><dd id="bEntry">—</dd></div>
+          <div><dt class="c-stop">손절</dt><dd id="bStop">—</dd></div>
+          <div><dt>목표</dt><dd id="bTarget">—</dd></div>
+        </dl>
+        <p class="chart-note">예시 화면 · 300틱 시뮬레이션 차트 · 실제 시세와 시그널이 아님 · <a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a></p>
+        <div class="plat-strip">
+          <p><span>플랫폼 연결</span>이 시그널을 주문할 MT5 환경을 고르세요</p>
+          <div class="chips"><a href="#platforms">HFM</a><a href="#platforms">XM</a><a href="#platforms">이지스퀘어</a><a href="#platforms">증권사 HTS</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 거래 종목 -->
+  <section class="sec" id="instruments">
+    <div class="wrap">
+      <p class="eyebrow">01 · 거래 종목</p>
+      <h2>여섯 종목,<br>데스크가 함께 봅니다</h2>
+      <p class="sec-lead">지수, 원자재, 통화, 크립토까지.<br>종목마다 심볼과 1랏 크기가 달라 주문 전에 함께 확인합니다.</p>
+      <ul class="insts">
+        <li><button type="button" data-card="nas"><span class="code">USA100 · US100Cash<i class="core">핵심</i></span><img src="../icons/nas.webp" alt="" width="64" height="64" loading="lazy"><h3>나스닥100</h3><p>기술주 중심의 미국 대표 지수</p><span class="lot1"><em>1랏</em>1계약 (HFM 기준)</span></button></li>
+        <li><button type="button" data-card="gold"><span class="code">XAUUSD · GOLD<i class="core">핵심</i></span><img src="../icons/gold.webp" alt="" width="64" height="64" loading="lazy"><h3>골드</h3><p>금리와 달러에 민감한 대표 안전자산</p><span class="lot1"><em>1랏</em>100온스</span></button></li>
+        <li><button type="button" data-card="wti"><span class="code">USOIL · OILCash<i class="core">핵심</i></span><img src="../icons/wti.webp" alt="" width="64" height="64" loading="lazy"><h3>WTI 오일</h3><p>변동성이 큰 대표 원자재</p><span class="lot1"><em>1랏</em>100배럴 (HFM 기준)</span></button></li>
+        <li><button type="button" data-card="spx"><span class="code">USA500 · US500Cash</span><img src="../icons/spx.webp" alt="" width="64" height="64" loading="lazy"><h3>S&amp;P500</h3><p>미국 시장 전체를 보는 기준 지수</p><span class="lot1"><em>1랏</em>상담 시 안내</span></button></li>
+        <li><button type="button" data-card="eur"><span class="code">EUR/USD 외 메이저 7</span><img src="../icons/eur.webp" alt="" width="64" height="64" loading="lazy"><h3>FX 통화쌍</h3><p>유동성이 가장 큰 메이저 통화쌍</p><span class="lot1"><em>1랏</em>100,000 통화 단위</span></button></li>
+        <li><button type="button" data-card="btc"><span class="code">BTCUSD</span><img src="../icons/btc.webp" alt="" width="64" height="64" loading="lazy"><h3>비트코인</h3><p>24시간 움직이는 대표 암호화폐 CFD</p><span class="lot1"><em>1랏</em>상담 시 안내</span></button></li>
+      </ul>
+      <p class="foot-note">계약 조건은 브로커와 계좌 유형에 따라 다릅니다.<br>최신 조건은 상담에서 함께 확인합니다.</p>
+    </div>
+  </section>
+
+  <!-- 02 처음이라면 + 모의거래 -->
+  <section class="sec sec-alt" id="demo">
+    <div class="wrap">
+      <p class="eyebrow">02 · 처음이라면</p>
+      <h2>처음엔 누구나<br>같은 곳에서 막힙니다</h2>
+      <ol class="gets">
+        <li><b>01</b><h3>용어부터 낯설다</h3><p>랏, 핍, 증거금, 스왑.<br>뜻을 모른 채 주문 창을 엽니다.</p><div class="words" aria-hidden="true"><span>랏</span><span>핍</span><span class="hi">증거금</span><span>스프레드</span><span>스왑</span><span>레버리지</span></div></li>
+        <li><b>02</b><h3>랏 한 자리가 100배</h3><p>골드 1랏은 100온스입니다.<br>0.01 대신 1.00을 넣으면 100배 크기로 주문됩니다.</p><div class="lot in-card"><div class="lot-row bad"><span>입력한 수량</span><b>1.00<small>= 100온스</small></b></div><div class="lot-row good"><span>의도한 수량</span><b>0.01<small>= 1온스</small></b></div></div></li>
+        <li><b>03</b><h3>손절 없이 들어간다</h3><p>손절가를 비워 두면<br>손실이 어디서 멈출지 정해지지 않습니다.</p></li>
+      </ol>
+
+      <div class="demo">
+        <div class="demo-copy">
+          <h2>그래서 데스크는<br><em>모의거래</em>부터 시작합니다</h2>
+          <p class="sec-lead">실제 돈 대신 가상 자금으로,<br>실제와 같은 MT5 화면에서 주문해 봅니다.<br>네 가지 미션을 마치면 실전으로 넘어갑니다.</p>
+        </div>
+        <div class="acct" aria-label="모의 계좌 예시 화면">
+          <div class="acct-top"><span class="tagd">DEMO</span><b>모의 계좌</b><small>예시 화면</small></div>
+          <p class="acct-l">가상 자금</p><p class="acct-v">$10,000.00</p>
+          <ul><li><span>골드 XAUUSD</span><b><i class="sg buy">매수</i>0.01랏</b></li><li><span>손절가</span><b class="okc">✓ 설정됨</b></li><li><span>익절가</span><b class="okc">✓ 설정됨</b></li></ul>
+          <div class="prog"><span>미션 진행</span><b>2 / 4</b><i><u></u></i></div>
+        </div>
+        <ol class="steps missions">
+          <li><span class="num">1</span><div><h3>첫 주문 넣기</h3><p>종목 검색부터 0.01랏 주문까지</p></div></li>
+          <li><span class="num">2</span><div><h3>손절과 익절 함께 설정</h3><p>주문 창에서 한 번에 입력하기</p></div></li>
+          <li><span class="num">3</span><div><h3>시그널대로 주문해 보기</h3><p>받은 시그널을 모의 계좌에서 실행</p></div></li>
+          <li><span class="num">4</span><div><h3>매매 일지 남기기</h3><p>진입 이유와 결과를 기록</p></div></li>
+        </ol>
+        <a class="btn btn-main demo-btn" href="#apply-demo">모의투자 상담 신청</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 실전 플랫폼 -->
+  <section class="sec" id="platforms">
+    <div class="wrap">
+      <p class="eyebrow">03 · 실전 플랫폼</p>
+      <h2>실전은<br>MT5 플랫폼에서</h2>
+      <p class="sec-lead">모의거래를 마치면 조건을 비교해 맞는 플랫폼을 연결합니다.<br>세팅은 데스크가 함께합니다.</p>
+      <ul class="plats">
+        <li><div class="plat-h"><h3>HFM</h3><span class="tagl">계좌 유형 다양</span></div><ul><li class="p">센트, 프리미엄, 제로, 프로 계좌 중 선택</li><li class="p">프로 외 계좌는 최소 입금 $0</li><li class="m">센트 계좌는 외환과 골드만 거래 가능</li></ul></li>
+        <li><div class="plat-h"><h3>XM</h3><span class="tagl">소액 시작</span></div><ul><li class="p">최소 입금 $5부터 시작</li><li class="p">마이크로 계좌: 1랏 = 1,000 통화 단위</li><li class="m">가입 법인에 따라 계좌 유형이 다름</li></ul></li>
+        <li><div class="plat-h"><h3>이지스퀘어</h3><span class="tagl hi">조건 확인 중</span></div><ul><li class="d">세부 조건은 확인을 마친 뒤 안내합니다.<br>먼저 상담으로 문의해 주세요.</li></ul></li>
+      </ul>
+      <p class="foot-note">브로커는 가입 법인마다 규제 기관과 계좌 조건이 다릅니다.<br>최신 조건은 상담에서 함께 확인합니다.</p>
+      <div class="hts">
+        <div><p class="eyebrow">국내 증권사 HTS</p><h3>국내 증권사 HTS로도 연결합니다</h3><p>해외선물 정식 계약을 증권사 HTS로 거래하려면,<br>제휴 증권사 계좌 개설과 HTS 화면 세팅을 안내합니다.</p><p class="tiny">제휴 증권사와 수수료는 상담 시 안내합니다</p></div>
+        <a class="btn btn-ghost" href="#apply-live">HTS 연결 문의</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · 05 상담 -->
+  <section class="sec sec-alt" id="apply">
+    <div class="wrap forms">
+      <div class="fcard light" id="apply-demo">
+        <p class="eyebrow">04 · 처음이라면</p>
+        <h2>모의투자 상담부터<br>신청하세요</h2>
+        <p class="fdesc">MT5 설치부터 첫 모의 주문까지 1:1로 안내합니다.<br>실제 돈은 들어가지 않습니다.</p>
+        <ul class="checks"><li>MT5 설치와 데모 계좌 개설</li><li>종목별 랏 계산 연습</li><li>네 가지 미션 1:1 점검</li></ul>
+        <form name="desk-demo" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-kakao-form>
+          <input type="hidden" name="form-name" value="desk-demo">
+          <p hidden><label>Skip <input name="bot-field"></label></p>
+          <div class="frow">
+            <label>이름<input name="fullname" required maxlength="20" autocomplete="name" placeholder="성명"></label>
+            <label>휴대폰 번호<input name="phone" type="tel" inputmode="numeric" required autocomplete="tel" maxlength="13" pattern="01[016789]-?[0-9]{3,4}-?[0-9]{4}" title="휴대폰 번호를 입력해 주세요. 예: 010-1234-5678" placeholder="010-0000-0000"></label>
+            <label>관심 종목<select name="instrument"><option>나스닥100</option><option>골드</option><option>WTI 오일</option><option>S&amp;P500</option><option>FX 통화쌍</option><option>비트코인</option><option>잘 모르겠어요</option></select></label>
+            <label>MT5 사용 경험<select name="mt5"><option>처음이에요</option><option>설치만 해봤어요</option><option>모의거래 해봤어요</option></select></label>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" required><span>상담 목적의 개인정보(이름, 휴대폰 번호) 수집·이용에 동의합니다.</span></label>
+          <button class="btn fbtn" type="submit">모의투자 상담 신청</button>
+          <p class="fmsg" data-form-msg role="status" hidden></p>
+        </form>
+      </div>
+      <div class="fcard dark" id="apply-live">
+        <p class="eyebrow">05 · 바로 매매하려면</p>
+        <h2>실전 매매 상담으로<br>바로 연결하세요</h2>
+        <p class="fdesc">플랫폼 선택부터 계좌 연결,<br>시그널 수신 세팅까지 한 번에 맞춥니다.</p>
+        <ul class="checks"><li>HFM · XM · 이지스퀘어 · 증권사 HTS 조건 비교</li><li>MT5 세팅과 주문 화면 점검</li><li>텔레그램 시그널 수신 세팅</li></ul>
+        <form name="desk-live" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-kakao-form>
+          <input type="hidden" name="form-name" value="desk-live">
+          <p hidden><label>Skip <input name="bot-field"></label></p>
+          <div class="frow">
+            <label>이름<input name="fullname" required maxlength="20" autocomplete="name" placeholder="성명"></label>
+            <label>휴대폰 번호<input name="phone" type="tel" inputmode="numeric" required autocomplete="tel" maxlength="13" pattern="01[016789]-?[0-9]{3,4}-?[0-9]{4}" title="휴대폰 번호를 입력해 주세요. 예: 010-1234-5678" placeholder="010-0000-0000"></label>
+            <label>희망 플랫폼<select name="platform"><option>HFM</option><option>XM</option><option>이지스퀘어</option><option>증권사 HTS</option><option>상담 후 결정</option></select></label>
+            <label>매매 경험<select name="experience"><option>1년 미만</option><option>1~3년</option><option>3년 이상</option></select></label>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" required><span>상담 목적의 개인정보(이름, 휴대폰 번호) 수집·이용에 동의합니다.</span></label>
+          <button class="btn btn-main fbtn" type="submit">실전 매매 상담 신청</button>
+          <p class="fmsg" data-form-msg role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 아카데미로 -->
+  <section class="final" id="final">
+    <div class="wrap">
+      <p class="eyebrow">기준부터 배우려면 · 딜러네 아카데미</p>
+      <h2>매매 전에<br>기준부터 세웁니다</h2>
+      <p class="sec-lead center">3분 레벨 진단으로 시작 레벨을 확인하고,<br>입문부터 실전까지 다섯 단계를 순서대로 밟습니다.</p>
+      <a class="btn btn-ghost" href="../#academy" data-track="academy">딜러네 아카데미로 이동 →</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="risk"><b>투자위험 고지</b> 이 사이트의 영상, 시그널과 자료는 교육용 정보이며, 특정 상품의 매매 권유나 투자자문이 아닙니다. 수익을 보장하지 않습니다. 선물, CFD, FX 같은 레버리지 상품은 투자 원금을 넘는 손실이 날 수 있고, 과거 사례가 앞으로의 결과를 뜻하지 않습니다. 투자 판단과 그 결과는 본인의 책임입니다.</p>
+    <p class="copy">© 2026 딜러네 아카데미 · 딜러네 데스크 · (주)맨큐</p>
+  </div>
+</footer>
+
+<div class="bar two-btn" id="bar">
+  <a class="btn btn-main" href="https://t.me/dealerne" target="_blank" rel="noopener" data-tg="sticky"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" fill="currentColor"/></svg>시그널 받기</a>
+  <a class="btn btn-ghost" href="#apply">상담 신청</a>
+</div>
+
+<div class="sample-flag">SAMPLE DRAFT</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<script src="tg2.js"></script>
+</body>
+</html>

@@ -23,19 +23,24 @@ const FIELD = [
 const b64url = (buf) => Buffer.from(buf).toString('base64').replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
 
 // Netlify 가 붙여 보내는 서명(X-Webhook-Signature)이 암호 문구와 본문에 맞는지 확인합니다.
-function signedByNetlify(signature, secret, rawBody) {
-  const parts = String(signature || '').split('.');
-  if (parts.length !== 3) return false;
+// 어디서 어긋났는지 알 수 있게 단계별 결과를 돌려줍니다. (암호 문구와 서명 값은 담지 않습니다.)
+function checkSignature(signature, secret, rawBody) {
+  const out = { hasHeader: !!signature, parts: 0, alg: '', keyMatches: false, bodyMatches: false };
+  const parts = String(signature || '').trim().split('.');
+  out.parts = parts.length;
+  if (parts.length !== 3) return out;
   try {
     const head = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
-    if (!head || head.alg !== 'HS256') return false;
+    out.alg = String((head && head.alg) || '');
+    if (out.alg !== 'HS256') return out;
     const want = Buffer.from(b64url(crypto.createHmac('sha256', secret).update(parts[0] + '.' + parts[1]).digest()));
-    const got = Buffer.from(parts[2]);
-    if (want.length !== got.length || !crypto.timingSafeEqual(want, got)) return false;
+    const got = Buffer.from(parts[2].replace(/=+$/, ''));
+    out.keyMatches = want.length === got.length && crypto.timingSafeEqual(want, got);
     const claim = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
     const hash = crypto.createHash('sha256').update(rawBody).digest('hex');
-    return !!claim && claim.sha256 === hash;
-  } catch (e) { return false; }
+    out.bodyMatches = !!claim && String(claim.sha256 || '').toLowerCase() === hash;
+  } catch (e) { out.error = e && e.name; }
+  return out;
 }
 
 exports.handler = async (event) => {
@@ -48,8 +53,10 @@ exports.handler = async (event) => {
 
   const raw = event.isBase64Encoded ? Buffer.from(event.body || '', 'base64') : Buffer.from(event.body || '', 'utf8');
   const h = event.headers || {};
-  if (!signedByNetlify(h['x-webhook-signature'] || h['X-Webhook-Signature'], secret, raw)) {
-    console.log('form-to-telegram: rejected, signature does not match');
+  const sig = checkSignature(h['x-webhook-signature'] || h['X-Webhook-Signature'], secret, raw);
+  if (!sig.keyMatches || !sig.bodyMatches) {
+    // 암호 문구의 글자 수만 남깁니다. 웹훅 칸에 넣은 문구의 글자 수와 같은지 비교하는 용도입니다.
+    console.log('form-to-telegram: rejected, signature does not match', JSON.stringify({ ...sig, secretLength: secret.length, bodyBytes: raw.length, base64: !!event.isBase64Encoded }));
     return { statusCode: 401, body: 'unauthorized' };
   }
 

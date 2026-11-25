@@ -285,7 +285,6 @@ export default function Page() {
         <a className="btn btn-sm" href="#apply" tabIndex={bar ? 0 : -1}>시그널 신청</a>
       </motion.aside>
 
-      <div className={bar ? 'sample-flag up' : 'sample-flag'}>SAMPLE DRAFT</div>
     </MotionConfig>
   );
 }
